@@ -1,0 +1,50 @@
+package com.mpvreeken.rpgcompanion.Classes;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.mpvreeken.rpgcompanion.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Sven on 7/4/2017.
+ */
+
+public class HookArrayAdapter extends ArrayAdapter<Hook> {
+
+    private final Context context;
+    private final List<Hook> hooks;
+    //TODO
+    //Consider using a RecyclerView instead of ListView
+
+    public HookArrayAdapter(Context context, ArrayList<Hook> values) {
+        super(context, R.layout.hooks_list_item_layout, values);
+        this.context = context;
+        this.hooks = values;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        final Hook hook = hooks.get(position);
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View rowView = inflater.inflate(R.layout.hooks_list_item_layout, parent, false);
+        TextView title_tv = (TextView) rowView.findViewById(R.id.hook_list_item_title_tv);
+        TextView desc_tv = (TextView) rowView.findViewById(R.id.hook_list_item_desc_tv);
+
+        title_tv.setText(hook.getTitle());
+        desc_tv.setText(hook.getDescription());
+
+        return rowView;
+    }
+}
