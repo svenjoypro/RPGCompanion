@@ -1,0 +1,12 @@
+{
+"details": [
+	"Cursed - {{curse}}",
+	"Blessed - {{blessing}}",
+	"Owns a map to {{destination}}",
+	"Possesses {{item}}",
+	"Strangely obsessed {{obsession}}",
+	"Protected by {{entity}}",
+	"Is owed a favor by {{entity}}",
+	"Owes a favor to {{entity}}"
+	]
+}

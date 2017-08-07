@@ -1,0 +1,821 @@
+{
+	"races-list": [
+		"Aarakocra","Aasimar","Beholder","Bugbear","Changeling","Dragonborn","Dwarf","Elf","Firbolg","Genasi","Gnoll","Gnome","Goblin","Goliath","Hag","Halfling","Half-Elf","Half-Orc","Human","Kenku","Kobold","Lizardfolk","Illithid","Minotaur","Orc","Shardmind","Tabaxi","Tiefling","Triton","Warforged","Wilden","Yuan-Ti"
+	],
+	"races-common": [
+		"Dragonborn","Dwarf","Elf","Gnome","Halfling","Half-Elf","Half-Orc","Human","Tiefling"
+	],
+	"races-moderate": [
+		"Aarakocra","Aasimar","Changeling","Firbolg","Gnoll","Goblin","Goliath","Kenku","Kobold","Lizardfolk","Orc","Tabaxi","Triton","Wilden","Yuan-Ti"
+	],
+	"races-rare": [
+		"Beholder","Bugbear","Genasi","Hag","Illithid","Minotaur","Shardmind","Warforged"
+	],
+	"races": [
+		{
+			"name": "Aarakocra",
+			"size": "M",
+			"speed": "25",
+			"fly-speed": "50",
+			"languages": [ "Common","Aarakocra" ],
+			"asi": [0,2,0,0,1,0],
+			"extras": [ "Talons" ],
+			"source": "ELM",
+			"names": {
+				"simple": ["Khug","Yerc","Ra","Qharrk","Zus","Ekaass","Yirras","Suqeg","Gruaqik","Haiarrick","Qhed","Cluied","Khas","Sek","Kehk","Ucees","Klakkir","Grilass","Craelass","Grucierr","Hahk","Ooc","Khuf","Qe","Rhuqag","Callek","Ucaar","Rikiaf","Geecia"]
+			}
+		},
+		{
+			"name": "Aasimar",
+			"size": "M",
+			"speed": "30",
+			"speedFly": "50",
+			"languages": [
+				"Common",
+				"Celestial"
+			],
+			"asi": [0,0,0,0,1,2],
+			"extras": ["Darkvision","Celestial Resistance","Healing Hands","Light Bearer"],
+			"source": "VGM",
+			"subRace": [
+				{
+					"name": "Protector Aasimar",
+					"asi": [0,0,0,0,1,0],
+					"extras": ["Radiant Soul"],
+					"source": "VGM"
+				},
+				{
+					"name": "Scourge Aasimar",
+					"asi": [0,0,1,0,0,0],
+					"extras": ["Radiant Consumption"],
+					"source": "VGM"
+				},
+				{
+					"name": "Fallen Aasimar",
+					"asi": [1,0,0,0,0,0],
+					"extras": ["Necrotic Shroud"],
+					"source": "VGM"
+				}
+			],
+			"names": {
+				"male": [
+					"Aritian","Beltin","Cernan","Cronwier","Eran","Ilamin","Maudril","Okrin","Parant","Tural","Wyran","Zaigan","Huggol","Brolrir","Velrim","Edun","Vykral","Tygwint","Rolrivin","Todetam","Zolriteel","Wogwodint"
+				],
+				"female": [
+					"Arken","Arsinoe","Davina","Drinma","Imesah","Masozi","Nijena","Niramour","Ondrea","Rhialla","Valtyra","Zole","Demmo","Meali","Homi","Thalve","Drinlie","Darsoni","Ravele","Limesa","Zordasa"
+				]
+			}
+		},
+		{
+			"name": "Beholder",
+			"size": "L",
+			"speed": "5",
+			"speed-fly": "20",
+			"languages": [ "Common" ],
+			"asi": [0,1,2,2,1,1],
+			"extras": [ "Eye Rays","All-around Vision","Antimagic Cone","Darkvision 60ft","Flight" ],
+			"source": "MM",
+			"names": {
+				"simple": ["Chihn","Elk","Khaalbralm","Zigaln","Oalxohs","Gatrucs","Khaotoskix","Midhyxis","Dhethacaksh","Xalbryrxioqa","Gi","Dhoax","Dhirthu","Olxaks","Lougthilx","Xadaks","Mirnoqehm","Qilbryqell","Thirdarelks","Zaudthroscakae","Je","Vaaph","Bagtharv","Qhezi","Dhoghuln","Zazducsh","Zimnuqielx","Rolbursahn","Chinaqsier","Dhamdraksiaqsa"]
+			}
+		},
+		{
+			"name": "Bugbear",
+			"size": "M",
+			"speed": "30",
+			"languages": [ "Common" ],
+			"asi": [2,1,0,0,0,0],
+			"extras": [ "Long Limbed","Powerful Build","Sneaky","Surprise Attack" ],
+			"source": "MM",
+			"names": {
+				"male": ["Duuven","Grandaran","Turgur","Areban","Turban","Noovera","Nuopen","Uovamin","Estenim","Kiata","Noomi","Sinana","Karrus"],
+				"female": ["Uovatrin","Hineres","Nuosia","Kuola","Testred","Nuokea","Uovara","Neodra","Entidra","Tiatra","Tinavena","Tinalin","Noolin","Teeru","Hinlen","Aretra","Kiatrin"],
+				"last": ["Thickfoot","Fearlesspelt","Stoutpaw","Thunderspeaker","Boldslash","Rockbody"]
+			}
+		},
+		{
+			"name": "Changeling",
+			"size": "M",
+			"speed": "35",
+			"languages": [ "Common" ],
+			"asi": [0,1,0,0,0,2],
+			"extras": [ "Duplicity","Shapechanger","Polyglot","Darkvision 60ft","Read Thoughts","Slippery Mind","Manipulator" ],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Bouz","Saks","Ukt","Vok","Dorx","Loz","Saert","Fikt","Jas","Pum","Waeks","Iks","Urt","Ik","Ats","Roks","Mikt","Loom","Sat","Ruz","Feem","Mog","Uc","Vaiks","Ok","Ukt","Eeg","Bag","Wots","Rurs"]
+			}
+		},
+		{
+			"name": "Dragonborn",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Draconic"
+			],
+			"asi": [2,0,0,0,0,1],
+			"extras": ["Breath Weapon","Damage Resistance"],
+			"source": "PHB",
+			"subRace": [
+				{ "name": "Black Dragonborn" },
+				{ "name": "Blue Dragonborn" },
+				{ "name": "Red Dragonborn" },
+				{ "name": "Green Dragonborn" },
+				{ "name": "White Dragonborn" },
+				{ "name": "Brass Dragonborn" },
+				{ "name": "Bronze Dragonborn" },
+				{ "name": "Copper Dragonborn" },
+				{ "name": "Gold Dragonborn" },
+				{ "name": "Silver Dragonborn" }
+			],
+			"names": {
+				"male": [
+					"Andujar","Armagan","Armek","Arzan","Axaran","Belaxarim","Brevarr","Djemidor","Draxan","Fayal","Grax","Iojad","Inzul","Khiraj","Kreytzen","Lejek","Mar","Nazir","Nedam","Nevek","Ravaran","Razaan","Sarax","Sarram","Savaxis","Siangar","Sirizan","Sunan","Szuran","Tajan","Tamajon","Tenahn","Toxal","Tzegyr","Vantajar","Vharkus","Xafiq","Zarkhil"
+				],
+				"female": [
+					"Artana","Kalas","Khagra","Leytra","Myrka","Naya","Sarcha","Shirren","Sirivistra","Sufana","Tamara","Vrumadi","Zovra"
+				],
+				"last": [
+					"Drencishkmiruth","Taxokmileas","Klulrishtad","Klethtundremesh","Ephikmuar","Empitallas","Erdexar","Larnashkmiash","Pruxakis","Taphir","Kraltuuc","Shambexin","Filtexik","Arnen","Linxal","Yialdrel"
+				]
+			}
+		},
+		{
+			"name": "Dwarf",
+			"size": "M",
+			"speed": "25",
+			"languages": [
+				"Common",
+				"Dwarf"
+			],
+			"asi": [0,0,2,0,0,0],
+			"extras": ["Darkvision","Dwarven Resistance","Dwarven Combat Training","Tool Proficiency","Stone-Cunning"],
+			"source": "PHB",
+			"subRace": [
+				{
+					"name": "Hill Dwarf",
+					"asi": [0,0,0,1,0,0],
+					"extras": ["Dwarven Toughness"]
+				},
+				{
+					"name": "Mountain Dwarf",
+					"asi": [2,0,0,0,0,0],
+					"extras": ["Dwarven Armour Training"]
+				},
+				{
+					"name": "Duergar",
+					"languages": ["Undercommon"],
+					"asi": [1,0,0,0,0,0],
+					"extras": ["Superior Darkvision","Duergar Resilience","Duergar Magic","Sunlight Sensitivity"],
+					"source": "SCAG"
+				}
+			],
+			"names": {
+				"male": [
+					"Agaro","Arnan","Auxlan","Avamir","Baelnar","Balfam","Bariken","Borkul","Darkul","Dolmen","Dyrnar","Erag","Ezegan","Ferrek","Garmul","Glint","Ghorvas","Grimmalk","Haeltar","Halagmar","Halzar","Hlant","Korlag","Krag","Krim","Kurman","Lurtrum","Malagar","Mardam","Maulnar","Melgar","Morak","Orobok","Rogath","Roken","Rozag","Sabakzar","Sharak","Smethykk","Swargar","Thorbalt","Thorin","Tredigar","Vabul","Vistrum","Wolvar"
+				],
+				"female": [
+					"Beyla","Fenryl","Grenenzel","Krystolari","Lokara","Lurka","Marnia","Praxana","Rokel","Roksana","Thurlfara","Vauldra","Veklani","Vronwe","Zebel"
+				],
+				"last": [
+					"Ambershard","Barrelhelm","Copperhearth","Deepmiddens","Drakantal","Evermead","Garkalan","Grimtor","Hackshield","Irongull","Markolak","Ramcrown","Rockharvest","Silvertarn","Skandalor","Zarkanan","Strongmaster","Brightmaker","Minebreaker","Earthdelver","Brightmaster","Forgemaul","Bonegrip","Forgegrog","Brickbrow","Frostmail","Metalbreaker","Sapphirebraids","Magmabrew","Hammermail","Underfury","Kegshaper","Mountainriver","Merrybringer","Goldback","Drakegut","Steelback","Wraithmail","Noblebringer","Reddigger","Wyvernflayer","Hardhelm","Bottlehelm","Smeltmaster","Coalgrog","Thunderhead","Lavashield","Bittershaper","Thunderdelver","Largegut","Whitestone","Hardcloak","Rubyminer","Frosthand","Pebbleback","Blackbender","Flintmace","Shadowhand","Mudbelt","Flintgranite","Graybelt","Barrelchin","Bronzehide","Bloodgrip","Bluntchin","Brightbeard"
+				]
+			}
+		},
+		{
+			"name": "Elf",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Elvish"
+			],
+			"asi": [0,2,0,0,0,0],
+			"extras": ["Darkvision","Keen Senses","Fey Ancestry","Trance"],
+			"source": "PHB",
+			"subRace": [
+				{
+					"name": "Dark Elf",
+					"languages": ["Drow Hand Signs"],
+					"asi": [0,0,0,0,0,1],
+					"extras": ["Superior Darkvision","Sunlight Sensitivity","Drow Magic","Drow Weapons Training"]
+				},
+				{
+					"name": "Eladrin",
+					"asi": [0,0,0,1,0,0],
+					"extras": ["Elf Weapon Training","Fey Step"],
+					"source": "DMG"
+				},
+				{
+					"name": "High Elf",
+					"asi": [0,0,0,1,0,0],
+					"extras": ["Elf Weapon Training","+1 Cantrip"]
+				},
+				{
+					"name": "Wood Elf",
+					"speed": "5",
+					"asi": [0,0,0,0,1,0],
+					"extras": ["Elf Weapon Training","Mask of the Wild"]
+				}
+			],
+			"names": {
+				"male": [
+					"Alarcion","Alathar","Ariandar","Arromar","Borel","Bvachan","Carydion","Elgoth","Farlien","Ferel","Gaerlan","Iafalior","Kaelthorn","Laethan","Leliar","Leodor","Lorak","Lorifir","Morian","Oleran","Rylef","Savian","Seylas","Tevior","Veyas","Iankian","Fardan","Genlar","Heryarus","Trajeon","Varis","Roric","Lumenor","Ralokas","Beilamin","Erfir","Traxidor","Wrantoris","Aehice","Yinlar","Fenbalar","Kelbalar","Daequinal","Leomaris","Umebalar","Leojor","Iliwarin","Glynjor","Dornan","Elaric","Valar","Oloren","Elakian","Herkian","Carmyar"
+				],
+				"female": [
+					"Aryllan","Atalya","Ayrthwil","Irva","Lyfalia","Ronefel","Thirya","Velene","Venefiq","Zereni","Zinrel","Bisys","Venkrana","Ravarora","Zinlynn","Zyldove","Zinthana","Keygwyn","Eilgella","Biqirelle","Ularoris","Gilvaris","Aralee","Valgella","Entris","Chaesys","Yllatris","Preslana","Liakrana","Xyrtris","Inamys","Trismys","Magfiel","Adjyre","Chaestina","Yllaxina","Wysamys","Holavaris","Liadi","Trisralei","Helerie","Jozana","Eillana","Neriwynn","Bryharice","Faxisys","Caisatra","Phina","Falana","Phibanise"
+				],
+				"last": [
+					"Autumnloft","Balefrost","Briarfell","Evenwind","Graytrails","Mooncairn","Riverwall","Stormwolf","Summergale","Sunshadow","Woodenhawk"
+				]
+			}
+		},
+		{
+			"name": "Firbolg",
+			"size": "M",
+			"speed": "30",
+			"languages": [ "Common","Elvish","Giant" ],
+			"asi": [1,0,0,0,2,0],
+			"extras": [ "Firbolg Magic","Hidden Step","Powerful Build","Speech of Beast and Leaf" ],
+			"source": "ELM",
+			"names": {
+				"male": ["Carren","Wranmaris","Wranhorn","Erzumin","Erbalar","Traris","Luwarin","Qidan","Yelquinal","Yelsalor","Pavalur","Urilar","Crajeon","Virran","Daejor","Yindan","Carpetor","Elafaren","Zinberos","Kelvalur","Cratoris","Olowarin","Uriren","Adric","Farjeon","Virvalur","Norsandoral","Daeneiros","Genxalim","Miraxidor"],
+				"female": ["Enjyre","Olagella","Brysys","Miajyre","Iarynore","Arana","Caivyre","Ravarie","Miasatra","Inahana","Yllagwyn","Eillana","Lialeth","Eilvaris","Bifina","Urileth","Zinfina","Keynala","Zylrieth","Yllajyre","Heleqirelle","Xyrgwyn","Helekalyn","Valphine","Bryrona","Valkrana","Sylna","Chaedove","Helebella","Shaphine"]
+			}
+		},
+		{
+			"name": "Genasi",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Primordial"
+			],
+			"asi": [0,0,2,0,0,0],
+			"source": "ELM",
+			"subRace": [
+				{
+					"name": "Air Genasi",
+					"asi": [0,1,0,0,0,0],
+					"extras": ["Unending Breath","Mingle with the Wind"]
+				},
+				{
+					"name": "Earth Genasi",
+					"asi": [1,0,0,0,0,0],
+					"extras": ["Earth Walk","Merge with Stone"]
+				},
+				{
+					"name": "Fire Genasi",
+					"asi": [0,0,0,1,0,0],
+					"extras": ["Darkvision","Fire Resistance","Reach to the Blaze"]
+				},
+				{
+					"name": "Water Genasi",
+					"asi": [0,0,0,0,1,0],
+					"extras": ["Acid Resistance","Amphibious","Call to the Wave"]
+				}
+			],
+			"names": {
+				"simple": ["Glint","Bonfire","Char","Gush","Downpour","Estuary","Gem","Crystal","Callous","Wheeze","Current","Azure","Flash","Ash","Gleam","Aqua","Brook","Sea","Turf","Sturdy","Basalt","Flutter","Tumult","Whistle","Fuego","Charcoal","Phoenix","Ocean","Aqua","Drizzle","Solid","Jewel","Sturdy","Surge","Gust","Cyclone","Nether","Fever","Glare","Surf","Mist","Lakelet","Sediment","Jewel","Sapphire","Turbulence","Soar","Whiff","Coal","Torrid","Cinder","Tempest","Tidal","Tsunami","Terra","Dense","Grime","Blast","Empyrean","Ascend","Ardor","Scoria","Cauterize","Tide","Brine","Downpour","Mountain","Alabaster","Emerald","Fly","Gasp","Float"]
+			}
+		},
+		{
+			"name": "Gnoll",
+			"size": "M",
+			"speed": "30",
+			"languages": [ "Common","Abyssal" ],
+			"asi": [2,1,0,0,0,0],
+			"extras": [ "Darkvision","Bite","Rampage","Carrion Eater","Pack Tactics" ],
+			"source": "D&DWiki",
+			"names": {
+				"male": ["Ignar","Usmakh","Orbok","Ognab","Eterk","Eltakh","Iyalk","Unrerk","Irrut"],
+				"female": ["Ethab","Anduk","Udrud","Imdat","Esmam","Agnut","Umnol"],
+				"last": ["of the Grunting Fields","of the Retched Miscreations","of the Growling Savages","of the Gloating Slayers","of the Ravaging Wildlings","of the Rotted Killers","of the Bloody Vandals","of the Barren Brawlers","of the Roaming Wanderers","of the Feeding Hoodlums","of the Twitching Brawlers","of the Grunting Slayers","of the Forsaken Trappers"]
+			}
+		},
+		{
+			"name": "Gnome",
+			"size": "S",
+			"speed": "25",
+			"languages": [
+				"Common",
+				"Gnomish"
+			],
+			"asi": [0,0,0,2,0,0],
+			"extras": ["Darkvision","Gnome Cunning"],
+			"source": "PHB",
+			"subRace": [
+				{
+					"name": "Deep Gnome",
+					"languages": ["Undercommon"],
+					"asi": [0,1,0,0,0,0],
+					"extras": ["Superior Darkvision","Stone Camoflague","Svirfneblin Magic"],
+					"source": "D&DWiki"
+				},
+				{
+					"name": "Forest Gnome",
+					"asi": [0,1,0,0,0,0],
+					"extras": ["Minor Illusion Cantrip","Speak with Small Beasts"],
+					"source": "PHB"
+				},
+				{
+					"name": "Rock Gnome",
+					"asi": [0,0,1,0,0,0],
+					"extras": ["Artificer's Lore","Tinker"],
+					"source": "PHB"
+				}
+			],
+			"names": {
+				"male": [
+					"Cordri","Quator","Towor","Kasben","Corxim","Erlen","Urixim","Davmin","Enihim","Aripip","Tanfiz","Umxif","Nesmin","Salfan","Umros","Pokur","Alziver","Jegrim","Niwor","Manyur","Rasrick","Nesvyn","Aripip","Umnan","Nicryn","Jetor","Wremorn","Jorben","Vorpip","Corzu","Oruben","Orudri","Toyur","Sindon","Salfiz","Tanston","Corjin","Bilkur","Hisdon","Xofiz"
+				],
+				"female": [
+					"Krimyra","Spiqys","Banbi","Jelkasys","Yobys","Trimyra","Ufegani","Ylomiphi","Hesqaryn","Isolin","Nidysa","Inaxis","Faekasys","Mypine","Ufela","Zinfi","Qirhana","Remyn","Klowyn","Spidira","Venbys","Lildysa","Sassa","Carfi","Klowyn","Aluyore","Saza","Tifaroe","Daphili","Faesys"
+				]
+			}
+		},		
+		{
+			"name": "Goblin",
+			"size": "S",
+			"speed": "25",
+			"languages": [ "Common","Goblin" ],
+			"asi": [0,1,0,0,0,1],
+			"extras": [ "Nimble Escape","Darkvision 60ft" ],
+			"source": "D&DWiki",
+			"subRace": [
+				{
+					"name": "Greenskin Goblin (Traditional Goblin)",
+					"asi": [0,1,0,0,0,0],
+					"extras": ["Mudslinger","Worg Rider","Run For It"],
+					"source": "D&DWiki"
+				},
+				{
+					"name": "Boggart Gnome",
+					"asi": [0,0,0,0,1,0],
+					"extras": ["Boggart Weapon Proficiency","Swamp Immunity","Bog Swimmer"],
+					"source": "D&DWiki"
+				},
+				{
+					"name": "Gremlin Goblin",
+					"asi": [0,0,0,1,0,0],
+					"extras": [ "Dangerous Tinker","Almost Fire Proof","Tinkerer" ],
+					"source": "D&DWiki"
+				}
+			],
+			"names": {
+				"male": ["Beets","Fil","Trelb","Strolx","Juld","Wromozz","Joihit","Pryhigs","Xakkur","Xiomteasb","Piong","Streld","Blear","Chegs","Usb","Zrabkiox","Hiameabs","Pliaddaakz","Wenur","Steahkiag","Vyng","Woibs","Prurx","Drokt","Freenk","Triokeq","Ohduiz","Heakniek","Girmulb","Laalgield"],
+				"female": ["Wesh","Phifzia","Weq","Quq","Wiqia","Enziaszea","Eelvusxia","Vravlilda","Eesvossai","Flitnuf","Shaqia","Ahx","Eelx","Crifee","Thong","Ollef","Ganeelk","Lukeeftai","Upraafz","Criokleef","Gnezia","Claarx","Trah","Brurx","Bragse","Ugtuisz","Khahbultea","Glarkuh","Uvieng","Shubahx"]
+			}
+		},
+		{
+			"name": "Goliath",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Giant"
+			],
+			"asi": [2,0,1,0,0,0],
+			"extras": ["Natural Athlete","Stone's Endruance","Powerful Build","Mountain Born"],
+			"source": "PHB",
+			"names": {
+				"male": [
+					"Puglath","Augmith","Pathi","Apaphak","Vithak","Thagath","Vivhik","Iliglath","Geamahk","Vapath","Navhal","Mogak","Khugith","Vokin","Aupath","Vimahl","Movek","Vonoth","Thavagath","Geapath","Neovhal","Aukhal","Laman","Vaulath"
+				],
+				"female": [
+					"Oneni","Kinia","Kini","Paagia","Vulea","Velo","Pekeo","Thevia","Thukeo","Inanu","Onegea","Nalki","Penu","Genia","Genu","Kuomi","Guari","Nalea","Maapu","Nania","Vauki","Nalgeo","Kaumia","Vevu","Agevia","Kaukeo"
+				],
+				"last": [
+					"Truebearer","Mindrunner","Rocklander","Wildleaper","HonestJumper","Lumberbearer","Foodleader","Rockfist","Frightlander","Adeptguard","Goathand","Hidetanner","Foodfriend","Hardsmasher","Dawnguard","Wildcook","Mindworker","Rantanner","Wanderbreaker","Threadwarrior","Hornwalker","Bearpicker","Truejumper","Stormwatcher","Daysmasher","Dawndreamer","Strongaid","Strongpicker"
+				]
+			}
+		},
+		{
+			"name": "Hag",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Draconic",
+				"Sylvan"
+			],
+			"asi": [2,0,1,0,0,0],
+			"extras": ["Claws","Illusory Appearance","Invisible Passage","Amphibious","Mimicry"],
+			"source": "HB",
+			"names": {
+				"male": ["Antsy Flora","Erratic Lila","Crooked Melissa","Lone Kim","Pesky Maggie","Salty Rosemarie","Frantic Shelley","Batty Emma","Jolly Pearl","Greedy Ramona"],
+				"female": ["Lurking Faye","Volatile Claudia","Antique Janis","Knotty Gayle","Wicked Pat","Whistling Olga","Dismal Roberta","Laughing Yvette","Bumpy Beatrice","Bickering Ina"],
+				"last": ["Saltscrambler","Soilcough","Fleshfeet","Branchjoint","Mirewiggle","Gristlecheeks","Snailbone","Coldbog","Inkstealer","Gravewart","Gnatbreath","Snailcounter","mousemumbler","Critterknee","Gunktooth","Spotjoints","Meatrumbler","Woodwiggle","Pestmouth","Firecobble"]
+			}
+		},
+		{
+			"name": "Halfling",
+			"size": "S",
+			"speed": "25",
+			"languages": [
+				"Common",
+				"Halfling"
+			],
+			"asi": [0,2,0,0,0,0],
+			"extras": ["Lucky","Brave","Halfling Nimbleness"],
+			"source": "PHB",
+			"subRace": [
+				{
+					"name": "Lightfoot Halfling",
+					"asi": [0,0,0,0,0,1],
+					"extras": ["Naturally Stealthy"],
+					"source": "PHB"
+				},
+				{
+					"name": "Stout Halfling",
+					"asi": [0,0,1,0,0,0],
+					"extras": ["Stout Resilience"],
+					"source": "PHB"
+				},
+				{
+					"name": "Ghostwise Halfling",
+					"languages": ["Silent Speech"],
+					"asi": [0,0,0,0,1,0],
+					"source": "SCAG"
+				}
+			],
+			"names": {
+				"male": [
+					"Arthan","Carvin","Corby","Cullen","Egen","Ernest","Gedi","Heron","Jeryl","Keffen","Kylem","Kynt","Leskyn","Neff","Orne","Quarrel","Rabbit","Rilkin","Snakebait","Tarfen","Titch","Tuck","Whim"
+				],
+				"female": [
+					"Caliope","Emily","Piper","Rixi","Sabretha","Teg","Tilly","Toira","Vexia","Vil","Vzani","Zanthe","Ziza"
+				],
+				"last": [
+					"Angler","Battlestone","Blackwater","Daggersharp","Deepstrider","Hollowpot","Puddle","Raftmite","Skiprock","Silverfin","Tanglestrand","Tricker","Willowrush","Yellowcrane"
+				]
+			}
+		},
+		{
+			"name": "Half-Elf",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Elvish"
+			],
+			"asi": [0,0,0,0,0,2],
+			"extras": ["+1 ASI","+1 ASI","Darkvision","Fey Ancestry","Skill Versatility"],
+			"source": "PHB",
+			"subRace": [
+				{
+					"name": "Half-Elf"
+				},
+				{
+					"name": "Half Wood Elf",
+					"extras": ["-Skill Versatility","Elf Weapon Training OR Fleet of Foot OR Mask of the Wild"],
+					"source": "SCAG"
+				},
+				{
+					"name": "Half Moon Elf",
+					"extras": ["-Skill Versatility","Elf Weapon Training OR +1 Cantrip"],
+					"source": "SCAG"
+				},
+				{
+					"name": "Half Sun Elf",
+					"extras": ["-Skill Versatility","Elf Weapon Training OR +1 Cantrip"],
+					"source": "SCAG"
+				},
+				{
+					"name": "Half Drow",
+					"extras": ["-Skill Versatility","Drow Magic"],
+					"source": "SCAG"
+				},
+				{
+					"name": "Half Aquatic Elf",
+					"extras": ["Fast Swimmer 30ft"],
+					"source": "SCAG"
+				}
+			],
+			"names": {
+				"male": [
+					"Kevcraes","Ulril","Davstaer","Nilgretor","Leoavor","Sylvoril","Yorphanis","Maryeras","Nilgotin","Ianfaerd","Zanqarim","Ilolumin","Nilminar","Jamwarith","Oshorn","Fallanann","Xavyeras","Sarorin","Alzaren","Quoynor","Rilumin","Pannan","Corfaelor","Alyeras","Nilparin","Eirynor","Ianvalor","Kriril","Vannan","Zylzaphir"
+				],
+				"female": [
+					"Carnoa","Relona","Jilnys","Marethana","Unahophe","Prielor","Ophienyphe","Giffine","Alygalyn","Zelvyre","Cofaen","Unabellis","Quetihne","Halywaris","Phayestine","Venmalis","Kysyaries","Tylbwynn","Kyszira","Marewalyn","Dellynn","Zinzenya","Elimythe","Zincerys","Safviel","Aluqarin","Kysphira","Lorawaris","Qibellis","Byngwynn"
+				]
+			}
+		},
+		{
+			"name": "Half-Orc",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Orc"
+			],
+			"asi": [2,0,1,0,0,0],
+			"extras": ["Darkvision","Menacing","Relentless Endurance","Savage Attacks"],
+			"source": "PHB",
+			"names": {
+				"male": [
+					"Galurall","Kraurak","Bragul","Suzall","Kelanur","Gromorall","Zoradash","Narak","Korigash","Dorodark","Kamun","Mageruk","Reked","Urtrurim","Atrisk","Zaad","Gromozall","Brakedar","Urthazar","Thedak","Sadark","Nomar","Drarall","Malubark","Mugesk","Zaramak","Grimotur","Urtramak","Trakemur","Crebar"
+				],
+				"female": [
+					"Folener","Kurigu","Umigur","Fuloni","Felozara","Rashitah","Feleni","Shayogume","Natur","Rohesha","Kutinur","Mozi","Shodar","Sanati","Ubag","Folig","Olizira","Ekiki","Lagetar","Gresh","Lagaki","Tumeki","Gajeshi","Temizar","Gryone","Meroni","Shone","Grozura","Samene","Kerotir"
+				]
+			}
+		},
+		{
+			"name": "Human",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"+1 Language"
+			],
+			"asi": [1,1,1,1,1,1],
+			"source": "PHB",
+			"subRace": [
+				{
+					"name": "Human"
+				},
+				{
+					"name": "Human Variant",
+					"asi": [-1,-1,-1,-1,-1,-1],
+					"extras": ["+1 ASI","+1 ASI","+1 Skill","+1 Feat"],
+					"source": "PHB"
+				}
+			],
+			"names": {
+				"male": [
+					"Anlow","Arando","Bram","Cale","Dalkon","Daylen","Dodd","Dungarth","Dyrk","Eandro","Falken","Feck","Fenton","Gryphero","Hagar","Jeras","Krynt","Lavant","Leyten","Madian","Malfier","Markus","Meklan","Namen","Navaren","Nerle","Nilus","Ningyan","Norris","Quentin","Semil","Sevenson","Steveren","Talfen","Tamond","Taran","Tavon","Tegan","Vanan","Vincent"
+				],
+				"female": [
+					"Azura","Brey","Hallan","Kasaki","Lorelei","Mirabel","Pharana","Remora","Rosalyn","Sachil","Saidi","Tanika","Tura","Tylsa","Vencia","Xandrilla"
+				],
+				"last": [
+					"Arkalis","Armanci","Bilger","Blackstrand","Brightwater","Carnavon","Caskajaro","Coldshore","Coyle","Cresthill","Cuttlescar","Daargen","Dalicarlia","Danamark","Donoghan","Drumwind","Dunhall","Ereghast","Falck","Fallenbridge","Faringray","Fletcher","Fryft","Goldrudder","Grantham","Graylock","Gullscream","Hindergrass","Iscalon","Kreel","Kroft","Lamoth","Leerstrom","Lynchfield","Moonridge","Netheridge","Oakenheart","Pyncion","Ratley","Redraven","Revenmar","Roxley","Sell","Seratolva","Shanks","Shattermast","Shaulfer","Silvergraft","Stavenger","Stormchapel","Strong","Swiller","Talandro ","Targana","Towerfall","Umbermoor","Van Devries","Van Gandt","Van Hyden","Varcona","Varzand","Voortham","Vrye","Webb","Welfer","Wilxes","Wintermere","Wygarthe","Zatchet","Zethergyll"
+				]
+			}
+		},
+		{
+			"name": "Kenku",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Auran"
+			],
+			"asi": [0,2,0,0,1,0],
+			"extras": ["Expert Forgery","Kenku Training","Mimicry"],
+			"source": "VGM",
+			"names": {
+				"male": [
+					"Baker","Cutter","Stamper","Knocker","Screamer","Swan Honk","Goat Baa","Brush Stroke","Net Cast","Leather Flick","Puffer","Exploder","Striker","Carver","Crocodile Roar","Owl Rustle","Deer Clash","Bell Ring","Book Drop","Saw Drop"
+				],
+				"female": [
+					"Driller","Growler","Dragger","Walloper","Horse Whinny","Eagle Screech","Deer Rustle","Furnace Door","Rope Whip","Hatchet Drop","Scribbler","Forger","Nailer","Clipper","Jackal Laugh","Wolf Howl","Owl Swoop","Hatchet Chop","Cork Pop","Wood Crack"
+				]
+			}
+		},
+		{
+			"name": "Kobold",
+			"size": "S",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Draconic"
+			],
+			"asi": [0,1,0,0,0,1],
+			"extras": ["Party Tactics","Sunlight Sensitivity","Darkvision 60ft","Trapper","Gutless","Hoarder","Kobold Weapon Training"],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Gan","Dog","Mett","Red","Tokru","Habi","Ritlo","Dere","Geki","Zavli","Tud","Des","Rev","Rigs","Snorto","Murku","Solge","Holta","Degle","Zikde","Snik","Tom","Hak","Snus","Snoka","Tagge","Takbe","Vahro","Herke","Gekbu","Zern","Nirn","Vatt","Nos","Tekbe","Tublo","Ivla","Kupli","Totre","Kekli","Gum","Norn","Hutt","Varn","Voka","Korka","Horke","Mila","Vota","Tedre"]
+			}
+		},
+		{
+			"name": "Lizardfolk",
+			"size": "M",
+			"speed": "30",
+			"speedSwim": "30",
+			"languages": [
+				"Common",
+				"Draconic"
+			],
+			"asi": [0,0,2,0,1,0],
+			"extras": ["Bite","Cunning Artisan","Hold Breath","Hunter's Lore","Natural Armor","Hungry Jaws"],
+			"source": "VGM",
+			"names": {
+				"male": [
+					"Trend","Turth","Vorhty","Uthroth","Shoggu","Ballass","Rashaesk","Thrortessix","Ditraekret","Irthaererk","Oth","Gurd","Dartarth","Kellux","Seda","Idri","Jhishak","Trirhtustrev","Truthrigrork","Maughaogra"
+				],
+				"female": [
+					"Lot","Ird","Jhirthiv","Kerirt","Idrat","Audreth","Irguv","Lothostrert","Kogrithon","Jhogregys","Kand","Lerd","Jherhtuth","Ullarth","Budrun","Olu","Irgia","Shaathognov","Laochogrut","Kerkikhesh"
+				]
+			}
+		},
+		{
+			"name": "Illithid",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Deep Speech",
+				"Undercommon"
+			],
+			"asi": [0,0,0,2,0,1],
+			"extras": ["Darkvision 60ft","Lesser Magic Resistance","Mind Blast","Devour Brain","Aberrant Mind"],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Gassk","Zussk","Slellek","Gelbakt","Tusdul","Caoluk","Zengugalt","Lulluyux","Qengubum","Drengevelo","Kaks","Cul","Grezil","Kuglur","Tresir","Esdissk","Losginuam","Trurgelok","Riphalossk","Kobuyaungo","Tal","Gul","Svusbar","Enkum","Kasassk","Qagchussk","Vabromuss","Cugemoss","Vagruyult","Azungevu","Taks","Kaull","Svuldex","Thusder","Dranchur","Ergix","Cuddanuks","Gruabriyex","Cuzingakt","Vauzeguze"]
+			}
+		},
+		{
+			"name": "Minotaur",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Abyssal"
+			],
+			"asi": [1,0,1,0,0,0],
+			"extras": ["Darkvision (60ft)","Gore","Charge","Labyrinthine Recall"],
+			"source": "D&DWiki",
+			"subRace": [
+				{
+					"name": "Silent Beast Minotaur",
+					"asi": [0,0,0,0,1,0],
+					"languages": ["Giant"],
+					"extras": ["Self Mastery","Labyrinthine Tracking"]
+				},
+				{
+					"name": "Baphomet Exile Minotaur",
+					"asi": [0,0,1,0,0,0],
+					"extras": ["Baphomet Origin","Siege Monster","Steady Feat"]
+				}
+			],
+			"names": {
+				"male": ["Hesra","Aseme","Linekea","Gunbaran","Djunrat","Gungur","Nooparan","Hilala","Duulas","Heslin","Jarrus","Hunkar","Koornark","Koodaran"],
+				"female": ["Kikea","Kikane","Weonu","Linelas","Noonu","Loona","Neola","Sinaris","Kiru","Teelas","Seolas","Seesdra","Aretin","Uovavena"],
+				"last": ["Agilehorns","Stouthunter","Boldfighter","Thunderfighter","Heavyhunter","Bravehide","HonorBane","Keenhorn","Valiantheart","Swiftvigor","Jaggedhoof","Rockskin","Stonebane"]
+			}
+		},
+		{
+			"name": "Orc",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Orcish"
+			],
+			"asi": [2,0,0,0,0,0],
+			"extras": ["Darkvision 60ft"],
+			"source": "D&DWiki",
+			"subRace": [
+				{
+					"name": "Gray Orc (Mountain Orc)",
+					"asi": [0,0,0,0,1,0],
+					"extras": ["Cold Adapted","Natural Hunter","Mountain Tracker","Mountain Born","Sun Adapted"]
+				},
+				{
+					"name": "Common Orc",
+					"asi": [0,0,1,0,0,0],
+					"extras": ["Aggressive","Battle Ready","Relentless Endurance","Savage Attacks"]
+				},
+				{
+					"name": "Orog Orc",
+					"asi": [0,0,1,0,0,0],
+					"extras": ["powerful Build","Display of Strength","Superior Darkvision (120ft)","Battle Born"]
+				},
+				{
+					"name": "Water Orc",
+					"asi": [0,2,0,0,0,0],
+					"extras": ["Water Born","Natural Water Hunter","Natural Fisher","Fire Weakness"]
+				}
+			],
+			"names": {
+				"male": ["Zhag","Rhob","Mul","Ghol","Gradgar","Bruggon","Rhuddug","Jograkk","Dobzol","Zortab","Dhun","Dur","Shub","Abzod","Dogguk","Gurzuk","Bhuddok","Rhundun","Duhzud"],
+				"female": ["Shol","Dez","Bang","Bhyef","Bevrang","Nuwnuv","Bhomviv","Zumzum","Novneh","Ouwni","Guh","Hok","Hieng","Bev","Umul","Bevnam","Mewnkon","Imvol","Ivgu"],
+				"last": ["The Broken","The Broad","The Frantic","Brass Axe","Gnome Axe","The Grave","Tooth Axe","Giant Axe","The Crazy","The Grim","The Feisty","The Gargantuan"]
+			}
+		},
+		{
+			"name": "Shardmind",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Shardspeak",
+				"+1 Language"
+			],
+			"asi": [0,0,0,2,1,0],
+			"extras": ["Crystalline Mind","Crystalline Body","Arcane Ancestry","Psionics"],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Balati","Aniniri","Balaraya","Erirashi","Irari","Sariram","Deluni","Ruanar","Delunaram","Tinwia","Tirulazu","Balanaru","Delushi","Eriram","Irayua","Tiruniri","Huaraya","Ashiwia","Bashari","Runyua","Runtari","Tinni","Luranu","Shirshi","Balatana","Tirumea","Balaram","Sarizu","Iluhara","Lupana"]
+			}
+		},
+		{
+			"name": "Tabaxi",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common"
+			],
+			"asi": [0,2,0,0,1,0],
+			"extras": ["Exceptional Darkvision (100ft)","Feline Reflexes","Feline Ability"],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Wonder of the World","Coursing River","Dust on the Road","Snow of the Mountain","Paw of a Bear","Humble Leaf","Single Brain","Merry Spark","Austere Night","Brash Link","Taste of Fruit","Sleight Hand","Locket on a Heart","Flight of a Robin","Curious Needle","Amused Animal","Rare Flame","Silent Wave","Jade Ice","Unpulled Cart","Friend of Foe","Shadows in the Wind","Dream of Days","Drifting Snowflake","True Block","Prime Garden","Lost Beetle","Velvet Mark","Swift Brain"]
+			}
+		},
+		{
+			"name": "Tiefling",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Infernal"
+			],
+			"asi": [0,0,0,1,0,2],
+			"extras": ["Darkvision","Hellish Resistance","Hellish Legacy"],
+			"source": "PHB",
+			"names": {
+				"male": [
+					"Ankhus","Arkadi","Armarius","Armillius","Archidius","Balmoloch","Calderax","Cavian","Cenereth","Chorum","Corynax","Dacian","Daelius","Damaceus","Decimeth","Demedor","Demerian","Dynachus","Grassus","Halius","Heleph","Incirion","Kalaradian","Kamien","Kazimir","Kzandro","Machem","Maetheus","Malfias","Marchion","Menerus","Namazeus","Nensis","Prismeus","Pyranikus","Razortail","Sejanus","Severian","Suffer","Syken","Tarkus","Vaius","Xerek","Zeth","Zevon"
+				],
+				"female": [
+					"Affyria","Cataclysmia","Domitia","Dorethau","Excellence","Hacari","Iritra","Lachira","Levatra","Mecretia","Milvia","Nericia","Precious","Rain","Samantia","Sunshine","Tenerife","Traya","Velavia","Zaidi","Zethaya"
+				],
+				"last": [
+					"Amarzian","Carnago","Domarien","Iscitan","Meluzan","Menetrian","Paradas","Romazi","Sarzan","Serechor","Shadowhorn","Szereban","Torzalan","Trelenus","Trevethor","Tryphon","Vadu","Vrago"
+				]
+			}
+		},
+		{
+			"name": "Triton",
+			"size": "M",
+			"speed": "30",
+			"speedSwim": "30",
+			"languages": [
+				"Common",
+				"Primordial"
+			],
+			"asi": [1,0,1,0,0,1],
+			"extras": ["Amphibious","Control Air and Water","Emissary of the Sea","Guardians of the Depths"],
+			"source": "VGM",
+			"names": {
+				"male": [
+					"Dhavas","Vinvis","Denes","Khehnes","Devnes","Jhalnas","Mundus","Cohnos","Numus","Jilnis","Menles","Zivnis","Zedes","Kannas","Daglas","Murnus","Dilzis","Ruglus"
+				],
+				"female": [
+					"Esnen","Murlyn","Flaryn","Flethyn","Utryn","Wasnehyn","Yaslamen","Badreryn","Hinthelyn","Ethlyn","Whaslen","Unlen","Flatyn","Sumleden","Sirnenyn","Bhothluhyn"
+				],
+				"last": [
+					"Ragorsath","Rahramnath","Zuhrulath","Ahnomath","Juboxath","Dulodath","Dohlamath","Navodath","Ubollath","Obolvath","Ahnodath"
+				]
+			}
+		},
+		{
+			"name": "Warforged",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"+1 Language"
+			],
+			"asi": [1,0,1,0,0,0],
+			"extras": ["Living Construct","Composite Plating"],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Driver","Calmer","Doctor","Cart","Teaser","Reviewer","Novice","Murderer","Awakener","Tempter","Coil","Bender","Two","Dagger","Patient","Gasher","Scrubber","Calmer","Fighter","Cleaver","Metal","Bulwark","Wielder","Sentry","Breaker","Nameless","Diagnoser","Designer","Bear","Drone"]
+			}
+		},
+		{
+			"name": "Wilden",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Sylvan"
+			],
+			"asi": [0,1,0,0,2,0],
+			"extras": ["One with Nature","Wilderness Symbiosis"],
+			"source": "HB",
+			"names": {
+				"male": ["Sankarran","Damrammas","Masfarran","Sintarrin","Rodgarron","Kettenmin","Marradrak","Barrunkas","Darrasnim","Torrimgar","Murlammir","Mandarras","Tumfarran","Mormorrin","Murmorrin","Karrendas","Fiddenbun","Vunnarlas","Zakkankas","Lorrinzor","Kordurrun","Sinmindin","Santorrin","Kanmennar","Masmorrin","Zakkanrak","Burrinnor","Kettenmar","Vunnargar","Mirrunzim"],
+				"female": ["Tirrennash","Ashinitas","Zellatish","Kersahai","Lorrissa","Tininash","Mirtenna","Wennishai","Lermeris","Gennentah","Trisitas","Erilarris","Kenninnem","Erilitas","Zazinnem","Ashinembin","Tazanai","Ennorren","Krinerla","Lorrembin","Tazembin","Kersarris","Zarerlis","Tirrimmesh","Ennonnes","Shanoris","Kersalin","Mirtinah","Ennerla","Wenneris"]
+			}
+		},
+		{
+			"name": "Yuan-Ti",
+			"size": "M",
+			"speed": "30",
+			"languages": [
+				"Common",
+				"Yuan Ti"
+			],
+			"asi": [0,0,0,1,0,2],
+			"extras": ["Speak with Serpents","Darkvision (60ft)","Poison Resilience","Passive Armor"],
+			"source": "D&DWiki",
+			"names": {
+				"simple": ["Ehsha","Zeshu","Thoshu","Ssashill","Mozsiuh","Ssisia","Zaktlulliss","Shoszuihsa","Theksuzal","Yissatie","Zheka","Zezsuss","Haktluih","Alsu","Tistlu","Sseshu","Ssalehlal","Zsutzithi","Hashihsul","Hehluishus","Ssuksall","Oltsi","Suni","Ssami","Nohshu","Sshezhi","Ssoksuithash","Ssheshuzhi","Szishoahsuiss","Uleyi"]
+			}
+		}
+	]
+}

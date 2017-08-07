@@ -1,0 +1,30 @@
+{
+"lifeevents": [
+	"recently released from prison",
+	"{{relative}} recently sent to prison",
+	"is planning a vacation soon (to a nearby major city, or other exotic location)",
+	"just got back from vacation (at a nearby major city, or other exotic location)",
+	"recently learned their {{relative}} is addicted to drugs",
+	"recently had a birthday",
+	"today is their birthday",
+	"{{relative}}'s birthday",
+	"pet recently died",
+	"their {{relative}} recently died",
+	"their {{relative}} is on their death bed",
+	"recently moved to town",
+	"about to move to a new town",
+	"recently changed jobs, used to be a {{profession}}",
+	"was just fired from their job",
+	"was just hired",
+	"throwing a party in the next couple days",
+	"planning to go see their {{relative}} who lives far from here",
+	"{{relative}} just got married",
+	"{{relative}} is getting married soon",
+	"{{relative}} just got divorced",
+	"{{relative}} just had a baby",
+	"{{relative}} is about to have a baby",
+	"{{relative}} just converted to {{god}}",
+	"just bought their first house",
+	"their house was recently destroyed by a fire"
+	]
+}
