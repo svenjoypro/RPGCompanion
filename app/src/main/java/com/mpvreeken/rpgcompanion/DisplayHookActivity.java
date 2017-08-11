@@ -60,7 +60,7 @@ public class DisplayHookActivity extends AppCompatActivity {
 
         this.comments_layout = findViewById(R.id.hook_comments_linear_layout);
 
-        String hooks_url = "http://192.168.1.100/rpg_companion/api/hooks/"+hook_id;
+        String hooks_url = getResources().getString(R.string.url_get_hook)+hook_id;
 
         OkHttpClient client = new OkHttpClient();
 

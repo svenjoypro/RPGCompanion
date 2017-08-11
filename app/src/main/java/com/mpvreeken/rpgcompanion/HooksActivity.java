@@ -47,7 +47,7 @@ public class HooksActivity extends AppCompatActivity {
         this.hookArrayAdapter = new HookArrayAdapter(this, hooksArray);
         this.hooks_lv = findViewById(R.id.hooks_lv);
 
-        String hooks_url = "http://192.168.1.100/rpg_companion/api/hooks";
+        String hooks_url = getResources().getString(R.string.url_get_hooks);
 
         OkHttpClient client = new OkHttpClient();
 

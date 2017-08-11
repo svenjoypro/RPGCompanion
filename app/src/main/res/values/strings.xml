@@ -2,11 +2,15 @@
     <string name="app_name">RPG Companion</string>
     <string name="action_settings">Settings</string>
     <string name="main_title_string">Choose a section</string>
-    <string name="main_hooks_button_string">Hooks - Coming Soon</string>
+    <string name="main_hooks_button_string">Hooks</string>
     <string name="main_encounters_button_string">Encounters - Coming Soon</string>
     <string name="main_puzzles_button_string">Puzzles - Coming Soon</string>
     <string name="main_npc_gen_button_string">NPC Generator</string>
     <string name="title_activity_settings">Settings</string>
+
+
+    <string name="url_get_hooks">http://192.168.1.100/rpg_companion/api/hooks</string>
+    <string name="url_get_hook">http://192.168.1.100/rpg_companion/api/hooks/</string>
 
     <!-- Strings related to Settings -->
 
