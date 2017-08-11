@@ -38,6 +38,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     HookCommentsArrayAdapter commentArrayAdapter;
     LinearLayout comments_layout;
     Hook hook;
+    String hook_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,35 @@ public class DisplayHookActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Bundle movie = intent.getExtras();
-        String hook_id = (String) movie.get("hook_id");
+        hook_id = (String) movie.get("hook_id");
+
+
+        Button upvote_btn = (Button) findViewById(R.id.hook_details_vote_up_btn);
+        Button downvote_btn = (Button) findViewById(R.id.hook_details_vote_down_btn);
+        Button comment_btn = (Button) findViewById(R.id.hook_details_comment_btn);
+        Button post_comment_btn = (Button) findViewById(R.id.hook_details_post_comment_btn);
+        View.OnClickListener buttonHandler = new View.OnClickListener() {
+            public void onClick(View v) {
+                switch(v.getId()) {
+                    case R.id.hook_details_vote_up_btn:
+                        upvote();
+                        break;
+                    case R.id.hook_details_vote_down_btn:
+                        downvote();
+                        break;
+                    case R.id.hook_details_comment_btn:
+                        displayCommentInput();
+                        break;
+                    case R.id.hook_details_post_comment_btn:
+                        postComment();
+                        break;
+                    default:
+                }
+            }
+        };
+
+
+
 
         //Fetch hooks from db
         this.commentsArray = new ArrayList<>();
@@ -109,6 +138,176 @@ public class DisplayHookActivity extends AppCompatActivity {
                                 setupUI();
                             }
                         });
+                    }
+                    catch (JSONException e) {
+                        Log.e("err", e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void downvote() {
+        String url = getResources().getString(R.string.url_downvote)+hook_id;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //TODO
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    //TODO
+                    throw new IOException("Unexpected code " + response);
+                }
+                else {
+                    try {
+                        JSONObject all = new JSONObject(response.body().string());
+
+                        if (all.has("error")) {
+                            //error
+                            Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                        }
+                        else if (all.has("msg")) {
+                            //success
+                            Log.e("DisplayHookActivity", "Success");
+                            //TODO
+                            //  Update downvote count, change ui color or something to indicate upvote or revert back after initial "expected" success
+                        }
+                        else {
+                            //unknown error
+                            Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                        }
+                        /*
+                        //We can't update the UI on a background thread, so run on the UI thread
+                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setupUI();
+                            }
+                        });
+                        */
+                    }
+                    catch (JSONException e) {
+                        Log.e("err", e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void upvote() {
+        String url = getResources().getString(R.string.url_upvote)+hook_id;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //TODO
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    //TODO
+                    throw new IOException("Unexpected code " + response);
+                }
+                else {
+                    try {
+                        JSONObject all = new JSONObject(response.body().string());
+
+                        if (all.has("error")) {
+                            //error
+                            Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                        }
+                        else if (all.has("msg")) {
+                            //success
+                            Log.e("DisplayHookActivity", "Success");
+                            //TODO
+                            //  Update upvote count, change ui color or something to indicate upvote or revert back after initial "expected" success
+                        }
+                        else {
+                            //unknown error
+                            Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                        }
+                        /*
+                        //We can't update the UI on a background thread, so run on the UI thread
+                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setupUI();
+                            }
+                        });
+                        */
+                    }
+                    catch (JSONException e) {
+                        Log.e("err", e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void displayCommentInput() {
+        
+    }
+
+    private void postComment() {
+        String url = getResources().getString(R.string.url_post_comment)+hook_id;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //TODO
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    //TODO
+                    throw new IOException("Unexpected code " + response);
+                }
+                else {
+                    try {
+                        JSONObject all = new JSONObject(response.body().string());
+
+                        if (all.has("error")) {
+                            //error
+                            Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                        }
+                        else if (all.has("msg")) {
+                            //success
+                            Log.e("DisplayHookActivity", "Success");
+                            //TODO
+                            //  Update comments section
+                        }
+                        else {
+                            //unknown error
+                            Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                        }
+                        /*
+                        //We can't update the UI on a background thread, so run on the UI thread
+                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setupUI();
+                            }
+                        });
+                        */
                     }
                     catch (JSONException e) {
                         Log.e("err", e.getMessage());

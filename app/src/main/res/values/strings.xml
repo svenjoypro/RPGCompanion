@@ -11,6 +11,9 @@
 
     <string name="url_get_hooks">http://192.168.1.100/rpg_companion/api/hooks</string>
     <string name="url_get_hook">http://192.168.1.100/rpg_companion/api/hooks/</string>
+    <string name="url_downvote">http://192.168.1.100/rpg_companion/api/hooks/</string>
+    <string name="url_upvote">http://192.168.1.100/rpg_companion/api/hooks/</string>
+    <string name="url_post_comment">http://192.168.1.100/rpg_companion/api/hooks/</string>
 
     <!-- Strings related to Settings -->
 
