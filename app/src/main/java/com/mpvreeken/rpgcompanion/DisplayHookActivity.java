@@ -1,5 +1,7 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.mpvreeken.rpgcompanion.Classes.Hook;
 import com.mpvreeken.rpgcompanion.Classes.HookArrayAdapter;
 import com.mpvreeken.rpgcompanion.Classes.HookComment;
 import com.mpvreeken.rpgcompanion.Classes.HookCommentsArrayAdapter;
+import com.mpvreeken.rpgcompanion.NPC.CommentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +42,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     LinearLayout comments_layout;
     Hook hook;
     String hook_id;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +54,16 @@ public class DisplayHookActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        context = this.getBaseContext();
+
         Intent intent = getIntent();
-        final Bundle movie = intent.getExtras();
-        hook_id = (String) movie.get("hook_id");
+        final Bundle hookBundle = intent.getExtras();
+        hook_id = (String) hookBundle.get("hook_id");
 
 
         Button upvote_btn = (Button) findViewById(R.id.hook_details_vote_up_btn);
         Button downvote_btn = (Button) findViewById(R.id.hook_details_vote_down_btn);
         Button comment_btn = (Button) findViewById(R.id.hook_details_comment_btn);
-        Button post_comment_btn = (Button) findViewById(R.id.hook_details_post_comment_btn);
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
                 switch(v.getId()) {
@@ -71,13 +76,14 @@ public class DisplayHookActivity extends AppCompatActivity {
                     case R.id.hook_details_comment_btn:
                         displayCommentInput();
                         break;
-                    case R.id.hook_details_post_comment_btn:
-                        postComment();
-                        break;
                     default:
                 }
             }
         };
+
+        upvote_btn.setOnClickListener(buttonHandler);
+        downvote_btn.setOnClickListener(buttonHandler);
+        comment_btn.setOnClickListener(buttonHandler);
 
 
 
@@ -260,7 +266,25 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void displayCommentInput() {
-        
+        Intent intent = new Intent(context, CommentActivity.class);
+
+        intent.putExtra("id", hook_id);
+        intent.putExtra("commentType", "hook");
+
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Should only happen after comment is submitted or cancelled
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                //String result=data.getStringExtra("result");
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //user pressed back btn
+            }
+        }
     }
 
     private void postComment() {

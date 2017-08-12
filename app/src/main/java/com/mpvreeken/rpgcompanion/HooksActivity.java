@@ -107,7 +107,7 @@ public class HooksActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
 
-                Bundle bundle = new Bundle();
+                //Bundle bundle = new Bundle();
                 //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
 
                 //intent.putExtras(bundle);

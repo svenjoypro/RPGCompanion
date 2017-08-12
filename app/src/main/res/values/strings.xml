@@ -14,6 +14,10 @@
     <string name="url_downvote">http://192.168.1.100/rpg_companion/api/hooks/</string>
     <string name="url_upvote">http://192.168.1.100/rpg_companion/api/hooks/</string>
     <string name="url_post_comment">http://192.168.1.100/rpg_companion/api/hooks/</string>
+    <string name="url_submit_hook_comment">http://192.168.1.100/rpg_companion/api/hooks/</string>
+    <string name="url_submit_encounter_comment">http://192.168.1.100/rpg_companion/api/hooks/</string>
+    <string name="url_submit_puzzle_comment">http://192.168.1.100/rpg_companion/api/hooks/</string>
+
 
     <!-- Strings related to Settings -->
 

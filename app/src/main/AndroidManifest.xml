@@ -21,7 +21,8 @@
         <activity android:name=".EncountersActivity" />
         <activity android:name=".PuzzlesActivity" />
         <activity android:name=".DisplayHookActivity" />
-        <activity android:name=".NPCActivity"></activity>
+        <activity android:name=".NPCActivity" />
+        <activity android:name=".NPC.CommentActivity"></activity>
     </application>
 
 </manifest>
