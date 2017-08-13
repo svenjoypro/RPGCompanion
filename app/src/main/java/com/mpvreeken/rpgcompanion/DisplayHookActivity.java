@@ -41,7 +41,6 @@ public class DisplayHookActivity extends AppCompatActivity {
     HookCommentsArrayAdapter commentArrayAdapter;
     LinearLayout comments_layout;
     Hook hook;
-    String hook_id;
     Context context;
 
     @Override
@@ -58,8 +57,7 @@ public class DisplayHookActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Bundle hookBundle = intent.getExtras();
-        hook_id = (String) hookBundle.get("hook_id");
-
+        hook = (Hook) hookBundle.getSerializable("HOOK_OBJ");
 
         Button upvote_btn = (Button) findViewById(R.id.hook_details_vote_up_btn);
         Button downvote_btn = (Button) findViewById(R.id.hook_details_vote_down_btn);
@@ -95,12 +93,10 @@ public class DisplayHookActivity extends AppCompatActivity {
 
         this.comments_layout = findViewById(R.id.hook_comments_linear_layout);
 
-        String hooks_url = getResources().getString(R.string.url_get_hook)+hook_id;
-
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(hooks_url)
+                .url(getResources().getString(R.string.url_get_hook)+hook.getId())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -113,7 +109,7 @@ public class DisplayHookActivity extends AppCompatActivity {
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
-
+                        /*
                         JSONObject h = all.getJSONObject("hook");
                         hook = new Hook(h.getString("id"),
                                 h.getString("title"),
@@ -122,17 +118,17 @@ public class DisplayHookActivity extends AppCompatActivity {
                                 h.getString("votes"),
                                 h.getString("created_at")
                         );
-
+                        */
                         JSONArray cs = all.getJSONArray("comments");
                         for (int i=0; i<cs.length(); i++) {
                             commentsArray.add(
-                                    new HookComment(cs.getJSONObject(i).getString("id"),
-                                            cs.getJSONObject(i).getString("hook_id"),
-                                            cs.getJSONObject(i).getString("username"),
-                                            cs.getJSONObject(i).getString("comment"),
-                                            cs.getJSONObject(i).getString("votes"),
-                                            cs.getJSONObject(i).getString("created_at")
-                                    )
+                                new HookComment(cs.getJSONObject(i).getString("id"),
+                                    cs.getJSONObject(i).getString("hook_id"),
+                                    cs.getJSONObject(i).getString("username"),
+                                    cs.getJSONObject(i).getString("comment"),
+                                    cs.getJSONObject(i).getString("votes"),
+                                    cs.getJSONObject(i).getString("created_at")
+                                )
                             );
                         }
 
@@ -146,7 +142,7 @@ public class DisplayHookActivity extends AppCompatActivity {
                         });
                     }
                     catch (JSONException e) {
-                        Log.e("err", e.getMessage());
+                        Log.e("DisplayHookActivity", e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -154,8 +150,44 @@ public class DisplayHookActivity extends AppCompatActivity {
         });
     }
 
+    public void setupUI() {
+        TextView votes_tv = findViewById(R.id.hook_details_votes_tv);
+        votes_tv.setText(String.valueOf(hook.getVotes()));
+        TextView title_tv = findViewById(R.id.hook_details_title_tv);
+        title_tv.setText(String.valueOf(hook.getTitle()));
+        TextView description_tv = findViewById(R.id.hook_details_description_tv);
+        description_tv.setText(String.valueOf(hook.getDescription()));
+
+        //comments_lv.setAdapter(commentArrayAdapter);
+
+        for (int i=0; i<commentsArray.size(); i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.comment_layout, null);
+            TextView comment_tv = (TextView) view.findViewById(R.id.comment_layout_comment_tv);
+
+
+            comment_tv.setText(commentsArray.get(i).getComment());
+            comments_layout.addView(view);
+        }
+
+        /*
+        comments_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
+
+                Bundle bundle = new Bundle();
+                //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
+
+                //intent.putExtras(bundle);
+                intent.putExtra("hook_id", hooksArray.get(position).getId());
+                startActivity(intent);
+            }
+        });
+        */
+    }
+
     private void downvote() {
-        String url = getResources().getString(R.string.url_downvote)+hook_id;
+        String url = getResources().getString(R.string.url_downvote)+hook.getId();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
@@ -211,7 +243,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void upvote() {
-        String url = getResources().getString(R.string.url_upvote)+hook_id;
+        String url = getResources().getString(R.string.url_upvote)+hook.getId();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
@@ -268,7 +300,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     private void displayCommentInput() {
         Intent intent = new Intent(context, CommentActivity.class);
 
-        intent.putExtra("id", hook_id);
+        intent.putExtra("id", hook.getId());
         intent.putExtra("commentType", "hook");
 
         startActivityForResult(intent, 1);
@@ -285,97 +317,6 @@ public class DisplayHookActivity extends AppCompatActivity {
                 //user pressed back btn
             }
         }
-    }
-
-    private void postComment() {
-        String url = getResources().getString(R.string.url_post_comment)+hook_id;
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //TODO
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    //TODO
-                    throw new IOException("Unexpected code " + response);
-                }
-                else {
-                    try {
-                        JSONObject all = new JSONObject(response.body().string());
-
-                        if (all.has("error")) {
-                            //error
-                            Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
-                        }
-                        else if (all.has("msg")) {
-                            //success
-                            Log.e("DisplayHookActivity", "Success");
-                            //TODO
-                            //  Update comments section
-                        }
-                        else {
-                            //unknown error
-                            Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
-                        }
-                        /*
-                        //We can't update the UI on a background thread, so run on the UI thread
-                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setupUI();
-                            }
-                        });
-                        */
-                    }
-                    catch (JSONException e) {
-                        Log.e("err", e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    public void setupUI() {
-        TextView votes_tv = findViewById(R.id.hook_details_votes_tv);
-        votes_tv.setText(String.valueOf(hook.getVotes()));
-        TextView title_tv = findViewById(R.id.hook_details_title_tv);
-        title_tv.setText(String.valueOf(hook.getTitle()));
-        TextView description_tv = findViewById(R.id.hook_details_description_tv);
-        description_tv.setText(String.valueOf(hook.getDescription()));
-
-        //comments_lv.setAdapter(commentArrayAdapter);
-
-        for (int i=0; i<commentsArray.size(); i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.comment_layout, null);
-            TextView comment_tv = (TextView) view.findViewById(R.id.comment_layout_comment_tv);
-
-
-            comment_tv.setText(commentsArray.get(i).getComment());
-            comments_layout.addView(view);
-        }
-
-        /*
-        comments_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
-
-                Bundle bundle = new Bundle();
-                //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
-
-                //intent.putExtras(bundle);
-                intent.putExtra("hook_id", hooksArray.get(position).getId());
-                startActivity(intent);
-            }
-        });
-        */
     }
 
 

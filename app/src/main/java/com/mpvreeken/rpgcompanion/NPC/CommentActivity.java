@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.R;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,7 +31,6 @@ import okhttp3.Response;
 public class CommentActivity extends AppCompatActivity {
 
     String id, commentType;
-    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +46,11 @@ public class CommentActivity extends AppCompatActivity {
         final Bundle bundle = intent.getExtras();
         id = (String) bundle.get("id");
         commentType = (String) bundle.get("commentType");
+
+        /*
         switch(commentType) {
             case "hook":
-                url = getResources().getString(R.string.url_submit_hook_comment)+id;
+                url = getResources().getString(R.string.url_submit_comment)+id;
                 break;
             case "encounter":
                 url = getResources().getString(R.string.url_submit_encounter_comment)+id;
@@ -61,6 +64,13 @@ public class CommentActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
         }
+        */
+        if (!commentType.equals("hook") && !commentType.equals("encounter") && !commentType.equals("puzzle")) {
+            //Invalid "commentType", finish intent
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
+        }
 
         final EditText comment_body_edit = findViewById(R.id.post_body_input);
 
@@ -70,15 +80,15 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 OkHttpClient client = new OkHttpClient();
 
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("comment", comment_body_edit.getText().toString())
+                RequestBody requestBody = new FormBody.Builder()
+                        .add("comment", comment_body_edit.getText().toString())
+                        .add("type", commentType)
+                        .add("id", id)
                         .build();
 
                 //.header("Authorization", "Bearer" + limelightApplication.getToken())
                 Request request = new Request.Builder()
-                        .url(url)
-                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .url(getResources().getString(R.string.url_submit_comment))
                         .post(requestBody)
                         .build();
 
@@ -86,14 +96,16 @@ public class CommentActivity extends AppCompatActivity {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        //TODO
                         e.printStackTrace();
+                        Log.e("CommentActivity", "okhttp onFailure()");
+                        Toast.makeText(CommentActivity.this, "Unable to connect to server", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(Call call, final Response response) throws IOException {
                         if (!response.isSuccessful()) {
-                            //TODO
+                            Log.e("CommentActivity", "okhttp response failure");
+                            //Toast.makeText(CommentActivity.this, "An unknown error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
                             throw new IOException("Unexpected code " + response);
                         }
                         else {
@@ -103,6 +115,7 @@ public class CommentActivity extends AppCompatActivity {
                                 if (all.has("error")) {
                                     //error
                                     Log.e("CommentActivity", "Error: "+ all.getString("error"));
+                                    //Toast.makeText(CommentActivity.this, all.getString("error"), Toast.LENGTH_SHORT).show();
                                 }
                                 else if (all.has("msg")) {
                                     //success
@@ -123,12 +136,14 @@ public class CommentActivity extends AppCompatActivity {
 
                                 }
                                 else {
+                                    //TODO
                                     //unknown error
                                     Log.e("CommentActivity", "Unknown Error: "+ all.toString());
+                                    //Toast.makeText(CommentActivity.this, "An unknown error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             catch (JSONException e) {
-                                Log.e("err", e.getMessage());
+                                Log.e("CommentActivity", e.getMessage());
                                 e.printStackTrace();
                             }
                         }

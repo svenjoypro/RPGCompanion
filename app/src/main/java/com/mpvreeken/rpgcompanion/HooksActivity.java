@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -69,20 +70,21 @@ public class HooksActivity extends AppCompatActivity {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
                         for (int i=0; i<r.length(); i++) {
-                            /*
+
                             //The plan is to eventually add more to each hook, like user_id, and voting
                             //but as of now, we just get simple info
                             hooksArray.add(
                                     new Hook(r.getJSONObject(i).getString("id"),
                                     r.getJSONObject(i).getString("title"),
                                     r.getJSONObject(i).getString("user_id"),
-                                    r.getJSONObject(i).getString("desc"),
+                                    r.getJSONObject(i).getString("description"),
                                     r.getJSONObject(i).getString("votes"),
                                     r.getJSONObject(i).getString("created_at")));
-                            */
+                            /*
                             hooksArray.add(
                                     new Hook(r.getJSONObject(i).getString("title"),
                                     r.getJSONObject(i).getString("description")));
+                            */
                         }
 
                         //We can't update the UI on a background thread, so run on the UI thread
@@ -107,11 +109,10 @@ public class HooksActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
 
-                //Bundle bundle = new Bundle();
-                //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
-
-                //intent.putExtras(bundle);
-                intent.putExtra("hook_id", hooksArray.get(position).getId());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("HOOK_OBJ", (Serializable) hooksArray.get(position));
+                intent.putExtras(bundle);
+                //intent.putExtra("hook_id", hooksArray.get(position).getId());
                 startActivity(intent);
             }
         });

@@ -1,10 +1,12 @@
 package com.mpvreeken.rpgcompanion.Classes;
 
+import java.io.Serializable;
+
 /**
  * Created by Sven on 7/4/2017.
  */
 
-public class Hook {
+public class Hook implements Serializable {
 
     private String id;
     private String title;
