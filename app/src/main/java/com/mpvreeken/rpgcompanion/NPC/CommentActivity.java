@@ -47,24 +47,6 @@ public class CommentActivity extends AppCompatActivity {
         id = (String) bundle.get("id");
         commentType = (String) bundle.get("commentType");
 
-        /*
-        switch(commentType) {
-            case "hook":
-                url = getResources().getString(R.string.url_submit_comment)+id;
-                break;
-            case "encounter":
-                url = getResources().getString(R.string.url_submit_encounter_comment)+id;
-                break;
-            case "puzzle":
-                url = getResources().getString(R.string.url_submit_puzzle_comment)+id;
-                break;
-            default:
-                //Invalid "commentType", finish intent
-                Intent returnIntent = new Intent();
-                setResult(Activity.RESULT_CANCELED, returnIntent);
-                finish();
-        }
-        */
         if (!commentType.equals("hook") && !commentType.equals("encounter") && !commentType.equals("puzzle")) {
             //Invalid "commentType", finish intent
             Intent returnIntent = new Intent();
@@ -92,20 +74,19 @@ public class CommentActivity extends AppCompatActivity {
                         .post(requestBody)
                         .build();
 
-
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         e.printStackTrace();
                         Log.e("CommentActivity", "okhttp onFailure()");
-                        Toast.makeText(CommentActivity.this, "Unable to connect to server", Toast.LENGTH_SHORT).show();
+                        httpCallbackFail("Unable to connect to server");
                     }
 
                     @Override
                     public void onResponse(Call call, final Response response) throws IOException {
                         if (!response.isSuccessful()) {
                             Log.e("CommentActivity", "okhttp response failure");
-                            //Toast.makeText(CommentActivity.this, "An unknown error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
+                            httpCallbackFail("An unknown error has occurred. Please try again.");
                             throw new IOException("Unexpected code " + response);
                         }
                         else {
@@ -113,9 +94,8 @@ public class CommentActivity extends AppCompatActivity {
                                 JSONObject all = new JSONObject(response.body().string());
 
                                 if (all.has("error")) {
-                                    //error
                                     Log.e("CommentActivity", "Error: "+ all.getString("error"));
-                                    //Toast.makeText(CommentActivity.this, all.getString("error"), Toast.LENGTH_SHORT).show();
+                                    httpCallbackFail(all.getString("error"));
                                 }
                                 else if (all.has("msg")) {
                                     //success
@@ -133,24 +113,22 @@ public class CommentActivity extends AppCompatActivity {
                                             finish();
                                         }
                                     });
-
                                 }
                                 else {
                                     //TODO
                                     //unknown error
                                     Log.e("CommentActivity", "Unknown Error: "+ all.toString());
-                                    //Toast.makeText(CommentActivity.this, "An unknown error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
+                                    httpCallbackFail("An unknown error has occurred. Please try again.");
                                 }
                             }
                             catch (JSONException e) {
                                 Log.e("CommentActivity", e.getMessage());
+                                httpCallbackFail("Parsing error. Please try again.");
                                 e.printStackTrace();
                             }
                         }
                     }
                 });
-
-
             }
         });
         Button cancel_btn = findViewById(R.id.post_cancel_btn);
@@ -163,14 +141,17 @@ public class CommentActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
-    private void submitComment() {
-
+    private void httpCallbackFail(final String s) {
+        //http error, show error via Toast message
+        CommentActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(CommentActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
 
     //Set click listener for back button in action bar
     @Override
