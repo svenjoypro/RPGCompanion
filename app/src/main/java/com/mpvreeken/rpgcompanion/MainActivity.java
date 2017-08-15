@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Button encounters_btn = (Button) findViewById(R.id.main_encounters_button);
         Button puzzles_btn = (Button) findViewById(R.id.main_puzzles_button);
         Button npc_btn = (Button) findViewById(R.id.main_npc_button);
+        Button adventures_btn = (Button) findViewById(R.id.main_adventures_button);
 
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.main_npc_button:
                         intent = new Intent(v.getContext(), NPCActivity.class);
                         break;
+                    case R.id.main_adventures_button:
+                        intent = new Intent(v.getContext(), AdventuresActivity.class);
+                        break;
                     default:
                         intent = new Intent(v.getContext(), HooksActivity.class);
                 }
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         encounters_btn.setOnClickListener(buttonHandler);
         puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
+        adventures_btn.setOnClickListener(buttonHandler);
 
 
     }

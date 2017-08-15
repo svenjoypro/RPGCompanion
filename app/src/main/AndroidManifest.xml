@@ -22,7 +22,8 @@
         <activity android:name=".PuzzlesActivity" />
         <activity android:name=".DisplayHookActivity" />
         <activity android:name=".NPCActivity" />
-        <activity android:name=".NPC.CommentActivity"></activity>
+        <activity android:name=".NPC.CommentActivity" />
+        <activity android:name=".AdventuresActivity"></activity>
     </application>
 
 </manifest>
