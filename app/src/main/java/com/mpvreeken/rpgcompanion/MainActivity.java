@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -22,11 +23,12 @@ public class MainActivity extends AppCompatActivity {
 
         //checkLoggedIn();
 
-        Button hooks_btn = (Button) findViewById(R.id.main_hooks_button);
-        Button encounters_btn = (Button) findViewById(R.id.main_encounters_button);
-        Button puzzles_btn = (Button) findViewById(R.id.main_puzzles_button);
-        Button npc_btn = (Button) findViewById(R.id.main_npc_button);
-        Button adventures_btn = (Button) findViewById(R.id.main_adventures_button);
+        ImageButton hooks_btn = (ImageButton) findViewById(R.id.main_hooks_button);
+        ImageButton encounters_btn = (ImageButton) findViewById(R.id.main_encounters_button);
+        ImageButton puzzles_btn = (ImageButton) findViewById(R.id.main_puzzles_button);
+        ImageButton npc_btn = (ImageButton) findViewById(R.id.main_npc_button);
+        ImageButton adventures_btn = (ImageButton) findViewById(R.id.main_adventures_button);
+        ImageButton riddles_btn = (ImageButton) findViewById(R.id.main_riddles_button);
 
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.main_adventures_button:
                         intent = new Intent(v.getContext(), AdventuresActivity.class);
                         break;
+                    case R.id.main_riddles_button:
+                        intent = new Intent(v.getContext(), AdventuresActivity.class);
+                        break;
                     default:
                         intent = new Intent(v.getContext(), HooksActivity.class);
                 }
@@ -60,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         encounters_btn.setOnClickListener(buttonHandler);
         puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
+        riddles_btn.setOnClickListener(buttonHandler);
         adventures_btn.setOnClickListener(buttonHandler);
 
 
