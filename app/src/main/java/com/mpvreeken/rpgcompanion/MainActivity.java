@@ -11,7 +11,8 @@ public class MainActivity extends AppCompatActivity {
 	
 	/**
 	 *	TODO
-	 *		Add Spell summaries?
+	 *      Add Spell summaries?
+     *      Add Items?
 	 *
 	 *
 	 */

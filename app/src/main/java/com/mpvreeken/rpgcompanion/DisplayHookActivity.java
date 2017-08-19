@@ -3,6 +3,7 @@ package com.mpvreeken.rpgcompanion;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,14 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.Classes.Hook;
-import com.mpvreeken.rpgcompanion.Classes.HookArrayAdapter;
 import com.mpvreeken.rpgcompanion.Classes.HookComment;
 import com.mpvreeken.rpgcompanion.Classes.HookCommentsArrayAdapter;
 import com.mpvreeken.rpgcompanion.NPC.CommentActivity;
@@ -42,6 +42,8 @@ public class DisplayHookActivity extends AppCompatActivity {
     LinearLayout comments_layout;
     Hook hook;
     Context context;
+    ConstraintLayout loading_screen;
+    ProgressBar loading_progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class DisplayHookActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Bundle hookBundle = intent.getExtras();
         hook = (Hook) hookBundle.getSerializable("HOOK_OBJ");
+
+        loading_screen = findViewById(R.id.hook_loading_screen);
+        loading_progressBar = findViewById(R.id.hook_loading_progressBar);
 
         Button upvote_btn = (Button) findViewById(R.id.hook_details_vote_up_btn);
         Button downvote_btn = (Button) findViewById(R.id.hook_details_vote_down_btn);
@@ -91,6 +96,8 @@ public class DisplayHookActivity extends AppCompatActivity {
         this.commentArrayAdapter = new HookCommentsArrayAdapter(this, commentsArray);
         //this.comments_lv = findViewById(R.id.hook_comments_lv);
 
+        showLoadingScreen();
+
         this.comments_layout = findViewById(R.id.hook_comments_linear_layout);
 
         OkHttpClient client = new OkHttpClient();
@@ -101,11 +108,17 @@ public class DisplayHookActivity extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+            public void onFailure(Call call, IOException e) {
+                displayError("Could not connect to server. Please try again");
+                e.printStackTrace();
+            }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                if (!response.isSuccessful()) {
+                    displayError("An unknown error occurred. Please try again");
+                    throw new IOException("Unexpected code " + response);
+                }
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
@@ -142,6 +155,7 @@ public class DisplayHookActivity extends AppCompatActivity {
                         });
                     }
                     catch (JSONException e) {
+                        displayError("An unknown error occurred. Please try again");
                         Log.e("DisplayHookActivity", e.getMessage());
                         e.printStackTrace();
                     }
@@ -169,6 +183,8 @@ public class DisplayHookActivity extends AppCompatActivity {
             comments_layout.addView(view);
         }
 
+        hideLoadingScreen();
+
         /*
         comments_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -186,6 +202,15 @@ public class DisplayHookActivity extends AppCompatActivity {
         */
     }
 
+    private void showLoadingScreen() {
+        loading_progressBar.setVisibility(View.VISIBLE);
+        loading_screen.setVisibility(View.VISIBLE);
+    }
+    private void hideLoadingScreen() {
+        loading_progressBar.setVisibility(View.GONE);
+        loading_screen.setVisibility(View.GONE);
+    }
+
     private void downvote() {
         String url = getResources().getString(R.string.url_downvote)+hook.getId();
         OkHttpClient client = new OkHttpClient();
@@ -194,14 +219,14 @@ public class DisplayHookActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                //TODO
+                displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    //TODO
+                    displayError("An unknown error occurred. Please try again");
                     throw new IOException("Unexpected code " + response);
                 }
                 else {
@@ -211,26 +236,18 @@ public class DisplayHookActivity extends AppCompatActivity {
                         if (all.has("error")) {
                             //error
                             Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                            displayError("Error: "+all.getString("error"));
                         }
                         else if (all.has("msg")) {
                             //success
                             Log.e("DisplayHookActivity", "Success");
-                            //TODO
-                            //  Update downvote count, change ui color or something to indicate upvote or revert back after initial "expected" success
+                            downvoteUI();
                         }
                         else {
                             //unknown error
                             Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                            displayError("An unknown error occurred. Please try again");
                         }
-                        /*
-                        //We can't update the UI on a background thread, so run on the UI thread
-                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setupUI();
-                            }
-                        });
-                        */
                     }
                     catch (JSONException e) {
                         Log.e("err", e.getMessage());
@@ -239,7 +256,15 @@ public class DisplayHookActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void downvoteUI() {
+        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 
     private void upvote() {
@@ -250,14 +275,14 @@ public class DisplayHookActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                //TODO
+                displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    //TODO
+                    displayError("An unknown error occurred. Please try again");
                     throw new IOException("Unexpected code " + response);
                 }
                 else {
@@ -267,32 +292,45 @@ public class DisplayHookActivity extends AppCompatActivity {
                         if (all.has("error")) {
                             //error
                             Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                            displayError("Error: "+all.getString("error"));
                         }
                         else if (all.has("msg")) {
                             //success
                             Log.e("DisplayHookActivity", "Success");
-                            //TODO
-                            //  Update upvote count, change ui color or something to indicate upvote or revert back after initial "expected" success
+                            //We can't update the UI on a background thread, so run on the UI thread
+                            upvoteUI();
                         }
                         else {
                             //unknown error
                             Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                            displayError("An unknown error occurred. Please try again");
                         }
-                        /*
-                        //We can't update the UI on a background thread, so run on the UI thread
-                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setupUI();
-                            }
-                        });
-                        */
+
+
                     }
                     catch (JSONException e) {
                         Log.e("err", e.getMessage());
                         e.printStackTrace();
                     }
                 }
+            }
+        });
+    }
+
+    private void upvoteUI() {
+        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+    }
+
+    private void displayError(final String s) {
+        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -312,6 +350,7 @@ public class DisplayHookActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 //String result=data.getStringExtra("result");
+                //TODO Add user's new comment to the list of comments
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //user pressed back btn

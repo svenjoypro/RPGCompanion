@@ -1,6 +1,8 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.Classes.Hook;
 import com.mpvreeken.rpgcompanion.Classes.HookArrayAdapter;
@@ -32,6 +36,10 @@ public class HooksActivity extends AppCompatActivity {
     ArrayList<Hook> hooksArray = new ArrayList<>();
     HookArrayAdapter hookArrayAdapter;
     ListView hooks_lv;
+    Context context;
+
+    ConstraintLayout loading_screen;
+    ProgressBar loading_progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,11 @@ public class HooksActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        context = this.getBaseContext();
+
+        loading_screen = findViewById(R.id.hooks_loading_screen);
+        loading_progressBar = findViewById(R.id.hooks_loading_screen_progressBar);
 
         //Fetch hooks from db
         this.hooksArray = new ArrayList<>();
@@ -60,12 +73,16 @@ public class HooksActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 //TODO - Handle this
+                displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                if (!response.isSuccessful()) {
+                    displayError("An unknown error occurred. Please try again");
+                    throw new IOException("Unexpected code " + response);
+                }
                 else {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
@@ -95,13 +112,18 @@ public class HooksActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    catch (JSONException e) { e.printStackTrace(); }
+                    catch (JSONException e) {
+                        displayError("An unknown error occurred. Please try again");
+                        e.printStackTrace();
+                    }
                 }
             }
         });
     }
 
     public void setupUI() {
+
+        hideLoadingScreen();
         hooks_lv.setAdapter(hookArrayAdapter);
 
         hooks_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,6 +136,24 @@ public class HooksActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 //intent.putExtra("hook_id", hooksArray.get(position).getId());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void showLoadingScreen() {
+        loading_progressBar.setVisibility(View.VISIBLE);
+        loading_screen.setVisibility(View.VISIBLE);
+    }
+    private void hideLoadingScreen() {
+        //loading_progressBar.setVisibility(View.GONE);
+        loading_screen.setVisibility(View.GONE);
+    }
+
+    private void displayError(final String s) {
+        HooksActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
             }
         });
     }
