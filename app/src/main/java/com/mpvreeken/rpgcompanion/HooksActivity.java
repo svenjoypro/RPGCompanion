@@ -72,7 +72,6 @@ public class HooksActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                //TODO - Handle this
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
@@ -141,11 +140,9 @@ public class HooksActivity extends AppCompatActivity {
     }
 
     private void showLoadingScreen() {
-        loading_progressBar.setVisibility(View.VISIBLE);
         loading_screen.setVisibility(View.VISIBLE);
     }
     private void hideLoadingScreen() {
-        //loading_progressBar.setVisibility(View.GONE);
         loading_screen.setVisibility(View.GONE);
     }
 
