@@ -1,4 +1,40 @@
 {
+"appearances": [
+	"Distinctive jewelry: earings, necklace, circlet, bracelets",
+	"Piercings",
+	"Flamboyant or outlandish clothes",
+	"Formal, clean clothes",
+	"Ragged, dirty clothes",
+	"Pronounced scar",
+	"Missing teeth",
+	"Missing finger(s)",
+	"Unusual eye color, or two different colors",
+	"Tattoos",
+	"Birthmark",
+	"Unusual skin color",
+	"Bald",
+	"Braided beard or hair",
+	"Unusual hair color",
+	"Nervous eye twitch",
+	"Lazy eye",
+	"Distinctive nose",
+	"Distinctive posture (crooked or rigid)",
+	"Exceptionally beautiful",
+	"Exceptionally ugly"
+	],
+"voices": [
+	"Speaks in rhyme",
+	"High, shrill voice",
+	"Deep, booming voice",
+	"Speaks loudly, with little regard for others around",
+	"Hoarse voice, from a lifetime of inhaling smoke",
+	"Slurred speech",
+	"Has a lisp",
+	"Stutters",
+	"Enunciates overly clearly",
+	"Uses flowery speech",
+	"Uses high society vocabulary"
+	],
 "curses": [
 	"Lycanthrope (wolf, bat, bear, etc)",
 	"Sees Ghosts",
@@ -562,7 +598,12 @@
 	"never sits on a chair",
 	"speaks only in riddles",
 	"doesn't tolerate nicknames",
-	"has an imaginary friend"
+	"has an imaginary friend",
+	"knows thieve's cant",
+	"often spaces out and stares into the distance",
+	"is always chewing something",
+	"bites their fingernails",
+	"twirls their hair or strokes their beard"
 	],
 "lifeevents": [
 	"recently released from prison",
