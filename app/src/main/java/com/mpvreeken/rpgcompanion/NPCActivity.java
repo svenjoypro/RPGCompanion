@@ -56,7 +56,7 @@ public class NPCActivity extends AppCompatActivity {
         npc_tv.setMovementMethod(new ScrollingMovementMethod());
 
         //Get the json data from raw, then parse it into a nicer, more accessible object
-        npcData = new NPCData(getRawData());
+        npcData = new NPCData(getApplicationContext());
 
         //Initialize the new activity with a freshly generated NPC
         generateNewNPC();
@@ -76,34 +76,6 @@ public class NPCActivity extends AppCompatActivity {
         //Show the new NPC in the output text view
         npc_tv.setText(currentNPC.output());
         npc_tv.scrollTo(0,0);
-    }
-
-    public String getRawData() {
-        //Read in the raw json data from resource folder
-        InputStream is = getResources().openRawResource(R.raw.npc_data);
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        String jsonString = writer.toString();
-
-        return jsonString;
     }
 
     //Set click listener for back button in action bar

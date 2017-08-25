@@ -1,11 +1,22 @@
 package com.mpvreeken.rpgcompanion.NPC;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.mpvreeken.rpgcompanion.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +42,14 @@ public class NPCData {
     /**
      * Arrays that hold lists of each of the different detail strings from the json data file
      */
-    public JSONArray curses, blessings, details, entities,
-            obsessions, destinations, items,motivations, titles, personalities,
-            professions, quirks, gods, lifeEvents, traits, relatives, relationships, hooks, racesList, racesCommon, racesModerate, racesRare, jRaces;
+    public JSONArray appearances, bonds, flaws, ideals, voices, curses, blessings, details, entities,
+            obsessions, destinations, items, motivations, titles, personalities,
+            cityPOI, professions, quirks, gods, lifeEvents, traits, relatives,
+            relationships, hooks, racesList, racesCommon, racesModerate, racesRare;
+    public JSONObject jRaces;
     public ArrayList<Race> races = new ArrayList<Race>();
+
+    private Context context;
 
     /**
      * map of {{variables}} found in the json data file to jsonArray members of this class
@@ -49,39 +64,51 @@ public class NPCData {
      * @param json json data in String format
      *
      */
-    public NPCData(String json) {
+    public NPCData(Context context) {
+        this.context = context;
+
+
+
         try {
-            JSONObject j = new JSONObject(json);
+            appearances = getRawData(R.raw.npc_appearances).getJSONArray("appearances");
+            blessings = getRawData(R.raw.npc_blessings).getJSONArray("blessings");
+            bonds = getRawData(R.raw.npc_bonds).getJSONArray("bonds");
+            cityPOI = getRawData(R.raw.npc_city_points_of_interest).getJSONArray("city-points-of-interest");
+            curses = getRawData(R.raw.npc_curses).getJSONArray("curses");
+            destinations = getRawData(R.raw.npc_destinations).getJSONArray("destinations");
+            details = getRawData(R.raw.npc_details).getJSONArray("details");
+            entities = getRawData(R.raw.npc_entities).getJSONArray("entities");
+            flaws = getRawData(R.raw.npc_flaws).getJSONArray("flaws");
+            gods = getRawData(R.raw.npc_gods).getJSONArray("gods");
+            hooks = getRawData(R.raw.npc_hooks).getJSONArray("hooks");
+            ideals = getRawData(R.raw.npc_ideals).getJSONArray("ideals");
+            items = getRawData(R.raw.npc_items).getJSONArray("items");
+            lifeEvents = getRawData(R.raw.npc_life_events).getJSONArray("life-events");
+            motivations = getRawData(R.raw.npc_motivations).getJSONArray("motivations");
+            obsessions = getRawData(R.raw.npc_obsessions).getJSONArray("obsessions");
+            personalities = getRawData(R.raw.npc_personalities).getJSONArray("personalities");
+            professions = getRawData(R.raw.npc_professions).getJSONArray("professions");
+            quirks = getRawData(R.raw.npc_quirks).getJSONArray("quirks");
+            relationships = getRawData(R.raw.npc_relationships).getJSONArray("relationships");
+            relatives = getRawData(R.raw.npc_relatives).getJSONArray("relatives");
+            titles = getRawData(R.raw.npc_titles).getJSONArray("titles");
+            traits = getRawData(R.raw.npc_traits).getJSONArray("traits");
+            voices = getRawData(R.raw.npc_voices).getJSONArray("voices");
 
-            curses = j.getJSONArray("curses");
-            blessings = j.getJSONArray("blessings");
-            details = j.getJSONArray("details");
-            entities = j.getJSONArray("entities");
-            obsessions = j.getJSONArray("obsessions");
-            motivations = j.getJSONArray("motivations");
-            destinations = j.getJSONArray("destinations");
-            items = j.getJSONArray("items");
-            titles = j.getJSONArray("titles");
-            personalities = j.getJSONArray("personalities");
-            professions = j.getJSONArray("professions");
-            quirks = j.getJSONArray("quirks");
-            gods = j.getJSONArray("gods");
-            lifeEvents = j.getJSONArray("lifeevents");
-            traits = j.getJSONArray("traits");
-            relatives = j.getJSONArray("relatives");
-            relationships = j.getJSONArray("relationships");
-            hooks = j.getJSONArray("hooks");
 
-            racesList = j.getJSONArray("races-list");
-            racesCommon = j.getJSONArray("races-common");
-            racesModerate = j.getJSONArray("races-moderate");
-            racesRare = j.getJSONArray("races-rare");
+            jRaces = getRawData(R.raw.npc_races);
 
-            jRaces = j.getJSONArray("races");
-            int l=jRaces.length();
+            racesList = jRaces.getJSONArray("races-list");
+            racesCommon = jRaces.getJSONArray("races-common");
+            racesModerate = jRaces.getJSONArray("races-moderate");
+            racesRare = jRaces.getJSONArray("races-rare");
+
+            JSONArray jr = jRaces.getJSONArray("races");
+            int l=jr.length();
             for (int i=0; i<l; i++) {
-                races.add(new Race((JSONObject) jRaces.get(i)));
+                races.add(new Race((JSONObject) jr.get(i)));
             }
+
 
             parseMap = new HashMap<>();
             parseMap.put("curse", curses);
@@ -100,50 +127,102 @@ public class NPCData {
         }
     }
 
+    public JSONObject getRawData(int res) {
+        //Read in the raw json data from resource folder
+        InputStream is = context.getResources().openRawResource(res);
+        Writer writer = new StringWriter();
+        char[] buffer = new char[1024];
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        JSONObject obj = new JSONObject();
+        try {
+            obj = new JSONObject(writer.toString());
+        } catch (JSONException e) {
+            //TODO close activity
+            Log.e("NPCData", e.getMessage());
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
     /**
-     * Method that selects a random "detail" from the details JSONArray
+     * Method that selects a random "entry" from the provided JSONArray
      * Then passes it through the parseMe method to replace any {{variables}} with
      * randomly chosen values
      *
      * @return The clean, legible String containing the randomly chosen NPC detail
      */
-    public String getRandomDetail() {
-        String detail = "Owns a map to the city they're in";
+    public String getRandom(JSONArray a) {
+        String s = "";
         try {
             Random ran = new Random();
-            int x = ran.nextInt(details.length());
-
-            detail = details.getString(x);
-
+            int x = ran.nextInt(a.length());
+            s = a.getString(x);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return parseMe(detail);
+        return s;
     }
 
+    public String getRandomDetail() {
+        return parseMe(getRandom(details));
+    }
+    public String getRandomAppearance() {
+        return parseMe(getRandom(appearances));
+    }
+    public String getRandomBond() {
+        return parseMe(getRandom(bonds));
+    }
+    public String getRandomFlaw() {
+        return parseMe(getRandom(flaws));
+    }
+    public String getRandomIdeal() {
+        return parseMe(getRandom(ideals));
+    }
+    public String getRandomVoice() {
+        return parseMe(getRandom(voices));
+    }
+    public String getRandomTitle() {
+        return parseMe(getRandom(titles));
+    }
     public String getRandomProfession() {
-        Random ran = new Random();
-        int x = ran.nextInt(professions.length());
-        String profession = "Merchant";
-        try {
-            profession = professions.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return profession;
+        return parseMe(getRandom(professions));
     }
-
     public String getRandomQuirk() {
-        Random ran = new Random();
-        int x = ran.nextInt(quirks.length());
-        String quirk = "doesn't like change";
-        try {
-            quirk = quirks.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return parseMe(quirk);
+        return parseMe(getRandom(quirks));
+    }
+    public String getRandomLifeEvent() {
+        return parseMe(getRandom(lifeEvents));
+    }
+    public String getRandomTrait() {
+        return parseMe(getRandom(traits));
+    }
+    public String getRandomRelationship() {
+        return parseMe(getRandom(relationships));
+    }
+    public String getRandomHook() {
+        return parseMe(getRandom(hooks));
+    }
+    public String getRandomMotivation() {
+        return parseMe(getRandom(motivations));
     }
 
     public String getRandomGod() {
@@ -164,6 +243,7 @@ public class NPCData {
     }
 
     public String getRandomWorshipHabit() {
+        //TODO put these into .json file in RAW?
         String[] adv = {"secretly worships", "discretely worships", "proudly worships", "loudly worships", "claims to, but doesn't actually worship", "zealously worships"};
 
         Random ran = new Random();
@@ -172,65 +252,7 @@ public class NPCData {
         return adv[x] + " " + getRandomGod();
     }
 
-    public String getRandomLifeEvent() {
-        Random ran = new Random();
-        int x = ran.nextInt(lifeEvents.length());
-        String lifeEvent = "just got back from vacation";
-        try {
-            lifeEvent = lifeEvents.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return parseMe(lifeEvent);
-    }
 
-    public String getRandomTrait() {
-        Random ran = new Random();
-        int x = ran.nextInt(traits.length());
-        String trait = "is always prepared";
-        try {
-            trait = traits.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return parseMe(trait);
-    }
-
-    public String getRandomRelationship() {
-        Random ran = new Random();
-        int x = ran.nextInt(relationships.length());
-        String relationship = "single";
-        try {
-            relationship = relationships.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return parseMe(relationship);
-    }
-
-    public String getRandomHook() {
-        Random ran = new Random();
-        int x = ran.nextInt(hooks.length());
-        String hook = "needs help finding their lost dog";
-        try {
-            hook = hooks.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return parseMe(hook);
-    }
-
-    public String getRandomMotivation() {
-        Random ran = new Random();
-        int x = ran.nextInt(motivations.length());
-        String motivation = "Past mistakes";
-        try {
-            motivation = motivations.getString(x);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return parseMe(motivation);
-    }
 
     public String getRandomPersonality() {
         Random ran = new Random();
@@ -246,7 +268,6 @@ public class NPCData {
         }
 
         String personality = "Friendly, Honest, and Patient";
-
 
         try {
             personality = personalities.getString(x)+", "+personalities.getString(x2)+", and "+personalities.getString(x3);
@@ -336,6 +357,4 @@ public class NPCData {
         NPC npc = new NPC(race, this);
         return npc;
     }
-
-
 }

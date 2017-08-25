@@ -22,7 +22,8 @@ public class NPC {
 
     public Race race;
 
-    public String name, detail, profession, motivation, personality, quirk, worshipHabit, lifeEvent, trait, relationship, hook;
+    public String name, detail, profession, motivation, personality, quirk, worshipHabit, lifeEvent,
+            appearance, bond, flaw, ideal, voice, title, trait, relationship, hook;
 
     public NPC(Race r, NPCData d) {
         race = r;
@@ -32,6 +33,12 @@ public class NPC {
         name = race.myName;
 
         //Randomize NPC details
+        appearance = d.getRandomAppearance();
+        bond = d.getRandomBond();
+        flaw = d.getRandomFlaw();
+        ideal = d.getRandomIdeal();
+        voice = d.getRandomVoice();
+        title = d.getRandomTitle();
         detail = d.getRandomDetail();
         profession = d.getRandomProfession();
         motivation = d.getRandomMotivation();
