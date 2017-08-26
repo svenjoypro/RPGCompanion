@@ -200,9 +200,6 @@ public class NPCData {
     public String getRandomVoice() {
         return parseMe(getRandom(voices));
     }
-    public String getRandomTitle() {
-        return parseMe(getRandom(titles));
-    }
     public String getRandomProfession() {
         return parseMe(getRandom(professions));
     }
@@ -275,6 +272,22 @@ public class NPCData {
             e.printStackTrace();
         }
         return parseMe(personality);
+    }
+
+    //3% chance of having a title (Samwise "the Brave")
+    public String getRandomTitle() {
+        Random ran = new Random();
+        String title = "";
+        int x = ran.nextInt(100);
+        if (x<3) {
+            x = ran.nextInt(titles.length());
+            try {
+                title = titles.getString(x);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return title;
     }
 
     /**

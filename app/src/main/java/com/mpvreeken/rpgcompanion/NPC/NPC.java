@@ -74,19 +74,25 @@ public class NPC {
         //Make things nice to read, bold all descriptive titles
         SpannableStringBuilder s = new SpannableStringBuilder();
 
-        s.append(formatString("Name: ",name));
+        s.append(formatString("Name: ",name+" "+title));
         s.append(formatString("\nRace: ", race.name));
         s.append(formatString("\nSex: ", race.sex));
         s.append(formatString("\nAge: ", race.ageDescriptive+" ("+ race.agePercent+"% of their lifespan)"));
-        s.append(formatString("\nProfession: ",profession));
-        s.append(formatString("\nMotivated by: ",motivation));
+        s.append(formatString("\nAppearance: ",appearance));
+        s.append(formatString("\nVoice: ",voice));
         s.append(formatString("\nPersonality: ",personality));
-        s.append(formatString("\nQuirk: ",quirk));
         s.append(formatString("\nTrait: ",trait));
+        s.append(formatString("\nBond: ",bond));
+        s.append(formatString("\nMotivated by: ",motivation));
+        s.append(formatString("\nIdeal: ",ideal));
+        s.append(formatString("\nFlaw: ",flaw));
+        s.append(formatString("\nQuirk: ",quirk));
         s.append(formatString("\nDetail: ",detail));
+
+        s.append(formatString("\nProfession: ",profession));
         s.append(formatString("\nReligion: ",worshipHabit));
-        s.append(formatString("\nLife Event: ",lifeEvent));
         s.append(formatString("\nRelationship Status: ",relationship));
+        s.append(formatString("\nLife Event: ",lifeEvent));
         s.append(formatString("\nSpeed: ", race.speed));
         //Check if there is a fly speed, only show if there is
         if (race.flySpeed.length()>0) {
