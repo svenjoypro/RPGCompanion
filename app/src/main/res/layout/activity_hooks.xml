@@ -23,17 +23,29 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/hooks_sort_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hooks"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Sort"
+        app:layout_constraintEnd_toStartOf="@+id/hooks_new_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/hooks_new_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="New Hook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/hooks_sort_btn"
+        app:layout_constraintTop_toTopOf="@+id/hooks_loading_screen" />
 
     <ListView
         android:id="@+id/hooks_lv"
@@ -46,7 +58,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" >
-
+        app:layout_constraintTop_toBottomOf="@+id/hooks_sort_btn" >
     </ListView>
 </android.support.constraint.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion.NPC;
+package com.mpvreeken.rpgcompanion;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -6,10 +6,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -19,7 +19,6 @@ import com.mpvreeken.rpgcompanion.Classes.HookArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -55,6 +54,17 @@ public class HooksActivity extends AppCompatActivity {
 
         loading_screen = findViewById(R.id.hooks_loading_screen);
         loading_progressBar = findViewById(R.id.hooks_loading_screen_progressBar);
+
+        Button new_btn = findViewById(R.id.hooks_new_btn);
+
+        new_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, NewPostActivity.class);
+                intent.putExtra("type", "hook");
+                startActivity(intent);
+            }
+        });
 
         //Fetch hooks from db
         this.hooksArray = new ArrayList<>();

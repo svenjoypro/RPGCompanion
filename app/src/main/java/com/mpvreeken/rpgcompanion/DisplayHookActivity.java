@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.mpvreeken.rpgcompanion.Classes.Hook;
 import com.mpvreeken.rpgcompanion.Classes.HookComment;
 import com.mpvreeken.rpgcompanion.Classes.HookCommentsArrayAdapter;
-import com.mpvreeken.rpgcompanion.NPC.CommentActivity;
+import com.mpvreeken.rpgcompanion.CommentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
