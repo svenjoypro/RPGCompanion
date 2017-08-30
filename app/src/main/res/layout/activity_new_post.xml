@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toStartOf="@+id/post_cancel_btn" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/post_body_et"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
