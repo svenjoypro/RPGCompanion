@@ -105,14 +105,14 @@ public class NewPostActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         e.printStackTrace();
-                        Log.e("CommentActivity", "okhttp onFailure()");
+                        Log.e("NewPostActivity", "okhttp onFailure()");
                         httpCallbackFail("Unable to connect to server");
                     }
 
                     @Override
                     public void onResponse(Call call, final Response response) throws IOException {
                         if (!response.isSuccessful()) {
-                            Log.e("CommentActivity", "okhttp response failure");
+                            Log.e("NewPostActivity", "okhttp response failure");
                             httpCallbackFail("An unknown error has occurred. Please try again.");
                             throw new IOException("Unexpected code " + response);
                         }
@@ -121,12 +121,12 @@ public class NewPostActivity extends AppCompatActivity {
                                 JSONObject all = new JSONObject(response.body().string());
 
                                 if (all.has("error")) {
-                                    Log.e("CommentActivity", "Error: "+ all.getString("error"));
+                                    Log.e("NewPostActivity", "Error: "+ all.getString("error"));
                                     httpCallbackFail(all.getString("error"));
                                 }
                                 else if (all.has("msg")) {
                                     //success
-                                    Log.e("CommentActivity", "Success");
+                                    Log.e("NewPostActivity", "Success");
                                     //TODO
 
                                     //We can't update the UI on a background thread, so run on the UI thread
@@ -145,12 +145,12 @@ public class NewPostActivity extends AppCompatActivity {
                                 else {
                                     //TODO
                                     //unknown error
-                                    Log.e("CommentActivity", "Unknown Error: "+ all.toString());
+                                    Log.e("NewPostActivity", "Unknown Error: "+ all.toString());
                                     httpCallbackFail("An unknown error has occurred. Please try again.");
                                 }
                             }
                             catch (JSONException e) {
-                                Log.e("CommentActivity", e.getMessage());
+                                Log.e("NewPostActivity", e.getMessage());
                                 httpCallbackFail("Parsing error. Please try again.");
                                 e.printStackTrace();
                             }
