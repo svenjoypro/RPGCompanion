@@ -111,7 +111,7 @@ public class Race {
                 sex="N/A";
                 JSONArray simple = jNames.getJSONArray("simple");
                 //Get a random simple name
-                x = ran.nextInt(jNames.length());
+                x = ran.nextInt(simple.length());
                 myName = simple.getString(x);
             }
             else {
@@ -126,7 +126,7 @@ public class Race {
                     sex="Female";
                 }
                 //Get a random name
-                x = ran.nextInt(jNames.length());
+                x = ran.nextInt(names.length());
                 myName = names.getString(x);
 
                 //Check if last names are applicable to race
