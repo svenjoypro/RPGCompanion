@@ -4,6 +4,8 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.Arrays;
 
 import static android.icu.lang.UProperty.INT_START;

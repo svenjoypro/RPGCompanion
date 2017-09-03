@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
 	/**
 	 *	TODO
 	 *      Add Spell summaries?
-     *      Add Items?
 	 *
 	 *
 	 */
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(v.getContext(), PuzzlesActivity.class);
                         break;
                     case R.id.main_npc_button:
-                        intent = new Intent(v.getContext(), NPCActivity.class);
+                        intent = new Intent(v.getContext(), NPCsActivity.class);
                         break;
                     case R.id.main_adventures_button:
                         intent = new Intent(v.getContext(), AdventuresActivity.class);

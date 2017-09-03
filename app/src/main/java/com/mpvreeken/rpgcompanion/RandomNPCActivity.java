@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCData;
 
@@ -35,7 +36,7 @@ import java.io.Writer;
  * @version 2017.0727
  * @since 1.0
  */
-public class NPCActivity extends AppCompatActivity {
+public class RandomNPCActivity extends AppCompatActivity {
 
     NPCData npcData;
     TextView npc_tv;
@@ -44,7 +45,7 @@ public class NPCActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_npc);
+        setContentView(R.layout.activity_random_npc);
 
         //Set up back button to appear in action bar
         ActionBar actionBar = getSupportActionBar();
@@ -68,6 +69,13 @@ public class NPCActivity extends AppCompatActivity {
                 generateNewNPC();
             }
         });
+    }
+
+    public void saveNPC() {
+        Gson gson = new Gson();
+        String json = gson.toJson(currentNPC);
+
+        //TODO save to db
     }
 
     public void generateNewNPC() {

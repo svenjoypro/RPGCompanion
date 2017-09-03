@@ -21,10 +21,11 @@
         <activity android:name=".EncountersActivity" />
         <activity android:name=".PuzzlesActivity" />
         <activity android:name=".DisplayHookActivity" />
-        <activity android:name=".NPCActivity" />
-        <activity android:name=".NPC.CommentActivity" />
+        <activity android:name=".NPCsActivity" />
+        <activity android:name=".CommentActivity" />
         <activity android:name=".AdventuresActivity" />
-        <activity android:name=".NewPostActivity"></activity>
+        <activity android:name=".NewPostActivity" />
+        <activity android:name=".RandomNPCActivity" />
     </application>
 
 </manifest>
