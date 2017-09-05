@@ -1,29 +1,22 @@
 package com.mpvreeken.rpgcompanion;
 
 
-import android.content.Intent;
-import android.net.Uri;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCData;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 /**
  * Activity to display randomly generated NPCs
@@ -69,13 +62,31 @@ public class RandomNPCActivity extends AppCompatActivity {
                 generateNewNPC();
             }
         });
+
+        Button save_btn = findViewById(R.id.npc_save_btn);
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveNPC();
+            }
+        });
     }
 
     public void saveNPC() {
         Gson gson = new Gson();
         String json = gson.toJson(currentNPC);
 
-        //TODO save to db
+        DBHelper dbHelper = new DBHelper(this.getBaseContext());
+        // Gets the data repository in write mode
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.NPCS_COL_NPC, json);
+        values.put(DBHelper.NPCS_COL_NAME, currentNPC.name);
+        values.put(DBHelper.NPCS_COL_SUMMARY, "Summary text about npc");
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(DBHelper.NPCS_TABLE_NAME, null, values);
+        Log.d("$$$$$$$$$", Long.toString(newRowId));
     }
 
     public void generateNewNPC() {

@@ -26,6 +26,7 @@
         <activity android:name=".AdventuresActivity" />
         <activity android:name=".NewPostActivity" />
         <activity android:name=".RandomNPCActivity" />
+        <activity android:name=".SavedNPCActivity"></activity>
     </application>
 
 </manifest>

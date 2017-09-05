@@ -1,15 +1,25 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.mpvreeken.rpgcompanion.Classes.DBHelper;
+import com.mpvreeken.rpgcompanion.NPC.NPCCursorAdapter;
+
 public class NPCsActivity extends AppCompatActivity {
+
+    private DBHelper dbHelper;
+    private ListView npcListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +41,53 @@ public class NPCsActivity extends AppCompatActivity {
             }
         });
 
-        ListView npcs_lv = findViewById(R.id.npcs_lv);
+        npcListView = findViewById(R.id.npcs_listview);
+
+        dbHelper = new DBHelper(this.getBaseContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT * FROM "+DBHelper.NPCS_TABLE_NAME+" ORDER BY _id ASC";
+        Cursor cursor = db.rawQuery(query, null);
+
+        NPCCursorAdapter adapter = new NPCCursorAdapter(
+                this, R.layout.npc_list_item_layout, cursor, 0 );
+
+        npcListView.setAdapter(adapter);
+    }
+
+    public void deleteNPC(String id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // Define 'where' part of query.
+        String selection = "_id = ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { id };
+        // Issue SQL statement.
+        db.delete(DBHelper.NPCS_TABLE_NAME, selection, selectionArgs);
+    }
+
+    public void updateNPC(String id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        String summary = "Updated Summary";
+        values.put(DBHelper.NPCS_COL_SUMMARY, summary);
+
+        // Which row to update, based on the id
+        String selection = "_id = ?";
+        String[] selectionArgs = { id };
+
+        int count = db.update(
+                DBHelper.NPCS_TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
     }
 
 
