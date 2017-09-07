@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
-        android:id="@+id/scrollView3"
+        android:id="@+id/npc_scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"

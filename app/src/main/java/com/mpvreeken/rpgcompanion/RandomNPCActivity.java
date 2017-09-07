@@ -1,22 +1,32 @@
 package com.mpvreeken.rpgcompanion;
 
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCData;
+import android.view.ViewGroup.LayoutParams;
 
 /**
  * Activity to display randomly generated NPCs
@@ -34,6 +44,8 @@ public class RandomNPCActivity extends AppCompatActivity {
     NPCData npcData;
     TextView npc_tv;
     NPC currentNPC;
+    private PopupWindow popupWindow;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +79,70 @@ public class RandomNPCActivity extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveNPC();
+                showSaveDialog();
+                //saveNPC();
             }
         });
+
+        scrollView = findViewById(R.id.npc_scrollView);
+
+        //By default set result to canceled, we re-set this to RESULT_OK if we need to later
+        Intent returnIntent = new Intent();
+        setResult(RESULT_CANCELED, returnIntent);
     }
 
-    public void saveNPC() {
+    public void showSaveDialog() {
+        //https://android--code.blogspot.com/2016/01/android-popup-window-example.html
+
+        // Initialize a new instance of LayoutInflater service
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // Inflate the custom layout/view
+        View popupView = inflater.inflate(R.layout.popup_npc_save_layout, null);
+
+
+        popupWindow = new PopupWindow(
+                popupView,
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
+        );
+
+        // Set an elevation value for popup window
+        // Call requires API level 21
+        if(Build.VERSION.SDK_INT>=21){
+            popupWindow.setElevation(5.0f);
+        }
+
+        // Get a reference for the custom view close button
+        Button saveButton = popupView.findViewById(R.id.npc_popup_save_btn);
+        Button cancelButton = popupView.findViewById(R.id.npc_popup_cancel_btn);
+        final EditText summary = popupView.findViewById(R.id.npc_popup_summary_et);
+
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveNPC(summary.getText().toString());
+                popupWindow.dismiss();
+                Intent intent = new Intent();
+                intent.putExtra("npc_saved", "true");
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.showAtLocation(scrollView, Gravity.CENTER,0,0);
+        popupWindow.setFocusable(true);
+        popupWindow.update();
+    }
+
+    public void saveNPC(String summary) {
         Gson gson = new Gson();
         String json = gson.toJson(currentNPC);
 
@@ -82,8 +152,8 @@ public class RandomNPCActivity extends AppCompatActivity {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DBHelper.NPCS_COL_NPC, json);
-        values.put(DBHelper.NPCS_COL_NAME, currentNPC.name);
-        values.put(DBHelper.NPCS_COL_SUMMARY, "Summary text about npc");
+        values.put(DBHelper.NPCS_COL_NAME, currentNPC.name+" - "+currentNPC.race.name+" "+currentNPC.profession);
+        values.put(DBHelper.NPCS_COL_SUMMARY, summary);
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DBHelper.NPCS_TABLE_NAME, null, values);
         Log.d("$$$$$$$$$", Long.toString(newRowId));
