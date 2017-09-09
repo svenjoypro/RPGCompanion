@@ -81,6 +81,9 @@ public class NPCsActivity extends AppCompatActivity {
         String[] selectionArgs = { id };
         // Issue SQL statement.
         db.delete(DBHelper.NPCS_TABLE_NAME, selection, selectionArgs);
+
+        //TODO update
+
     }
 
     public void updateNPC(String id) {
