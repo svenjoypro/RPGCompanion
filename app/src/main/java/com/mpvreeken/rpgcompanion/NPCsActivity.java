@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,9 +83,9 @@ public class NPCsActivity extends AppCompatActivity {
         // Issue SQL statement.
         db.delete(DBHelper.NPCS_TABLE_NAME, selection, selectionArgs);
 
-        //TODO update
-
+        populateNPCList();
     }
+
 
     public void updateNPC(String id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

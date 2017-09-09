@@ -38,6 +38,9 @@ public class NPCCursorAdapter extends ResourceCursorAdapter {
         summary_tv.setText(cursor.getString(cursor.getColumnIndex("summary")));
 
         final Button delete_btn = view.findViewById(R.id.npc_list_item_delete_btn);
+        final Button confirm_btn = view.findViewById(R.id.npc_list_item_delete_confirm_btn);
+        final Button cancel_btn = view.findViewById(R.id.npc_list_item_cancel_btn);
+
         view.setTag(cursor.getString(cursor.getColumnIndex("_id")));
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +62,30 @@ public class NPCCursorAdapter extends ResourceCursorAdapter {
             public void onClick(View view) {
                 View v = (View) view.getParent();
                 v.setVisibility(View.GONE);
-                //TODO sho "undo" button for X seconds, then really delete
-                npcsActivity.deleteNPC(v.getTag().toString());
+                View p = (View) v.getParent();
+                View v2 = p.findViewById(R.id.npc_list_item_undo);
+                v2.setVisibility(View.VISIBLE);
+            }
+        });
+
+        confirm_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View v = (View) view.getParent();
+                View p = (View) v.getParent();
+                npcsActivity.deleteNPC(p.getTag().toString());
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View v = (View) view.getParent();
+                v.setVisibility(View.GONE);
+                View p = (View) v.getParent();
+                View v2 = p.findViewById(R.id.npc_list_item_visible);
+                v2.setVisibility(View.VISIBLE);
+                delete_btn.setVisibility(View.GONE);
             }
         });
     }
