@@ -156,7 +156,6 @@ public class RandomNPCActivity extends AppCompatActivity {
         values.put(DBHelper.NPCS_COL_SUMMARY, summary);
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DBHelper.NPCS_TABLE_NAME, null, values);
-        Log.d("$$$$$$$$$", Long.toString(newRowId));
     }
 
     public void generateNewNPC() {
