@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton npc_btn = (ImageButton) findViewById(R.id.main_npc_button);
         ImageButton adventures_btn = (ImageButton) findViewById(R.id.main_adventures_button);
         ImageButton riddles_btn = (ImageButton) findViewById(R.id.main_riddles_button);
+        ImageButton town_builder_btn = (ImageButton) findViewById(R.id.main_town_builder_button);
 
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
@@ -51,22 +52,26 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(v.getContext(), AdventuresActivity.class);
                         break;
                     case R.id.main_riddles_button:
-                        intent = new Intent(v.getContext(), AdventuresActivity.class);
+                        intent = new Intent(v.getContext(), RiddlesActivity.class);
+                        break;
+                    case R.id.main_town_builder_button:
+                        intent = new Intent(v.getContext(), TownBuilderActivity.class);
                         break;
                     default:
-                        intent = new Intent(v.getContext(), HooksActivity.class);
+                        intent = new Intent(v.getContext(), NPCsActivity.class);
                 }
                 //intent.putExtra(EXTRA_MESSAGE, message);
                 startActivity(intent);
             }
         };
 
-        hooks_btn.setOnClickListener(buttonHandler);
-        encounters_btn.setOnClickListener(buttonHandler);
-        puzzles_btn.setOnClickListener(buttonHandler);
+        //hooks_btn.setOnClickListener(buttonHandler);
+        //encounters_btn.setOnClickListener(buttonHandler);
+        //puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
-        riddles_btn.setOnClickListener(buttonHandler);
+        //riddles_btn.setOnClickListener(buttonHandler);
         adventures_btn.setOnClickListener(buttonHandler);
+        town_builder_btn.setOnClickListener(buttonHandler);
 
 
     }
