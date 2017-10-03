@@ -130,7 +130,7 @@
                 app:srcCompat="@mipmap/unique_items_button" />
 
             <ImageButton
-                android:id="@+id/main_town_builder_button"
+                android:id="@+id/main_misc_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -139,7 +139,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/main_adventures_button"
-                app:srcCompat="@mipmap/town_builder_button" />
+                app:srcCompat="@mipmap/misc_button" />
 
             main_town_builder_button
 

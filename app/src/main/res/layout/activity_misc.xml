@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mpvreeken.rpgcompanion.MiscActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/misc_output_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="Click on a button to randomly generate something!"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/misc_scrollview" />
+
+    <ScrollView
+        android:id="@+id/misc_scrollview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/misc_output_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Encounters" />
+
+            <Button
+                android:id="@+id/misc_long_rest_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Long Rest Encounters" />
+
+            <Button
+                android:id="@+id/misc_road_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Road Encounters" />
+
+            <Button
+                android:id="@+id/misc_romantic_love_interests_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Romantic Love Interests" />
+
+            <Button
+                android:id="@+id/misc_slums_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Slums Encounters" />
+
+            <Button
+                android:id="@+id/misc_strange_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Strange / Frightening Encounters" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Items and Weapons" />
+
+            <Button
+                android:id="@+id/misc_backpack_contents_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Backpack Contents" />
+
+            <Button
+                android:id="@+id/misc_book_titles_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Book Titles" />
+
+            <Button
+                android:id="@+id/misc_creepy_necromancers_lair_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Creepy Things in a Necromancer's Lair" />
+
+            <Button
+                android:id="@+id/misc_curious_items_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Curious Items" />
+
+            <Button
+                android:id="@+id/misc_kitchen_items_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kitchen Items" />
+
+            <Button
+                android:id="@+id/misc_magic_umbrellas_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Magic Umbrellas" />
+
+            <Button
+                android:id="@+id/misc_minor_magic_items_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minor Magic Items" />
+
+            <Button
+                android:id="@+id/misc_mundane_treasures_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mundane Treasures" />
+
+            <Button
+                android:id="@+id/misc_potions_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Potions" />
+
+            <Button
+                android:id="@+id/misc_ruined_building_contents_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ruined Building Contents" />
+
+            <Button
+                android:id="@+id/misc_weapon_names_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Weapon Names" />
+
+            <Button
+                android:id="@+id/misc_tavern_drinks_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tavern Drinks" />
+
+            <Button
+                android:id="@+id/misc_things_in_the_woods_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Things in the Deep Dark Woods" />
+
+            <Button
+                android:id="@+id/misc_trinkets_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trinkets" />
+
+            <Button
+                android:id="@+id/misc_magic_skulls_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Magic Skulls" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Names" />
+
+            <Button
+                android:id="@+id/misc_town_names_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Town Names" />
+
+            <Button
+                android:id="@+id/misc_tavern_name_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tavern Names" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+
+
+            <Button
+                android:id="@+id/misc_curses_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Curses" />
+
+            <Button
+                android:id="@+id/misc_flawed_utopias_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Flawed Utopias" />
+
+            <Button
+                android:id="@+id/misc_lone_graves_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Strange Lone Graves" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

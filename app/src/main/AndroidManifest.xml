@@ -27,7 +27,7 @@
         <activity android:name=".NewPostActivity" />
         <activity android:name=".RandomNPCActivity" />
         <activity android:name=".SavedNPCActivity" />
-        <activity android:name=".TownBuilderActivity" />
+        <activity android:name=".MiscActivity" />
         <activity android:name=".RiddlesActivity"></activity>
     </application>
 

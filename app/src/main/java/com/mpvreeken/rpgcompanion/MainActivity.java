@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton npc_btn = (ImageButton) findViewById(R.id.main_npc_button);
         ImageButton adventures_btn = (ImageButton) findViewById(R.id.main_adventures_button);
         ImageButton riddles_btn = (ImageButton) findViewById(R.id.main_riddles_button);
-        ImageButton town_builder_btn = (ImageButton) findViewById(R.id.main_town_builder_button);
+        ImageButton misc_btn = (ImageButton) findViewById(R.id.main_misc_button);
 
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
@@ -54,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.main_riddles_button:
                         intent = new Intent(v.getContext(), RiddlesActivity.class);
                         break;
-                    case R.id.main_town_builder_button:
-                        intent = new Intent(v.getContext(), TownBuilderActivity.class);
+                    case R.id.main_misc_button:
+                        intent = new Intent(v.getContext(), MiscActivity.class);
                         break;
                     default:
                         intent = new Intent(v.getContext(), NPCsActivity.class);
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         npc_btn.setOnClickListener(buttonHandler);
         //riddles_btn.setOnClickListener(buttonHandler);
         adventures_btn.setOnClickListener(buttonHandler);
-        town_builder_btn.setOnClickListener(buttonHandler);
+        misc_btn.setOnClickListener(buttonHandler);
 
 
     }

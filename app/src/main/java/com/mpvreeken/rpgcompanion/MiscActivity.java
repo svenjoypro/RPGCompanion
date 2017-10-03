@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -21,33 +22,35 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Random;
 
-public class TownBuilderActivity extends AppCompatActivity {
+public class MiscActivity extends AppCompatActivity {
 
     public JSONArray tavern_adjs, tavern_nouns;
+    private TextView output_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_town_builder);
+        setContentView(R.layout.activity_misc);
 
+        output_tv = findViewById(R.id.misc_output_tv);
 
         try {
-            tavern_adjs = getRawData(R.raw.npc_tavern_names).getJSONArray("adjs");
-            tavern_nouns = getRawData(R.raw.npc_tavern_names).getJSONArray("nouns");
+            tavern_adjs = getRawData(R.raw.d100_tavern_names).getJSONArray("adjs");
+            tavern_nouns = getRawData(R.raw.d100_tavern_names).getJSONArray("nouns");
         } catch (JSONException e) {
-            Log.e("TownBuilderActivity", e.getMessage());
+            Log.e("MiscActivity", e.getMessage());
             e.printStackTrace();
         }
 
-        Button tavern_name_btn = findViewById(R.id.town_builder_tavern_name_btn);
+        Button tavern_name_btn = findViewById(R.id.misc_tavern_name_btn);
 
         tavern_name_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TownBuilderActivity.this.runOnUiThread(new Runnable() {
+                MiscActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getBaseContext(), generateTavernName(), Toast.LENGTH_LONG).show();
+                        output_tv.setText(generateTavernName());
                     }
                 });
             }
