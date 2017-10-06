@@ -107,6 +107,10 @@
                 android:id="@+id/misc_kitchen_items_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
                 android:text="Kitchen Items" />
 
             <Button
@@ -138,12 +142,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ruined Building Contents" />
-
-            <Button
-                android:id="@+id/misc_weapon_names_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Weapon Names" />
 
             <Button
                 android:id="@+id/misc_tavern_drinks_btn"
@@ -186,6 +184,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tavern Names" />
+
+            <Button
+                android:id="@+id/misc_weapon_names_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Weapon Names" />
 
             <TextView
                 android:id="@+id/textView11"
