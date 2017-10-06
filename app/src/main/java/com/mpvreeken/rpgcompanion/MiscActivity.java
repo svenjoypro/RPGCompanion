@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class MiscActivity extends AppCompatActivity {
 
-    private JSONArray tavern_adjs, tavern_nouns, long_rests, road_encounters, romantic_love_interests, slums_encounters, strange_encounters, backpack_contents_tools, backpack_contents_edibles, backpack_contents_personals, backpack_contents_strange, book_titles, necromancers_lair, curious_items, kitchen_items, magic_umbrellas, minor_magic_items, mundane_treasures, potion_colors, potion_scents, potion_appearances, potion_effects, ruined_building_contents, weapon_names, tavern_drinks, deep_dark_woods, trinkets, magic_skulls, town_names, curses, flawed_utopias, lone_graves;
+    private JSONArray tavern_adjs, tavern_nouns, long_rests, road_encounters, romantic_love_interests, slums_encounters, strange_encounters, backpack_contents_tools, backpack_contents_edibles, backpack_contents_personals, backpack_contents_strange, book_titles, necromancers_lair, curious_items, kitchen_items, magic_umbrellas, minor_magic_items, mundane_treasures, potion_colors, potion_scents, potion_appearances, potion_effects, ruined_building_contents, weapon_names, tavern_drinks, tavern_foods, deep_dark_woods, trinkets, magic_skulls, town_names, curses, flawed_utopias, lone_graves;
     private TextView output_tv;
 
 
@@ -51,6 +51,7 @@ public class MiscActivity extends AppCompatActivity {
         Button p_btn = findViewById(R.id.misc_potions_btn);
         Button rbc_btn = findViewById(R.id.misc_ruined_building_contents_btn);
         Button td_btn = findViewById(R.id.misc_tavern_drinks_btn);
+        Button tf_btn = findViewById(R.id.misc_tavern_food_btn);
         Button tddw_btn = findViewById(R.id.misc_things_in_the_woods_btn);
         Button t_btn = findViewById(R.id.misc_trinkets_btn);
         Button ms_btn = findViewById(R.id.misc_magic_skulls_btn);
@@ -138,6 +139,10 @@ public class MiscActivity extends AppCompatActivity {
                         if (tavern_drinks == null) { tavern_drinks = loadJSON(R.raw.d100_tavern_drinks, "tavern_drinks"); }
                         showOutput(getRandomBasic(tavern_drinks));
                         break;
+                    case R.id.misc_tavern_food_btn:
+                        if (tavern_foods == null) { tavern_foods = loadJSON(R.raw.d100_tavern_food, "tavern_food"); }
+                        showOutput(getRandomBasic(tavern_foods));
+                        break;
                     case R.id.misc_things_in_the_woods_btn:
                         if (deep_dark_woods == null) { deep_dark_woods = loadJSON(R.raw.d100_deep_dark_woods, "things_in_the_deep_dark_woods"); }
                         showOutput(getRandomBasic(deep_dark_woods));
@@ -199,6 +204,7 @@ public class MiscActivity extends AppCompatActivity {
         p_btn.setOnClickListener(buttonHandler);
         rbc_btn.setOnClickListener(buttonHandler);
         td_btn.setOnClickListener(buttonHandler);
+        tf_btn.setOnClickListener(buttonHandler);
         tddw_btn.setOnClickListener(buttonHandler);
         t_btn.setOnClickListener(buttonHandler);
         ms_btn.setOnClickListener(buttonHandler);

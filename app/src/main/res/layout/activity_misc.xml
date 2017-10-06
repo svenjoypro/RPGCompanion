@@ -107,10 +107,6 @@
                 android:id="@+id/misc_kitchen_items_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
                 android:text="Kitchen Items" />
 
             <Button
@@ -148,6 +144,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tavern Drinks" />
+
+            <Button
+                android:id="@+id/misc_tavern_food_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tavern Food" />
 
             <Button
                 android:id="@+id/misc_things_in_the_woods_btn"
