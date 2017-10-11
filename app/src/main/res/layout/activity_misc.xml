@@ -73,6 +73,12 @@
                 android:layout_height="wrap_content"
                 android:text="Strange / Frightening Encounters" />
 
+            <Button
+                android:id="@+id/misc_trail_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trail Encounters" />
+
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"

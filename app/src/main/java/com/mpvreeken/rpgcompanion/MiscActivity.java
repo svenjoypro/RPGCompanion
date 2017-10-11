@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class MiscActivity extends AppCompatActivity {
 
-    private JSONArray tavern_adjs, tavern_nouns, long_rests, road_encounters, romantic_love_interests, slums_encounters, strange_encounters, backpack_contents_tools, backpack_contents_edibles, backpack_contents_personals, backpack_contents_strange, book_titles, necromancers_lair, curious_items, kitchen_items, magic_umbrellas, minor_magic_items, mundane_treasures, potion_colors, potion_scents, potion_appearances, potion_effects, ruined_building_contents, weapon_names, tavern_drinks, tavern_foods, deep_dark_woods, trinkets, magic_skulls, town_names, curses, flawed_utopias, lone_graves;
+    private JSONArray tavern_adjs, tavern_nouns, long_rests, road_encounters, romantic_love_interests, slums_encounters, strange_encounters, trail_encounters, backpack_contents_tools, backpack_contents_edibles, backpack_contents_personals, backpack_contents_strange, book_titles, necromancers_lair, curious_items, kitchen_items, magic_umbrellas, minor_magic_items, mundane_treasures, potion_colors, potion_scents, potion_appearances, potion_effects, ruined_building_contents, weapon_names, tavern_drinks, tavern_foods, deep_dark_woods, trinkets, magic_skulls, town_names, curses, flawed_utopias, lone_graves;
     private TextView output_tv;
 
 
@@ -40,6 +40,7 @@ public class MiscActivity extends AppCompatActivity {
         Button rli_btn = findViewById(R.id.misc_romantic_love_interests_btn);
         Button se_btn = findViewById(R.id.misc_slums_encounters_btn);
         Button sfe_btn = findViewById(R.id.misc_strange_encounters_btn);
+        Button te_btn = findViewById(R.id.misc_trail_encounters_btn);
         Button bc_btn = findViewById(R.id.misc_backpack_contents_btn);
         Button bt_btn = findViewById(R.id.misc_book_titles_btn);
         Button tnl_btn = findViewById(R.id.misc_creepy_necromancers_lair_btn);
@@ -84,6 +85,10 @@ public class MiscActivity extends AppCompatActivity {
                     case R.id.misc_strange_encounters_btn:
                         if (strange_encounters == null) { strange_encounters = loadJSON(R.raw.d100_strange_encounters, "strange_encounters"); }
                         showOutput(getRandomBasic(strange_encounters));
+                        break;
+                    case R.id.misc_trail_encounters_btn:
+                        if (trail_encounters == null) { trail_encounters = loadJSON(R.raw.d100_trail_encounters, "trail_encounters"); }
+                        showOutput(getRandomBasic(trail_encounters));
                         break;
                     case R.id.misc_backpack_contents_btn:
                         if (backpack_contents_tools == null) {
@@ -193,6 +198,7 @@ public class MiscActivity extends AppCompatActivity {
         rli_btn.setOnClickListener(buttonHandler);
         se_btn.setOnClickListener(buttonHandler);
         sfe_btn.setOnClickListener(buttonHandler);
+        te_btn.setOnClickListener(buttonHandler);
         bc_btn.setOnClickListener(buttonHandler);
         bt_btn.setOnClickListener(buttonHandler);
         tnl_btn.setOnClickListener(buttonHandler);
