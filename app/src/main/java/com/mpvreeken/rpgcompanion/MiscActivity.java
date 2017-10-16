@@ -270,8 +270,7 @@ public class MiscActivity extends AppCompatActivity {
     }
 
     public String generatePotion() {
-        String potion = "";
-        potion += "Color: "+getRandom(potion_colors);
+        String potion = "Color: "+getRandom(potion_colors);
         potion += "\nAppearance: "+getRandom(potion_appearances);
         potion += "\nSmell/Flavor: "+getRandom(potion_scents);
         potion += "\nEffect: "+getRandom(potion_effects);
