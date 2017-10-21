@@ -96,21 +96,18 @@ public class HooksActivity extends AppCompatActivity {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
                         for (int i=0; i<r.length(); i++) {
-
-                            //The plan is to eventually add more to each hook, like user_id, and voting
-                            //but as of now, we just get simple info
                             hooksArray.add(
-                                    new Hook(r.getJSONObject(i).getString("id"),
+                                new Hook(
+                                    r.getJSONObject(i).getString("id"),
                                     r.getJSONObject(i).getString("title"),
                                     r.getJSONObject(i).getString("user_id"),
                                     r.getJSONObject(i).getString("description"),
-                                    r.getJSONObject(i).getString("votes"),
-                                    r.getJSONObject(i).getString("created_at")));
-                            /*
-                            hooksArray.add(
-                                    new Hook(r.getJSONObject(i).getString("title"),
-                                    r.getJSONObject(i).getString("description")));
-                            */
+                                    r.getJSONObject(i).getInt("upvotes"),
+                                    r.getJSONObject(i).getInt("downvotes"),
+                                    r.getJSONObject(i).getInt("voted"),
+                                    r.getJSONObject(i).getString("created_at")
+                                )
+                            );
                         }
 
                         //We can't update the UI on a background thread, so run on the UI thread
@@ -134,6 +131,17 @@ public class HooksActivity extends AppCompatActivity {
 
         hideLoadingScreen();
         hooks_lv.setAdapter(hookArrayAdapter);
+        Button btn = new Button(this);
+        btn.setText("Load More");
+
+        hooks_lv.addFooterView(btn);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadMoreHooks();
+            }
+        });
 
         hooks_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -145,6 +153,73 @@ public class HooksActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 //intent.putExtra("hook_id", hooksArray.get(position).getId());
                 startActivity(intent);
+            }
+        });
+    }
+
+    public void loadMoreHooks() {
+        String hooks_url = getResources().getString(R.string.url_get_hooks);
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(hooks_url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                displayError("Could not connect to server. Please try again");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    displayError("An unknown error occurred. Please try again");
+                    throw new IOException("Unexpected code " + response);
+                }
+                else {
+                    try {
+                        JSONArray r = new JSONArray(response.body().string());
+                        for (int i=0; i<r.length(); i++) {
+                            hooksArray.add(
+                                    new Hook(
+                                            r.getJSONObject(i).getString("id"),
+                                            r.getJSONObject(i).getString("title"),
+                                            r.getJSONObject(i).getString("user_id"),
+                                            r.getJSONObject(i).getString("description"),
+                                            r.getJSONObject(i).getInt("upvotes"),
+                                            r.getJSONObject(i).getInt("downvotes"),
+                                            r.getJSONObject(i).getInt("voted"),
+                                            r.getJSONObject(i).getString("created_at")
+                                    )
+                            );
+                        }
+
+                        HooksActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Get scroll position of listview, so we can retain their position after loading more
+                                int firstVisibleItem = hooks_lv.getFirstVisiblePosition();
+                                int oldCount = hookArrayAdapter.getCount();
+                                View view = hooks_lv.getChildAt(0);
+                                int pos = (view == null ? 0 :  view.getBottom());
+
+                                //Set the new data
+                                hooks_lv.setAdapter(hookArrayAdapter);
+
+                                //Set the listview position back to where they were
+                                hooks_lv.setSelectionFromTop(firstVisibleItem + hookArrayAdapter.getCount() - oldCount + 1, pos);
+                            }
+                        });
+
+                    }
+                    catch (JSONException e) {
+                        displayError("An unknown error occurred. Please try again");
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }

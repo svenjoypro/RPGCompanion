@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        //hooks_btn.setOnClickListener(buttonHandler);
+        hooks_btn.setOnClickListener(buttonHandler);
         //encounters_btn.setOnClickListener(buttonHandler);
         //puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);

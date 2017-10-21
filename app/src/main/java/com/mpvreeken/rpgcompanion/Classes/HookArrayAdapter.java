@@ -40,9 +40,11 @@ public class HookArrayAdapter extends ArrayAdapter<Hook> {
 
         View rowView = inflater.inflate(R.layout.hooks_list_item_layout, parent, false);
         TextView title_tv = (TextView) rowView.findViewById(R.id.hook_list_item_title_tv);
+        TextView votes_tv = (TextView) rowView.findViewById(R.id.hook_list_item_votes_tv);
         TextView desc_tv = (TextView) rowView.findViewById(R.id.hook_list_item_desc_tv);
 
         title_tv.setText(hook.getTitle());
+        votes_tv.setText(hook.getListItemVotes());
         desc_tv.setText(hook.getDescription());
 
         return rowView;

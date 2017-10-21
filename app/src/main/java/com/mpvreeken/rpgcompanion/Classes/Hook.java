@@ -12,7 +12,7 @@ public class Hook implements Serializable {
     private String title;
     private String user;
     private String description;
-    private Integer votes;
+    private Integer upvotes, downvotes, voted;
     private String date;
 
     public Hook(String title, String description) {
@@ -20,17 +20,20 @@ public class Hook implements Serializable {
         this.title=title;
         this.user="";
         this.description=description;
-        this.votes=0;
+        this.upvotes=0;
+        this.downvotes=0;
         this.date="";
     }
 
-    public Hook(String id, String title, String user, String description, String votes, String timestamp) {
+    public Hook(String id, String title, String user, String description, Integer upvotes, Integer downvotes, Integer voted, String timestamp) {
 
         this.id=id;
         this.title=title;
         this.user=user;
         this.description=description;
-        this.votes=Integer.parseInt(votes);
+        this.upvotes=upvotes;
+        this.downvotes=downvotes;
+        this.voted=voted; // -1=didn't vote, 0=downvoted, 1=upvoted
         //todo convert to readable time
         this.date=timestamp;
     }
@@ -49,7 +52,15 @@ public class Hook implements Serializable {
         return description;
     }
 
-    public Integer getVotes() { return votes; }
+    public Integer getUpvotes() { return upvotes; }
+    public Integer getDownvotes() { return downvotes; }
+    public Integer getMyVote() { return voted; }
+
+    public Integer getCalculatedVotes() { return upvotes-downvotes; }
+
+    public String getListItemVotes() {
+        return "User Votes: " + getCalculatedVotes() + " | +" + upvotes + ", -" + downvotes;
+    }
 
     public String getDate() {
         return date;

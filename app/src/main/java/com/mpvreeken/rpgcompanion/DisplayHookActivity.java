@@ -166,7 +166,7 @@ public class DisplayHookActivity extends AppCompatActivity {
 
     public void setupUI() {
         TextView votes_tv = findViewById(R.id.hook_details_votes_tv);
-        votes_tv.setText(String.valueOf(hook.getVotes()));
+        votes_tv.setText(String.valueOf(hook.getCalculatedVotes()));
         TextView title_tv = findViewById(R.id.hook_details_title_tv);
         title_tv.setText(String.valueOf(hook.getTitle()));
         TextView description_tv = findViewById(R.id.hook_details_description_tv);
