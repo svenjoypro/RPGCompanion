@@ -1,7 +1,7 @@
 package com.mpvreeken.rpgcompanion;
 
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,23 +10,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCData;
-import android.view.ViewGroup.LayoutParams;
 
 /**
  * Activity to display randomly generated NPCs
@@ -44,7 +41,6 @@ public class RandomNPCActivity extends AppCompatActivity {
     NPCData npcData;
     TextView npc_tv;
     NPC currentNPC;
-    private PopupWindow popupWindow;
     ScrollView scrollView;
 
     @Override
@@ -100,17 +96,21 @@ public class RandomNPCActivity extends AppCompatActivity {
         // Inflate the custom layout/view
         View popupView = inflater.inflate(R.layout.popup_npc_save_layout, null);
 
+        final Dialog dialog = new Dialog(this, R.style.AlertDialogTheme);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(popupView);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setGravity(Gravity.CENTER);
+        dialog.show();
 
-        popupWindow = new PopupWindow(
-                popupView,
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-        );
 
         // Set an elevation value for popup window
-        // Call requires API level 21
-        if(Build.VERSION.SDK_INT>=21){
-            popupWindow.setElevation(5.0f);
+        // Call requires API level 22
+        if(Build.VERSION.SDK_INT>=22){
+            dialog.getWindow().setElevation(5.0f);
         }
 
         // Get a reference for the custom view close button
@@ -123,7 +123,7 @@ public class RandomNPCActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveNPC(summary.getText().toString());
-                popupWindow.dismiss();
+                dialog.dismiss();
                 Intent intent = new Intent();
                 intent.putExtra("npc_saved", "true");
                 setResult(RESULT_OK, intent);
@@ -133,13 +133,10 @@ public class RandomNPCActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupWindow.dismiss();
+                dialog.dismiss();
             }
         });
 
-        popupWindow.showAtLocation(scrollView, Gravity.CENTER,0,0);
-        popupWindow.setFocusable(true);
-        popupWindow.update();
     }
 
     public void saveNPC(String summary) {
