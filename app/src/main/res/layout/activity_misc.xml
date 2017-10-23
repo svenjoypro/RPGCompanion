@@ -79,6 +79,24 @@
                 android:layout_height="wrap_content"
                 android:text="Trail Encounters" />
 
+            <Button
+                android:id="@+id/misc_suspicious_village_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Suspicious Village Encounters" />
+
+            <Button
+                android:id="@+id/misc_nice_village_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nice Village Encounters" />
+
+            <Button
+                android:id="@+id/misc_jungle_encounters_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jungle Encounters" />
+
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
@@ -175,6 +193,36 @@
                 android:layout_height="wrap_content"
                 android:text="Magic Skulls" />
 
+            <Button
+                android:id="@+id/misc_blacksmith_wares_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blacksmith Wares" />
+
+            <Button
+                android:id="@+id/misc_misc_items_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Misc Items" />
+
+            <Button
+                android:id="@+id/misc_rich_corpses_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rich Corpses" />
+
+            <Button
+                android:id="@+id/misc_unique_spellbooks_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unique Spellbooks" />
+
+            <Button
+                android:id="@+id/misc_plants_trees_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Plants and Trees" />
+
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
@@ -200,11 +248,40 @@
                 android:text="Weapon Names" />
 
             <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Creatures and NPCs" />
+
+            <Button
+                android:id="@+id/misc_witches_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Witches" />
+
+            <Button
+                android:id="@+id/misc_antagonist_bios_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Antagonist Bios" />
+
+            <Button
+                android:id="@+id/misc_unique_horses_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unique Horses" />
+
+            <Button
+                android:id="@+id/misc_zombie_variations_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zombie Variations" />
+
+            <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Other" />
-
 
             <Button
                 android:id="@+id/misc_curses_btn"
@@ -223,6 +300,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Strange Lone Graves" />
+
+            <Button
+                android:id="@+id/misc_good_smells_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Good Smells" />
+
+            <Button
+                android:id="@+id/misc_monster_deaths_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monster Deaths" />
+
+            <Button
+                android:id="@+id/misc_necromantic_effects_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Necromantic Effects" />
+
+            <Button
+                android:id="@+id/misc_gossip_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gossip" />
 
             <Space
                 android:layout_width="match_parent"
