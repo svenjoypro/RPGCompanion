@@ -9,7 +9,6 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCData;
+import com.mpvreeken.rpgcompanion.NPC.NPCLayout;
 
 /**
  * Activity to display randomly generated NPCs
@@ -53,10 +53,6 @@ public class RandomNPCActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //set up variable to hold npc output text view
-        npc_tv = findViewById(R.id.npc_body_tv);
-        npc_tv.setMovementMethod(new ScrollingMovementMethod());
-
         //Get the json data from raw, then parse it into a nicer, more accessible object
         npcData = new NPCData(getApplicationContext());
 
@@ -75,12 +71,15 @@ public class RandomNPCActivity extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSaveDialog();
-                //saveNPC();
+                //showSaveDialog();
+                saveNPC();
+                //dialog.dismiss();
+                Intent intent = new Intent();
+                intent.putExtra("npc_saved", "true");
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
-
-        scrollView = findViewById(R.id.npc_scrollView);
 
         //By default set result to canceled, we re-set this to RESULT_OK if we need to later
         Intent returnIntent = new Intent();
@@ -88,7 +87,6 @@ public class RandomNPCActivity extends AppCompatActivity {
     }
 
     public void showSaveDialog() {
-        //https://android--code.blogspot.com/2016/01/android-popup-window-example.html
 
         // Initialize a new instance of LayoutInflater service
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -122,7 +120,7 @@ public class RandomNPCActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveNPC(summary.getText().toString());
+                saveNPC();
                 dialog.dismiss();
                 Intent intent = new Intent();
                 intent.putExtra("npc_saved", "true");
@@ -139,7 +137,7 @@ public class RandomNPCActivity extends AppCompatActivity {
 
     }
 
-    public void saveNPC(String summary) {
+    public void saveNPC() {
         Gson gson = new Gson();
         String json = gson.toJson(currentNPC);
 
@@ -149,8 +147,13 @@ public class RandomNPCActivity extends AppCompatActivity {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DBHelper.NPCS_COL_NPC, json);
-        values.put(DBHelper.NPCS_COL_NAME, currentNPC.name+" - "+currentNPC.race.name+" "+currentNPC.profession);
-        values.put(DBHelper.NPCS_COL_SUMMARY, summary);
+        values.put(DBHelper.NPCS_COL_NAME, currentNPC.getName()+" - "+currentNPC.getRace()+" "+currentNPC.getProfession());
+        if (currentNPC.getSummary().equals(currentNPC.DEFAULT_SUMMARY)) {
+            values.put(DBHelper.NPCS_COL_SUMMARY, "No Summary Provided");
+        }
+        else {
+            values.put(DBHelper.NPCS_COL_SUMMARY, currentNPC.getSummary());
+        }
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DBHelper.NPCS_TABLE_NAME, null, values);
     }
@@ -158,9 +161,8 @@ public class RandomNPCActivity extends AppCompatActivity {
     public void generateNewNPC() {
         //Generate new NPC
         currentNPC = npcData.getRandomNPC();
-        //Show the new NPC in the output text view
-        npc_tv.setText(currentNPC.output());
-        npc_tv.scrollTo(0,0);
+        NPCLayout npcLayout = findViewById(R.id.npc_npc_npclayout);
+        npcLayout.setNPC(currentNPC);
     }
 
     //Set click listener for back button in action bar

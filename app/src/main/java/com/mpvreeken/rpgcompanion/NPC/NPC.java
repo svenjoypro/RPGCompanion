@@ -1,14 +1,6 @@
 package com.mpvreeken.rpgcompanion.NPC;
-
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
-
-import java.util.Arrays;
-
-import static android.icu.lang.UProperty.INT_START;
 
 /**
  * Parses NPC object class to hold all info for a randomly generated NPC
@@ -22,17 +14,34 @@ import static android.icu.lang.UProperty.INT_START;
 
 public class NPC {
 
-    public Race race;
 
     public String name, detail, profession, motivation, personality, quirk, worshipHabit, lifeEvent,
-            appearance, bond, flaw, ideal, voice, title, trait, relationship, hook;
+            appearance, bond, flaw, ideal, voice, trait, relationship, hook, raceName, sex, age, speed, flySpeed, languages, racials,
+            strength, dexterity, constitution, intelligence, wisdom, charisma, summary;
 
-    public NPC(Race r, NPCData d) {
-        race = r;
+    public static final String DEFAULT_SUMMARY = "*EDIT THIS* This will be displayed as a summary on your list of saved NPCs";
+
+    public NPC(Race race, NPCData d) {
+
 
         //Randomize race details
         race.randomize();
         name = race.myName;
+        name += d.getRandomTitle();
+        raceName = race.name;
+        age = race.ageDescriptive+" ("+ race.agePercent+"% of their lifespan)";
+        sex = race.sex;
+        speed = race.speed;
+        flySpeed = race.flySpeed;
+        languages = race.languages.toString().substring(1, race.languages.toString().length()-1);
+        racials = race.extras.toString().substring(1, race.extras.toString().length()-1);
+        strength = String.valueOf(race.asi[0]);
+        dexterity = String.valueOf(race.asi[1]);
+        constitution = String.valueOf(race.asi[2]);
+        intelligence = String.valueOf(race.asi[3]);
+        wisdom = String.valueOf(race.asi[4]);
+        charisma = String.valueOf(race.asi[5]);
+
 
         //Randomize NPC details
         appearance = d.getRandomAppearance();
@@ -40,7 +49,7 @@ public class NPC {
         flaw = d.getRandomFlaw();
         ideal = d.getRandomIdeal();
         voice = d.getRandomVoice();
-        title = d.getRandomTitle();
+
         detail = d.getRandomDetail();
         profession = d.getRandomProfession();
         motivation = d.getRandomMotivation();
@@ -51,6 +60,8 @@ public class NPC {
         trait = d.getRandomTrait();
         relationship = d.getRandomRelationship();
         hook = d.getRandomHook();
+
+        summary = DEFAULT_SUMMARY;
     }
 
     /**
@@ -72,14 +83,15 @@ public class NPC {
      *
      * @return SpannableStringBuilder output of npc data to be set into a TextView
      */
+    /*
     public SpannableStringBuilder output() {
         //Make things nice to read, bold all descriptive titles
         SpannableStringBuilder s = new SpannableStringBuilder();
 
-        s.append(formatString("Name: ",name+" "+title));
-        s.append(formatString("\nRace: ", race.name));
-        s.append(formatString("\nSex: ", race.sex));
-        s.append(formatString("\nAge: ", race.ageDescriptive+" ("+ race.agePercent+"% of their lifespan)"));
+        s.append(formatString("Name: ",name));
+        s.append(formatString("\nRace: ", raceName));
+        s.append(formatString("\nSex: ", sex));
+        s.append(formatString("\nAge: ", age));
         s.append(formatString("\nAppearance: ",appearance));
         s.append(formatString("\nVoice: ",voice));
         s.append(formatString("\nPersonality: ",personality));
@@ -95,28 +107,161 @@ public class NPC {
         s.append(formatString("\nReligion: ",worshipHabit));
         s.append(formatString("\nRelationship Status: ",relationship));
         s.append(formatString("\nLife Event: ",lifeEvent));
-        s.append(formatString("\nSpeed: ", race.speed));
+        s.append(formatString("\nSpeed: ", speed));
         //Check if there is a fly speed, only show if there is
-        if (race.flySpeed.length()>0) {
+        if (flySpeed.length()>0) {
             //Same line
-            s.append(formatString(", Fly Speed: ", race.flySpeed));
+            s.append(formatString(", Fly Speed: ", flySpeed));
         }
 
-        //ASIs
-        s.append(formatString("\nSTR: ",String.valueOf(race.asi[0])));
-        s.append(formatString("   DEX: ",String.valueOf(race.asi[1])));
-        s.append(formatString("\nCON: ",String.valueOf(race.asi[2])));
-        s.append(formatString("   INT: ",String.valueOf(race.asi[3])));
-        s.append(formatString("\nWIS: ",String.valueOf(race.asi[4])));
-        s.append(formatString("   CHA: ",String.valueOf(race.asi[5])));
-
-        //Simple output of array, could be nicer
-        s.append(formatString("\nLanguages: ", Arrays.toString(race.languages.toArray())));
-        //Simple output of array, could be nicer
-        s.append(formatString("\nRacial Extras: ", Arrays.toString(race.extras.toArray())));
+        s.append(formatString("\nSTR: ",strength));
+        s.append(formatString("   DEX: ",dexterity));
+        s.append(formatString("\nCON: ",constitution));
+        s.append(formatString("   INT: ",intelligence));
+        s.append(formatString("\nWIS: ",wisdom));
+        s.append(formatString("   CHA: ",charisma));
+        s.append(formatString("\nLanguages: ", languages));
+        s.append(formatString("\nRacial Extras: ", racials));
         s.append(formatString("\nPlot Hook: ",hook));
 
         return s;
     }
+    */
 
+
+    public String getRace() {return raceName;}
+    public String getSex() {return sex;}
+    public String getAge() {return age;}
+    public String getSpeed() {return speed;}
+    public String getFlySpeed() {
+        if (flySpeed != null && flySpeed.length()>0) {return flySpeed;}
+        else {return "0";}
+    }
+    public String getLanguages() {return languages;}
+    public String getRacial() {return racials;}
+
+    public String getStrength() {return strength;}
+    public String getDexterity() {return dexterity;}
+    public String getConstitution() {return constitution;}
+    public String getIntelligence() {return intelligence;}
+    public String getWisdom() {return wisdom;}
+    public String getCharisma() {return charisma;}
+
+
+    public String getName() {return name;}
+    public String getDetail() {return detail;}
+    public String getProfession() {return profession;}
+    public String getMotivation() {return motivation;}
+    public String getPersonality() {return personality;}
+    public String getQuirk() {return quirk;}
+    public String getWorshipHabit() {return worshipHabit;}
+    public String getLifeEvent() {return lifeEvent;}
+    public String getAppearance() {return appearance;}
+    public String getBond() {return bond;}
+    public String getFlaw() {return flaw;}
+    public String getIdeal() {return ideal;}
+    public String getVoice() {return voice;}
+    public String getTrait() {return trait;}
+    public String getRelationship() {return relationship;}
+    public String getHook() {return hook;}
+
+    public String getSummary() { return summary; }
+    public void setSummary(String summary) { this.summary=summary; }
+
+
+    public void setAttribute(String a, String v) {
+        switch(a) {
+            case "Name":
+                name = v;
+                break;
+            case "Race":
+                raceName = v;
+                break;
+            case "Sex":
+                sex = v;
+                break;
+            case "Age":
+                age = v;
+                break;
+            case "Appearance":
+                appearance = v;
+                break;
+            case "Voice":
+                voice = v;
+                break;
+            case "Personality":
+                personality = v;
+                break;
+            case "Trait":
+                trait = v;
+                break;
+            case "Bond":
+                bond = v;
+                break;
+            case "Motivation":
+                motivation = v;
+                break;
+            case "Ideal":
+                ideal = v;
+                break;
+            case "Flaw":
+                flaw = v;
+                break;
+            case "Quirk":
+                quirk = v;
+                break;
+            case "Detail":
+                detail = v;
+                break;
+            case "Profession":
+                profession = v;
+                break;
+            case "Religion":
+                worshipHabit = v;
+                break;
+            case "Relationship":
+                relationship = v;
+                break;
+            case "Life Event":
+                lifeEvent = v;
+                break;
+            case "Speed":
+                speed = v;
+                break;
+            case "Fly Speed":
+                flySpeed = v;
+                break;
+            case "Strength":
+                strength = v;
+                break;
+            case "Dexterity":
+                dexterity = v;
+                break;
+            case "Constitution":
+                constitution = v;
+                break;
+            case "Intelligence":
+                intelligence = v;
+                break;
+            case "Wisdom":
+                wisdom = v;
+                break;
+            case "Charisma":
+                charisma = v;
+                break;
+            case "Languages":
+                languages = v;
+                break;
+            case "Racial Extras":
+                racials = v;
+                break;
+            case "Plot Hook":
+                hook = v;
+                break;
+            case "Summary":
+                summary = v;
+                break;
+            default:
+        }
+    }
 }

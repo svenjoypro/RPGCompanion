@@ -17,10 +17,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/saved_npc_body_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <com.mpvreeken.rpgcompanion.NPC.NPCLayout
+            android:id="@+id/saved_npc_npclayout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" >
+        </com.mpvreeken.rpgcompanion.NPC.NPCLayout>
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -4,11 +4,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -44,9 +42,15 @@ public class NPCsActivity extends AppCompatActivity {
 
         npcListView = findViewById(R.id.npcs_listview);
         dbHelper = new DBHelper(this.getBaseContext());
-        populateNPCList();
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateNPCList();
+    }
+
     private void populateNPCList() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -84,26 +88,6 @@ public class NPCsActivity extends AppCompatActivity {
         db.delete(DBHelper.NPCS_TABLE_NAME, selection, selectionArgs);
 
         populateNPCList();
-    }
-
-
-    public void updateNPC(String id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // New value for one column
-        ContentValues values = new ContentValues();
-        String summary = "Updated Summary";
-        values.put(DBHelper.NPCS_COL_SUMMARY, summary);
-
-        // Which row to update, based on the id
-        String selection = "_id = ?";
-        String[] selectionArgs = { id };
-
-        int count = db.update(
-                DBHelper.NPCS_TABLE_NAME,
-                values,
-                selection,
-                selectionArgs);
     }
 
     @Override
