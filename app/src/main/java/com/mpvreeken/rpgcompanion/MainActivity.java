@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
                 else {
-                    Log.d("$$$$$$$$$", "Done");
                     JSONObject r = null;
                     String o = "";
                     try {
