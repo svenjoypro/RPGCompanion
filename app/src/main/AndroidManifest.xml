@@ -28,7 +28,8 @@
         <activity android:name=".RandomNPCActivity" />
         <activity android:name=".SavedNPCActivity" />
         <activity android:name=".MiscActivity" />
-        <activity android:name=".Riddles.RiddlesActivity"></activity>
+        <activity android:name=".Riddles.RiddlesActivity" />
+        <activity android:name=".Riddles.DisplayRiddleActivity" />
     </application>
 
 </manifest>
