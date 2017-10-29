@@ -195,7 +195,7 @@ public class DisplayHookActivity extends AppCompatActivity {
                 //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
 
                 //intent.putExtras(bundle);
-                intent.putExtra("hook_id", hooksArray.get(position).getId());
+                intent.putExtra("hook_id", riddlesArray.get(position).getId());
                 startActivity(intent);
             }
         });

@@ -14,8 +14,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.mpvreeken.rpgcompanion.Classes.Hook;
-import com.mpvreeken.rpgcompanion.Classes.HookArrayAdapter;
+import com.mpvreeken.rpgcompanion.Classes.Riddle;
+import com.mpvreeken.rpgcompanion.Classes.RiddleArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,11 +30,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class HooksActivity extends AppCompatActivity {
+public class RiddlesActivity extends AppCompatActivity {
 
-    ArrayList<Hook> hooksArray = new ArrayList<>();
-    HookArrayAdapter hookArrayAdapter;
-    ListView hooks_lv;
+    ArrayList<Riddle> riddlesArray = new ArrayList<>();
+    RiddleArrayAdapter riddleArrayAdapter;
+    ListView riddles_lv;
     Context context;
 
     ConstraintLayout loading_screen;
@@ -43,7 +43,7 @@ public class HooksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hooks);
+        setContentView(R.layout.activity_riddles);
 
         //Set up back button to appear in action bar
         ActionBar actionBar = getSupportActionBar();
@@ -52,31 +52,31 @@ public class HooksActivity extends AppCompatActivity {
 
         context = this.getBaseContext();
 
-        loading_screen = findViewById(R.id.hooks_loading_screen);
-        loading_progressBar = findViewById(R.id.hooks_loading_screen_progressBar);
+        loading_screen = findViewById(R.id.riddles_loading_screen);
+        loading_progressBar = findViewById(R.id.riddles_loading_screen_progressBar);
 
-        Button new_btn = findViewById(R.id.hooks_new_btn);
+        Button new_btn = findViewById(R.id.riddles_new_btn);
 
         new_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, NewPostActivity.class);
-                intent.putExtra("type", "hook");
+                intent.putExtra("type", "riddle");
                 startActivity(intent);
             }
         });
 
-        //Fetch hooks from db
-        this.hooksArray = new ArrayList<>();
-        this.hookArrayAdapter = new HookArrayAdapter(this, hooksArray);
-        this.hooks_lv = findViewById(R.id.hooks_lv);
+        //Fetch riddles from db
+        this.riddlesArray = new ArrayList<>();
+        this.riddleArrayAdapter = new RiddleArrayAdapter(this, riddlesArray);
+        this.riddles_lv = findViewById(R.id.riddles_lv);
 
-        String hooks_url = getResources().getString(R.string.url_get_hooks);
+        String riddles_url = getResources().getString(R.string.url_get_riddles);
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(hooks_url)
+                .url(riddles_url)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -96,22 +96,22 @@ public class HooksActivity extends AppCompatActivity {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
                         for (int i=0; i<r.length(); i++) {
-                            hooksArray.add(
-                                new Hook(
-                                    r.getJSONObject(i).getString("id"),
-                                    r.getJSONObject(i).getString("title"),
-                                    r.getJSONObject(i).getString("user_id"),
-                                    r.getJSONObject(i).getString("description"),
-                                    r.getJSONObject(i).getInt("upvotes"),
-                                    r.getJSONObject(i).getInt("downvotes"),
-                                    r.getJSONObject(i).getInt("voted"),
-                                    r.getJSONObject(i).getString("created_at")
-                                )
+                            riddlesArray.add(
+                                    new Riddle(
+                                            r.getJSONObject(i).getString("id"),
+                                            r.getJSONObject(i).getString("user_id"),
+                                            r.getJSONObject(i).getString("riddle"),
+                                            r.getJSONObject(i).getString("answer"),
+                                            r.getJSONObject(i).getInt("upvotes"),
+                                            r.getJSONObject(i).getInt("downvotes"),
+                                            r.getJSONObject(i).getInt("voted"),
+                                            r.getJSONObject(i).getString("created_at")
+                                    )
                             );
                         }
 
                         //We can't update the UI on a background thread, so run on the UI thread
-                        HooksActivity.this.runOnUiThread(new Runnable() {
+                        RiddlesActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 setupUI();
@@ -130,40 +130,39 @@ public class HooksActivity extends AppCompatActivity {
     public void setupUI() {
 
         hideLoadingScreen();
-        hooks_lv.setAdapter(hookArrayAdapter);
+        riddles_lv.setAdapter(riddleArrayAdapter);
         Button btn = new Button(this);
         btn.setText("Load More");
 
-        hooks_lv.addFooterView(btn);
+        riddles_lv.addFooterView(btn);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadMoreHooks();
+                loadMoreRiddles();
             }
         });
 
-        hooks_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        riddles_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
+                Intent intent = new Intent(parent.getContext(), DisplayRiddleActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("HOOK_OBJ", (Serializable) hooksArray.get(position));
+                bundle.putSerializable("RIDDLE_OBJ", (Serializable) riddlesArray.get(position));
                 intent.putExtras(bundle);
-                //intent.putExtra("hook_id", hooksArray.get(position).getId());
                 startActivity(intent);
             }
         });
     }
 
-    public void loadMoreHooks() {
-        String hooks_url = getResources().getString(R.string.url_get_hooks);
+    public void loadMoreRiddles() {
+        String riddles_url = getResources().getString(R.string.url_get_riddles);
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(hooks_url)
+                .url(riddles_url)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -183,12 +182,12 @@ public class HooksActivity extends AppCompatActivity {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
                         for (int i=0; i<r.length(); i++) {
-                            hooksArray.add(
-                                    new Hook(
+                            riddlesArray.add(
+                                    new Riddle(
                                             r.getJSONObject(i).getString("id"),
-                                            r.getJSONObject(i).getString("title"),
                                             r.getJSONObject(i).getString("user_id"),
-                                            r.getJSONObject(i).getString("description"),
+                                            r.getJSONObject(i).getString("riddle"),
+                                            r.getJSONObject(i).getString("answer"),
                                             r.getJSONObject(i).getInt("upvotes"),
                                             r.getJSONObject(i).getInt("downvotes"),
                                             r.getJSONObject(i).getInt("voted"),
@@ -197,20 +196,20 @@ public class HooksActivity extends AppCompatActivity {
                             );
                         }
 
-                        HooksActivity.this.runOnUiThread(new Runnable() {
+                        RiddlesActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 //Get scroll position of listview, so we can retain their position after loading more
-                                int firstVisibleItem = hooks_lv.getFirstVisiblePosition();
-                                int oldCount = hookArrayAdapter.getCount();
-                                View view = hooks_lv.getChildAt(0);
+                                int firstVisibleItem = riddles_lv.getFirstVisiblePosition();
+                                int oldCount = riddleArrayAdapter.getCount();
+                                View view = riddles_lv.getChildAt(0);
                                 int pos = (view == null ? 0 :  view.getBottom());
 
                                 //Set the new data
-                                hooks_lv.setAdapter(hookArrayAdapter);
+                                riddles_lv.setAdapter(riddleArrayAdapter);
 
                                 //Set the listview position back to where they were
-                                hooks_lv.setSelectionFromTop(firstVisibleItem + hookArrayAdapter.getCount() - oldCount + 1, pos);
+                                riddles_lv.setSelectionFromTop(firstVisibleItem + riddleArrayAdapter.getCount() - oldCount + 1, pos);
                             }
                         });
 
@@ -232,7 +231,7 @@ public class HooksActivity extends AppCompatActivity {
     }
 
     private void displayError(final String s) {
-        HooksActivity.this.runOnUiThread(new Runnable() {
+        RiddlesActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(context, s, Toast.LENGTH_LONG).show();
