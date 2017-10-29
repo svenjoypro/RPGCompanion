@@ -35,12 +35,12 @@ public class NPC {
         flySpeed = race.flySpeed;
         languages = race.languages.toString().substring(1, race.languages.toString().length()-1);
         racials = race.extras.toString().substring(1, race.extras.toString().length()-1);
-        strength = String.valueOf(race.asi[0]);
-        dexterity = String.valueOf(race.asi[1]);
-        constitution = String.valueOf(race.asi[2]);
-        intelligence = String.valueOf(race.asi[3]);
-        wisdom = String.valueOf(race.asi[4]);
-        charisma = String.valueOf(race.asi[5]);
+        strength = String.valueOf(race.asi[0]) + " (" + (Integer.valueOf(race.asi[0]/2)-5) + ")";
+        dexterity = String.valueOf(race.asi[1]) + " (" + (Integer.valueOf(race.asi[1]/2)-5) + ")";
+        constitution = String.valueOf(race.asi[2]) + " (" + (Integer.valueOf(race.asi[2]/2)-5) + ")";
+        intelligence = String.valueOf(race.asi[3]) + " (" + (Integer.valueOf(race.asi[3]/2)-5) + ")";
+        wisdom = String.valueOf(race.asi[4]) + " (" + (Integer.valueOf(race.asi[4]/2)-5) + ")";
+        charisma = String.valueOf(race.asi[5]) + " (" + (Integer.valueOf(race.asi[5]/2)-5) + ")";
 
 
         //Randomize NPC details
