@@ -18,11 +18,17 @@
     <!-- URLS -->
     <string name="url_get_hooks">&baseurl;hooks</string>
     <string name="url_get_hook">&baseurl;hooks/</string>
-    <string name="url_get_hook_votes">&baseurl;hook/</string>
+
+    <string name="url_get_riddles">&baseurl;riddles</string>
+    <string name="url_get_riddle">&baseurl;riddles/</string>
+
+
     <string name="url_downvote">&baseurl;downvote</string>
     <string name="url_upvote">&baseurl;upvote</string>
+
     <string name="url_submit_comment">&baseurl;comments/post</string>
     <string name="url_submit_post">&baseurl;posts/post</string>
+
     <string name="url_get_webalert">&baseurl;webalert</string>
 
     <string name="npc_activity_title">Generated NPC</string>

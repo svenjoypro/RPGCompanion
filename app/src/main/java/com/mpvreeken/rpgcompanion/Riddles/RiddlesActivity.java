@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.Riddles;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.mpvreeken.rpgcompanion.Classes.Riddle;
-import com.mpvreeken.rpgcompanion.Classes.RiddleArrayAdapter;
+import com.mpvreeken.rpgcompanion.NewPostActivity;
+import com.mpvreeken.rpgcompanion.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

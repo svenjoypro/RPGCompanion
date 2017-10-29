@@ -113,7 +113,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:alpha=".4"
                 android:background="@null"
                 android:scaleType="centerInside"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"

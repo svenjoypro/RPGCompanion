@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion.Hooks;
+package com.mpvreeken.rpgcompanion.Riddles;
 
 import java.io.Serializable;
 
@@ -6,31 +6,30 @@ import java.io.Serializable;
  * Created by Sven on 7/4/2017.
  */
 
-public class Hook implements Serializable {
+public class Riddle implements Serializable {
 
     private String id;
-    private String title;
+    private String riddle, answer;
     private String user;
-    private String description;
     private Integer upvotes, downvotes, voted;
     private String date;
 
-    public Hook(String title, String description) {
+    public Riddle(String riddle, String answer) {
         this.id="-1";
-        this.title=title;
+        this.riddle=riddle;
         this.user="";
-        this.description=description;
+        this.answer=answer;
         this.upvotes=0;
         this.downvotes=0;
         this.date="";
     }
 
-    public Hook(String id, String title, String user, String description, Integer upvotes, Integer downvotes, Integer voted, String timestamp) {
+    public Riddle(String id, String user, String riddle, String answer, Integer upvotes, Integer downvotes, Integer voted, String timestamp) {
 
         this.id=id;
-        this.title=title;
+        this.riddle=riddle;
         this.user=user;
-        this.description=description;
+        this.answer=answer;
         this.upvotes=upvotes;
         this.downvotes=downvotes;
         this.voted=voted; // -1=didn't vote, 0=downvoted, 1=upvoted
@@ -40,16 +39,16 @@ public class Hook implements Serializable {
 
     public String getId() { return id; }
 
-    public String getTitle() {
-        return title;
+    public String getRiddle() {
+        return riddle;
     }
 
     public String getUser() {
         return user;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAnswer() {
+        return answer;
     }
 
     public Integer getUpvotes() { return upvotes; }

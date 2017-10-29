@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion.Hooks;
+package com.mpvreeken.rpgcompanion.Riddles;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,12 +33,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class DisplayHookActivity extends AppCompatActivity {
+public class DisplayRiddleActivity extends AppCompatActivity {
 
-    ArrayList<HookComment> commentsArray = new ArrayList<>();
-    HookCommentsArrayAdapter commentArrayAdapter;
+    ArrayList<RiddleComment> commentsArray = new ArrayList<>();
+    RiddleCommentsArrayAdapter commentArrayAdapter;
     LinearLayout comments_layout;
-    Hook hook;
+    Riddle riddle;
     Context context;
     ConstraintLayout loading_screen;
     ProgressBar loading_progressBar;
@@ -46,7 +46,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_hook);
+        setContentView(R.layout.activity_display_riddle);
 
         //Set up back button to appear in action bar
         ActionBar actionBar = getSupportActionBar();
@@ -56,25 +56,25 @@ public class DisplayHookActivity extends AppCompatActivity {
         context = this.getBaseContext();
 
         Intent intent = getIntent();
-        final Bundle hookBundle = intent.getExtras();
-        hook = (Hook) hookBundle.getSerializable("HOOK_OBJ");
+        final Bundle riddleBundle = intent.getExtras();
+        riddle = (Riddle) riddleBundle.getSerializable("RIDDLE_OBJ");
 
-        loading_screen = findViewById(R.id.hook_loading_screen);
-        loading_progressBar = findViewById(R.id.hook_loading_progressBar);
+        loading_screen = findViewById(R.id.riddle_loading_screen);
+        loading_progressBar = findViewById(R.id.riddle_loading_progressBar);
 
-        Button upvote_btn = (Button) findViewById(R.id.hook_details_vote_up_btn);
-        Button downvote_btn = (Button) findViewById(R.id.hook_details_vote_down_btn);
-        Button comment_btn = (Button) findViewById(R.id.hook_details_comment_btn);
+        Button upvote_btn = findViewById(R.id.riddle_details_vote_up_btn);
+        Button downvote_btn = findViewById(R.id.riddle_details_vote_down_btn);
+        Button comment_btn = findViewById(R.id.riddle_details_comment_btn);
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
                 switch(v.getId()) {
-                    case R.id.hook_details_vote_up_btn:
+                    case R.id.riddle_details_vote_up_btn:
                         upvote();
                         break;
-                    case R.id.hook_details_vote_down_btn:
+                    case R.id.riddle_details_vote_down_btn:
                         downvote();
                         break;
-                    case R.id.hook_details_comment_btn:
+                    case R.id.riddle_details_comment_btn:
                         displayCommentInput();
                         break;
                     default:
@@ -89,19 +89,19 @@ public class DisplayHookActivity extends AppCompatActivity {
 
 
 
-        //Fetch hooks from db
+        //Fetch riddles from db
         this.commentsArray = new ArrayList<>();
-        this.commentArrayAdapter = new HookCommentsArrayAdapter(this, commentsArray);
-        //this.comments_lv = findViewById(R.id.hook_comments_lv);
+        this.commentArrayAdapter = new RiddleCommentsArrayAdapter(this, commentsArray);
+        //this.comments_lv = findViewById(R.id.riddle_comments_lv);
 
         showLoadingScreen();
 
-        this.comments_layout = findViewById(R.id.hook_comments_linear_layout);
+        this.comments_layout = findViewById(R.id.riddle_comments_linear_layout);
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(getResources().getString(R.string.url_get_hook)+hook.getId())
+                .url(getResources().getString(R.string.url_get_riddle)+riddle.getId())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -121,8 +121,8 @@ public class DisplayHookActivity extends AppCompatActivity {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
                         /*
-                        JSONObject h = all.getJSONObject("hook");
-                        hook = new Hook(h.getString("id"),
+                        JSONObject h = all.getJSONObject("riddle");
+                        riddle = new Riddle(h.getString("id"),
                                 h.getString("title"),
                                 h.getString("username"),
                                 h.getString("description"),
@@ -133,8 +133,8 @@ public class DisplayHookActivity extends AppCompatActivity {
                         JSONArray cs = all.getJSONArray("comments");
                         for (int i=0; i<cs.length(); i++) {
                             commentsArray.add(
-                                new HookComment(cs.getJSONObject(i).getString("id"),
-                                    cs.getJSONObject(i).getString("hook_id"),
+                                new RiddleComment(cs.getJSONObject(i).getString("id"),
+                                    cs.getJSONObject(i).getString("riddle_id"),
                                     cs.getJSONObject(i).getString("username"),
                                     cs.getJSONObject(i).getString("comment"),
                                     cs.getJSONObject(i).getString("votes"),
@@ -145,7 +145,7 @@ public class DisplayHookActivity extends AppCompatActivity {
 
 
                         //We can't update the UI on a background thread, so run on the UI thread
-                        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+                        DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 setupUI();
@@ -154,7 +154,7 @@ public class DisplayHookActivity extends AppCompatActivity {
                     }
                     catch (JSONException e) {
                         displayError("An unknown error occurred. Please try again");
-                        Log.e("DisplayHookActivity", e.getMessage());
+                        Log.e("DisplayRiddleActivity", e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -163,12 +163,12 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     public void setupUI() {
-        TextView votes_tv = findViewById(R.id.hook_details_votes_tv);
-        votes_tv.setText(String.valueOf(hook.getCalculatedVotes()));
-        TextView title_tv = findViewById(R.id.hook_details_title_tv);
-        title_tv.setText(String.valueOf(hook.getTitle()));
-        TextView description_tv = findViewById(R.id.hook_details_description_tv);
-        description_tv.setText(String.valueOf(hook.getDescription()));
+        TextView votes_tv = findViewById(R.id.riddle_details_votes_tv);
+        votes_tv.setText(String.valueOf(riddle.getCalculatedVotes()));
+        TextView riddle_tv = findViewById(R.id.riddle_details_riddle_tv);
+        riddle_tv.setText(String.valueOf(riddle.getRiddle()));
+        TextView answer_tv = findViewById(R.id.riddle_details_answer_tv);
+        answer_tv.setText(String.valueOf(riddle.getAnswer()));
 
         //comments_lv.setAdapter(commentArrayAdapter);
 
@@ -187,13 +187,13 @@ public class DisplayHookActivity extends AppCompatActivity {
         comments_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
+                Intent intent = new Intent(parent.getContext(), DisplayRiddleActivity.class);
 
                 Bundle bundle = new Bundle();
                 //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
 
                 //intent.putExtras(bundle);
-                intent.putExtra("hook_id", riddlesArray.get(position).getId());
+                intent.putExtra("riddle_id", riddlesArray.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -210,7 +210,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void downvote() {
-        String url = getResources().getString(R.string.url_downvote)+hook.getId();
+        String url = getResources().getString(R.string.url_downvote)+riddle.getId();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
@@ -233,17 +233,17 @@ public class DisplayHookActivity extends AppCompatActivity {
 
                         if (all.has("error")) {
                             //error
-                            Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                            Log.e("DisplayRiddleActivity", "Error: "+ all.getString("error"));
                             displayError("Error: "+all.getString("error"));
                         }
                         else if (all.has("msg")) {
                             //success
-                            Log.e("DisplayHookActivity", "Success");
+                            Log.e("DisplayRiddleActivity", "Success");
                             downvoteUI();
                         }
                         else {
                             //unknown error
-                            Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                            Log.e("DisplayRiddleActivity", "Unknown Error: "+ all.toString());
                             displayError("An unknown error occurred. Please try again");
                         }
                     }
@@ -257,7 +257,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void downvoteUI() {
-        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+        DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
@@ -266,7 +266,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void upvote() {
-        String url = getResources().getString(R.string.url_upvote)+hook.getId();
+        String url = getResources().getString(R.string.url_upvote)+riddle.getId();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
 
@@ -289,18 +289,18 @@ public class DisplayHookActivity extends AppCompatActivity {
 
                         if (all.has("error")) {
                             //error
-                            Log.e("DisplayHookActivity", "Error: "+ all.getString("error"));
+                            Log.e("DisplayRiddleActivity", "Error: "+ all.getString("error"));
                             displayError("Error: "+all.getString("error"));
                         }
                         else if (all.has("msg")) {
                             //success
-                            Log.e("DisplayHookActivity", "Success");
+                            Log.e("DisplayRiddleActivity", "Success");
                             //We can't update the UI on a background thread, so run on the UI thread
                             upvoteUI();
                         }
                         else {
                             //unknown error
-                            Log.e("DisplayHookActivity", "Unknown Error: "+ all.toString());
+                            Log.e("DisplayRiddleActivity", "Unknown Error: "+ all.toString());
                             displayError("An unknown error occurred. Please try again");
                         }
 
@@ -316,7 +316,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void upvoteUI() {
-        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+        DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
@@ -325,7 +325,7 @@ public class DisplayHookActivity extends AppCompatActivity {
     }
 
     private void displayError(final String s) {
-        DisplayHookActivity.this.runOnUiThread(new Runnable() {
+        DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(context, s, Toast.LENGTH_LONG).show();
@@ -336,8 +336,8 @@ public class DisplayHookActivity extends AppCompatActivity {
     private void displayCommentInput() {
         Intent intent = new Intent(context, CommentActivity.class);
 
-        intent.putExtra("id", hook.getId());
-        intent.putExtra("commentType", "hook");
+        intent.putExtra("id", riddle.getId());
+        intent.putExtra("commentType", "riddle");
 
         startActivityForResult(intent, 1);
     }

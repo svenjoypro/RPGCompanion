@@ -17,10 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HooksActivity" />
+        <activity android:name=".Hooks.HooksActivity" />
         <activity android:name=".EncountersActivity" />
         <activity android:name=".PuzzlesActivity" />
-        <activity android:name=".DisplayHookActivity" />
+        <activity android:name=".Hooks.DisplayHookActivity" />
         <activity android:name=".NPCsActivity" />
         <activity android:name=".CommentActivity" />
         <activity android:name=".AdventuresActivity" />
@@ -28,7 +28,7 @@
         <activity android:name=".RandomNPCActivity" />
         <activity android:name=".SavedNPCActivity" />
         <activity android:name=".MiscActivity" />
-        <activity android:name=".RiddlesActivity"></activity>
+        <activity android:name=".Riddles.RiddlesActivity"></activity>
     </application>
 
 </manifest>

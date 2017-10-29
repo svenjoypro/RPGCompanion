@@ -3,9 +3,13 @@ package com.mpvreeken.rpgcompanion;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.mpvreeken.rpgcompanion.Hooks.HooksActivity;
+import com.mpvreeken.rpgcompanion.Riddles.RiddlesActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         //encounters_btn.setOnClickListener(buttonHandler);
         //puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
-        //riddles_btn.setOnClickListener(buttonHandler);
+        riddles_btn.setOnClickListener(buttonHandler);
         adventures_btn.setOnClickListener(buttonHandler);
         misc_btn.setOnClickListener(buttonHandler);
 
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
                 else {
+                    Log.d("$$$$$$$$$", "Done");
                     JSONObject r = null;
                     String o = "";
                     try {

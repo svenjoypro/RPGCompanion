@@ -13,4 +13,7 @@
     <color name="hook_list_item_gradient_start">#444444</color>
     <color name="hook_list_item_gradient_end">#282828</color>
     <color name="hook_list_item_text_color">#111111</color>
+
+
+    <color name="riddle_list_item_text_color">#111111</color>
 </resources>
