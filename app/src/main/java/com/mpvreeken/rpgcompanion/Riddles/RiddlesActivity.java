@@ -19,10 +19,13 @@ import com.mpvreeken.rpgcompanion.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,13 +35,18 @@ import okhttp3.Response;
 
 public class RiddlesActivity extends AppCompatActivity {
 
-    ArrayList<Riddle> riddlesArray = new ArrayList<>();
-    RiddleArrayAdapter riddleArrayAdapter;
-    ListView riddles_lv;
-    Context context;
+    private ArrayList<Riddle> riddlesArray = new ArrayList<>();
+    private RiddleArrayAdapter riddleArrayAdapter;
+    private ListView riddles_lv;
+    private Context context;
 
-    ConstraintLayout loading_screen;
-    ProgressBar loading_progressBar;
+    private int total;
+    private List<Integer> past_ids, get_ids;
+
+    private ConstraintLayout loading_screen;
+    private ProgressBar loading_progressBar;
+
+    private int GET_QUANTITY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,11 @@ public class RiddlesActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         context = this.getBaseContext();
+
+        past_ids = new ArrayList<>();
+
+        //# of riddles to get from db
+        GET_QUANTITY = Integer.valueOf(getResources().getString(R.string.url_get_riddles_quantity));
 
         loading_screen = findViewById(R.id.riddles_loading_screen);
         loading_progressBar = findViewById(R.id.riddles_loading_screen_progressBar);
@@ -71,7 +84,7 @@ public class RiddlesActivity extends AppCompatActivity {
         this.riddleArrayAdapter = new RiddleArrayAdapter(this, riddlesArray);
         this.riddles_lv = findViewById(R.id.riddles_lv);
 
-        String riddles_url = getResources().getString(R.string.url_get_riddles);
+        String riddles_url = getResources().getString(R.string.url_get_riddles_first);
 
         OkHttpClient client = new OkHttpClient();
 
@@ -94,7 +107,9 @@ public class RiddlesActivity extends AppCompatActivity {
                 }
                 else {
                     try {
-                        JSONArray r = new JSONArray(response.body().string());
+                        JSONObject o = new JSONObject(response.body().string());
+                        total = o.getInt("total");
+                        JSONArray r = o.getJSONArray("riddles");
                         for (int i=0; i<r.length(); i++) {
                             riddlesArray.add(
                                     new Riddle(
@@ -157,7 +172,59 @@ public class RiddlesActivity extends AppCompatActivity {
     }
 
     public void loadMoreRiddles() {
-        String riddles_url = getResources().getString(R.string.url_get_riddles);
+        //TODO eventually cache these on the user's device by id?
+        //TODO If they aren't going to change id, then caching might be a wise choice
+
+        //TODO the issue with this method is that if a riddle is deleted, then an id no longer exists
+        //TODO So if the user requests a riddle with a deleted id, what happens?
+
+        if (past_ids.size() > total-GET_QUANTITY) {
+            //No more possible ids
+            Toast.makeText(context, "No more riddles to get", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        List<Integer> get_ids = new ArrayList<>();
+        Random ran = new Random();
+
+        while (get_ids.size() < GET_QUANTITY) {
+            int x = ran.nextInt(total)+1;
+
+            if (!past_ids.contains(x) && !get_ids.contains(x)) {
+                get_ids.add(x);
+                past_ids.add(x);
+            }
+            else {
+                //already have that id, so lets either inc or dec to get a new one
+                int i=0;
+                if (x % 2 == 0) {
+                    do {
+                        x++;
+                        if (x>total) { x=1; }
+                        if (++i > 30) { break; } // max 30 iterations
+                    } while(past_ids.contains(x) || get_ids.contains(x));
+                }
+                else {
+                    do {
+                        x--;
+                        if (x<=0) { x=total; }
+                        if (++i > 30) { break; } // max 30 iterations
+                    } while(past_ids.contains(x) || get_ids.contains(x));
+                }
+                //make sure new value isn't in arrays before adding, otherwise skip it
+                if (!past_ids.contains(x) && !get_ids.contains(x)) {
+                    get_ids.add(x);
+                    past_ids.add(x);
+                }
+            }
+
+        }
+
+        String riddles_url = getResources().getString(R.string.url_get_riddles_ids);
+
+        for (int id : get_ids) {
+            riddles_url += "ids[]="+String.valueOf(id)+"&";
+        }
 
         OkHttpClient client = new OkHttpClient();
 
@@ -180,7 +247,8 @@ public class RiddlesActivity extends AppCompatActivity {
                 }
                 else {
                     try {
-                        JSONArray r = new JSONArray(response.body().string());
+                        JSONObject o = new JSONObject(response.body().string());
+                        JSONArray r = o.getJSONArray("riddles");
                         for (int i=0; i<r.length(); i++) {
                             riddlesArray.add(
                                     new Riddle(

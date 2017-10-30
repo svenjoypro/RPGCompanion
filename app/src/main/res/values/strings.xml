@@ -19,7 +19,9 @@
     <string name="url_get_hooks">&baseurl;hooks</string>
     <string name="url_get_hook">&baseurl;hooks/</string>
 
-    <string name="url_get_riddles">&baseurl;riddles</string>
+    <string name="url_get_riddles_quantity">5</string>
+    <string name="url_get_riddles_first">&baseurl;riddles?qty=5&amp;random=true</string>
+    <string name="url_get_riddles_ids">&baseurl;riddles?</string>
     <string name="url_get_riddle">&baseurl;riddles/</string>
 
 

@@ -102,21 +102,29 @@ public class MainActivity extends AppCompatActivity {
         Request request = new Request.Builder()
                 .url(hooks_url)
                 .build();
-
+        Log.d("$$$$$$", "Get Webalert");
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+            public void onFailure(Call call, IOException e) {
+                Log.d("$$$$$$", "Webalert not successful");
+                e.printStackTrace();
+            }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                if (!response.isSuccessful()) {
+                    Log.d("$$$$$$", "Webalert not successful");
+                    throw new IOException("Unexpected code " + response);
+                }
                 else {
+                    Log.d("$$$$$$", "Got Webalert");
                     JSONObject r = null;
                     String o = "";
                     try {
                         r = new JSONObject(response.body().string());
                         o = r.getString("msg");
                     } catch (JSONException e) {
+                        Log.d("WebAlert Catch", e.getMessage());
                         e.printStackTrace();
                     }
                     if (o.length()>0) {
