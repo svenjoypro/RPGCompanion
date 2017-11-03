@@ -26,7 +26,7 @@ import java.util.Random;
 public class MiscActivity extends AppCompatActivity {
 
     private JSONArray tavern_adjs, tavern_nouns, long_rests, road_encounters, romantic_love_interests, slums_encounters, strange_encounters, trail_encounters, backpack_contents_tools, backpack_contents_edibles, backpack_contents_personals, backpack_contents_strange, book_titles, necromancers_lair, curious_items, kitchen_items, magic_umbrellas, minor_magic_items, mundane_treasures, potion_colors, potion_scents, potion_appearances, potion_effects, ruined_building_contents, weapon_names, tavern_drinks, tavern_foods, deep_dark_woods, trinkets, magic_skulls, town_names, curses, flawed_utopias, lone_graves;
-    private JSONArray good_smells, witches, monster_deaths, blacksmith_wares, suspicious_village_encounters, nice_village_encounters, jungle_encounters, misc_items, antagonist_bios, necromantic_effects, unique_horses, rich_corpses, zombie_variations, unique_spellbooks, gossip, plants_trees;
+    private JSONArray good_smells, witches, monster_deaths, blacksmith_wares, suspicious_village_encounters, nice_village_encounters, jungle_encounters, misc_items, antagonist_bios, necromantic_effects, unique_horses, rich_corpses, zombie_variations, unique_spellbooks, gossip, plants_trees, rival_parties;
     private TextView output_tv;
 
     @Override
@@ -80,6 +80,7 @@ public class MiscActivity extends AppCompatActivity {
         Button ab_btn = findViewById(R.id.misc_antagonist_bios_btn);
         Button uh_btn = findViewById(R.id.misc_unique_horses_btn);
         Button zv_btn = findViewById(R.id.misc_zombie_variations_btn);
+        Button rp_btn = findViewById(R.id.misc_rival_parties_btn);
 
 
         Button c_btn = findViewById(R.id.misc_curses_btn);
@@ -284,6 +285,12 @@ public class MiscActivity extends AppCompatActivity {
                         }
                         showOutput(getRandomBasic(unique_horses));
                         break;
+                    case R.id.misc_rival_parties_btn:
+                        if (rival_parties == null) {
+                            rival_parties = loadJSON(R.raw.d100_rival_parties, "rival_parties");
+                        }
+                        showOutput(getRandomBasic(rival_parties));
+                        break;
                     case R.id.misc_rich_corpses_btn:
                         if (rich_corpses == null) {
                             rich_corpses = loadJSON(R.raw.d100_rich_corpses, "rich_corpses");
@@ -364,6 +371,7 @@ public class MiscActivity extends AppCompatActivity {
         md_btn.setOnClickListener(buttonHandler);
         ne_btn.setOnClickListener(buttonHandler);
         g_btn.setOnClickListener(buttonHandler);
+        rp_btn.setOnClickListener(buttonHandler);
 
     }
 

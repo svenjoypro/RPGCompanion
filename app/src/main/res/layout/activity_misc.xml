@@ -277,6 +277,12 @@
                 android:layout_height="wrap_content"
                 android:text="Zombie Variations" />
 
+            <Button
+                android:id="@+id/misc_rival_parties_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rival Parties" />
+
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
