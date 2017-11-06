@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/">
-]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/">]>
 
 <resources>
     <string name="app_name">RPG Companion</string>
@@ -16,6 +13,12 @@
     <string name="activity_link_button_string">www.adventurelookup.com</string>
 
     <!-- URLS -->
+
+    <string name="url_register">&baseurl;register</string>
+    <string name="url_confirm_email">&baseurl;confirm-email</string>
+
+    <string name="url_login">&baseurl;login</string>
+
     <string name="url_get_hooks">&baseurl;hooks</string>
     <string name="url_get_hook">&baseurl;hooks/</string>
 

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.NewPostActivity;
 import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class RiddlesActivity extends AppCompatActivity {
+public class RiddlesActivity extends RPGCActivity {
 
     private ArrayList<Riddle> riddlesArray = new ArrayList<>();
     private RiddleArrayAdapter riddleArrayAdapter;
@@ -52,11 +53,6 @@ public class RiddlesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_riddles);
-
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         context = this.getBaseContext();
 
@@ -305,17 +301,5 @@ public class RiddlesActivity extends AppCompatActivity {
                 Toast.makeText(context, s, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

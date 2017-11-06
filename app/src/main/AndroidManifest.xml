@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".RPGCApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,6 +31,25 @@
         <activity android:name=".MiscActivity" />
         <activity android:name=".Riddles.RiddlesActivity" />
         <activity android:name=".Riddles.DisplayRiddleActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".DeepLinkURLActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="107.150.7.141" />
+                <data android:pathPrefix="/rpg_companion/api/confirm-email" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ConfirmEmailActivity"></activity>
     </application>
 
 </manifest>
