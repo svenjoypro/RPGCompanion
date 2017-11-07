@@ -94,6 +94,8 @@ public class MainActivity extends RPGCActivity {
         misc_btn.setOnClickListener(buttonHandler);
 
         getWebAlert();
+
+        application.checkToken();
     }
 
     private void getWebAlert() {

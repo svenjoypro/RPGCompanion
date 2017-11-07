@@ -18,6 +18,7 @@
     <string name="url_confirm_email">&baseurl;confirm-email</string>
 
     <string name="url_login">&baseurl;login</string>
+    <string name="url_check_token">&baseurl;admin/check-token</string>
 
     <string name="url_get_hooks">&baseurl;hooks</string>
     <string name="url_get_hook">&baseurl;hooks/</string>

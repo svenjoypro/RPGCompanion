@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.Response;
 
 /**
  * Created by Sven on 11/1/2017.
@@ -88,6 +94,32 @@ public class RPGCActivity extends AppCompatActivity {
     }
 
 
+    public void onUnsuccessfulResponse(String s, Response response) {
+        //TODO implement on all http calls
+        try {
+            JSONObject r = new JSONObject(s);
+            //Error
+            String error = r.has("error") ? r.getString("error") : "unknown_error";
+            String readable_error;
+            switch (error) {
+                case "token_not_provided":
+                    readable_error = "You are not logged in. Please log in first.";
+                    //TODO Redirect to login
+                    break;
+                case "token_expired":
+                    readable_error = "Your session has expired. Please log in again.";
+                    //TODO redirect to login
+                    break;
+                default:
+                    readable_error = "An unknown error has occurred. Please try again.";
+                    break;
+            }
+        }
+        catch (JSONException e) {
+            Log.d("RPGCApplication", e.getMessage());
+        }
+        //throw new IOException("Unexpected code " + response);
+    }
 
 
 
