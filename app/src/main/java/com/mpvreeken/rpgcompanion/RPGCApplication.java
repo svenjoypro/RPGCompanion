@@ -120,7 +120,7 @@ public class RPGCApplication extends Application {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("RPGCApplication1", call.request().body().toString());
+                Log.d("RPGCApplication", call.request().body().toString());
             }
 
             @Override
