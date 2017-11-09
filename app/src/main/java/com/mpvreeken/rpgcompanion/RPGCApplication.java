@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.Classes.User;
 
@@ -127,7 +128,7 @@ public class RPGCApplication extends Application {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     //response code isn't 200
-                    onUnsuccessfulResponse(response.body().string(), response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                             /*
@@ -154,12 +155,13 @@ public class RPGCApplication extends Application {
         });
     }
 
-    public void onUnsuccessfulResponse(String s, Response response) {
+    public void onUnsuccessfulResponse(Response response) {
+        String readable_error = "An unknown error has occurred. Please try again.";
         try {
-            JSONObject r = new JSONObject(s);
+            JSONObject r = new JSONObject(response.body().string());
             //Error
             String error = r.has("error") ? r.getString("error") : "unknown_error";
-            String readable_error;
+
             switch (error) {
                 case "token_not_provided":
                     readable_error = "You are not logged in. Please log in first.";
@@ -173,12 +175,13 @@ public class RPGCApplication extends Application {
                     readable_error = "An unknown error has occurred. Please try again.";
                     break;
             }
-            Log.d("$$$$$$$$$$$$$$$$$$$$$$$", r.toString());
         }
         catch (JSONException e) {
             Log.d("RPGCApplication", e.getMessage());
+        } catch (IOException e) {
+            Log.d("RPGCApplication", e.getMessage());
         }
-        //throw new IOException("Unexpected code " + response);
+        Toast.makeText(this, readable_error, Toast.LENGTH_LONG).show();
     }
 }
 

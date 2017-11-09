@@ -16,6 +16,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import okhttp3.Response;
 
 /**
@@ -94,13 +96,13 @@ public class RPGCActivity extends AppCompatActivity {
     }
 
 
-    public void onUnsuccessfulResponse(String s, Response response) {
-        //TODO implement on all http calls
+    public void onUnsuccessfulResponse(Response response) {
+        String readable_error = "An unknown error has occurred. Please try again.";
         try {
-            JSONObject r = new JSONObject(s);
+            JSONObject r = new JSONObject(response.body().string());
             //Error
             String error = r.has("error") ? r.getString("error") : "unknown_error";
-            String readable_error;
+
             switch (error) {
                 case "token_not_provided":
                     readable_error = "You are not logged in. Please log in first.";
@@ -117,8 +119,20 @@ public class RPGCActivity extends AppCompatActivity {
         }
         catch (JSONException e) {
             Log.d("RPGCApplication", e.getMessage());
+        } catch (IOException e) {
+            Log.d("RPGCApplication", e.getMessage());
         }
-        //throw new IOException("Unexpected code " + response);
+        Toast.makeText(this, readable_error, Toast.LENGTH_LONG).show();
+    }
+
+    protected void onHttpCallbackFail(final String s) {
+        //http error, show error via Toast message
+        RPGCActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(RPGCActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
