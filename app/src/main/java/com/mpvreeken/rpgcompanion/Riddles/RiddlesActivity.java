@@ -34,13 +34,10 @@ public class RiddlesActivity extends RPGCActivity {
     private ArrayList<Riddle> riddlesArray = new ArrayList<>();
     private RiddleArrayAdapter riddleArrayAdapter;
     private ListView riddles_lv;
-    private Context context;
 
     private int total;
     private List<Integer> past_ids, get_ids;
 
-    private ConstraintLayout loading_screen;
-    private ProgressBar loading_progressBar;
 
     private int GET_QUANTITY;
 
@@ -55,16 +52,13 @@ public class RiddlesActivity extends RPGCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_riddles);
-
-        context = this.getBaseContext();
+        setupLoadingAnim();
 
         past_ids = new ArrayList<>();
 
         //# of riddles to get from db
         GET_QUANTITY = Integer.valueOf(getResources().getString(R.string.url_get_riddles_quantity));
 
-        loading_screen = findViewById(R.id.riddles_loading_screen);
-        loading_progressBar = findViewById(R.id.riddles_loading_screen_progressBar);
 
         Button new_btn = findViewById(R.id.riddles_new_btn);
 
@@ -81,6 +75,8 @@ public class RiddlesActivity extends RPGCActivity {
         this.riddleArrayAdapter = new RiddleArrayAdapter(this, riddlesArray);
         this.riddles_lv = findViewById(R.id.riddles_lv);
 
+        showLoadingAnim();
+
         String riddles_url = getResources().getString(R.string.url_get_riddles_first);
 
         OkHttpClient client = new OkHttpClient();
@@ -92,12 +88,14 @@ public class RiddlesActivity extends RPGCActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     displayError("An unknown error occurred. Please try again");
                     throw new IOException("Unexpected code " + response);
@@ -142,8 +140,6 @@ public class RiddlesActivity extends RPGCActivity {
     }
 
     public void setupUI() {
-
-        hideLoadingScreen();
         riddles_lv.setAdapter(riddleArrayAdapter);
         Button btn = new Button(this);
         btn.setText("Load More");
@@ -221,6 +217,8 @@ public class RiddlesActivity extends RPGCActivity {
 
         String riddles_url = getResources().getString(R.string.url_get_riddles_ids);
 
+        showLoadingAnim();
+
         for (int id : get_ids) {
             riddles_url += "ids[]="+String.valueOf(id)+"&";
         }
@@ -234,12 +232,14 @@ public class RiddlesActivity extends RPGCActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     displayError("An unknown error occurred. Please try again");
                     throw new IOException("Unexpected code " + response);
@@ -290,13 +290,6 @@ public class RiddlesActivity extends RPGCActivity {
                 }
             }
         });
-    }
-
-    private void showLoadingScreen() {
-        loading_screen.setVisibility(View.VISIBLE);
-    }
-    private void hideLoadingScreen() {
-        loading_screen.setVisibility(View.GONE);
     }
 
     private void displayError(final String s) {

@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.mpvreeken.rpgcompanion.Hooks.HooksActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/hooks_loading_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg">
-
-        <ProgressBar
-            android:id="@+id/hooks_loading_screen_progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/hooks_sort_btn"
@@ -46,7 +30,7 @@
         android:text="New Hook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hooks_sort_btn"
-        app:layout_constraintTop_toTopOf="@+id/hooks_loading_screen" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/hooks_lv"

@@ -33,25 +33,13 @@ public class HooksActivity extends RPGCActivity {
     ArrayList<Hook> hooksArray = new ArrayList<>();
     HookArrayAdapter hookArrayAdapter;
     ListView hooks_lv;
-    Context context;
-
-    ConstraintLayout loading_screen;
-    ProgressBar loading_progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hooks);
+        setupLoadingAnim();
 
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        context = this.getBaseContext();
-
-        loading_screen = findViewById(R.id.hooks_loading_screen);
-        loading_progressBar = findViewById(R.id.hooks_loading_screen_progressBar);
 
         Button new_btn = findViewById(R.id.hooks_new_btn);
 
@@ -68,6 +56,8 @@ public class HooksActivity extends RPGCActivity {
         this.hookArrayAdapter = new HookArrayAdapter(this, hooksArray);
         this.hooks_lv = findViewById(R.id.hooks_lv);
 
+        showLoadingAnim();
+
         String hooks_url = getResources().getString(R.string.url_get_hooks);
 
         OkHttpClient client = new OkHttpClient();
@@ -80,11 +70,13 @@ public class HooksActivity extends RPGCActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 displayError("Could not connect to server. Please try again");
+                hideLoadingAnim();
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     onUnsuccessfulResponse(response);
                 }
@@ -127,7 +119,6 @@ public class HooksActivity extends RPGCActivity {
 
     public void setupUI() {
 
-        hideLoadingScreen();
         hooks_lv.setAdapter(hookArrayAdapter);
         Button btn = new Button(this);
         btn.setText("Load More");
@@ -156,6 +147,8 @@ public class HooksActivity extends RPGCActivity {
     }
 
     public void loadMoreHooks() {
+        showLoadingAnim();
+
         String hooks_url = getResources().getString(R.string.url_get_hooks);
 
         OkHttpClient client = new OkHttpClient();
@@ -167,12 +160,14 @@ public class HooksActivity extends RPGCActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     displayError("An unknown error occurred. Please try again");
                     throw new IOException("Unexpected code " + response);
@@ -224,13 +219,6 @@ public class HooksActivity extends RPGCActivity {
         });
     }
 
-    private void showLoadingScreen() {
-        loading_screen.setVisibility(View.VISIBLE);
-    }
-    private void hideLoadingScreen() {
-        loading_screen.setVisibility(View.GONE);
-    }
-
     private void displayError(final String s) {
         HooksActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -238,17 +226,5 @@ public class HooksActivity extends RPGCActivity {
                 Toast.makeText(context, s, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }
