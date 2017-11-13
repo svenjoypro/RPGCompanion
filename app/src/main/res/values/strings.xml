@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://192.168.1.100/rpg_companion/api/">]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://107.150.7.141/">]>
 
 <resources>
-    <string name="base">http://107.150.7.141/</string>
     <string name="app_name">RPG Companion</string>
     <string name="action_settings">Settings</string>
     <string name="main_title_string">Choose a section</string>
