@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.CommentActivity;
 import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,50 +30,43 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class DisplayRiddleActivity extends AppCompatActivity {
+public class DisplayRiddleActivity extends RPGCActivity {
 
     ArrayList<RiddleComment> commentsArray = new ArrayList<>();
     RiddleCommentsArrayAdapter commentArrayAdapter;
     LinearLayout comments_layout;
     Riddle riddle;
-    Context context;
-    ConstraintLayout loading_screen;
-    ProgressBar loading_progressBar;
+    private int riddle_id;
+    private Button upvote_btn, downvote_btn;
+    private TextView votes_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_riddle);
-
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        context = this.getBaseContext();
+        setupLoadingAnim();
 
         Intent intent = getIntent();
         final Bundle riddleBundle = intent.getExtras();
-        riddle = (Riddle) riddleBundle.getSerializable("RIDDLE_OBJ");
+        riddle_id = riddleBundle.getInt("RIDDLE_ID");
 
-        loading_screen = findViewById(R.id.riddle_loading_screen);
-        loading_progressBar = findViewById(R.id.riddle_loading_progressBar);
-
-        Button upvote_btn = findViewById(R.id.riddle_details_vote_up_btn);
-        Button downvote_btn = findViewById(R.id.riddle_details_vote_down_btn);
+        upvote_btn = findViewById(R.id.riddle_details_vote_up_btn);
+        downvote_btn = findViewById(R.id.riddle_details_vote_down_btn);
         Button comment_btn = findViewById(R.id.riddle_details_comment_btn);
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
                 switch(v.getId()) {
                     case R.id.riddle_details_vote_up_btn:
-                        upvote();
+                        vote(true);
                         break;
                     case R.id.riddle_details_vote_down_btn:
-                        downvote();
+                        vote(false);
                         break;
                     case R.id.riddle_details_comment_btn:
                         displayCommentInput();
@@ -94,25 +88,28 @@ public class DisplayRiddleActivity extends AppCompatActivity {
         this.commentArrayAdapter = new RiddleCommentsArrayAdapter(this, commentsArray);
         //this.comments_lv = findViewById(R.id.riddle_comments_lv);
 
-        showLoadingScreen();
+        showLoadingAnim();
 
         this.comments_layout = findViewById(R.id.riddle_comments_linear_layout);
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(getResources().getString(R.string.url_get_riddle)+riddle.getId())
+                .url(getResources().getString(R.string.url_get_riddle)+riddle_id)
+                .header("Authorization", "Bearer" + application.getToken())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     displayError("An unknown error occurred. Please try again");
                     throw new IOException("Unexpected code " + response);
@@ -120,16 +117,20 @@ public class DisplayRiddleActivity extends AppCompatActivity {
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
-                        /*
+
                         JSONObject h = all.getJSONObject("riddle");
-                        riddle = new Riddle(h.getString("id"),
-                                h.getString("title"),
+                        riddle = new Riddle(h.getInt("id"),
                                 h.getString("username"),
-                                h.getString("description"),
-                                h.getString("votes"),
-                                h.getString("created_at")
+                                h.getInt("user_id"),
+                                h.getString("riddle"),
+                                h.getString("answer"),
+                                h.getInt("upvotes"),
+                                h.getInt("downvotes"),
+                                h.getInt("voted"),
+                                h.getString("created_at"),
+                                h.getString("updated_at")
                         );
-                        */
+
                         JSONArray cs = all.getJSONArray("comments");
                         for (int i=0; i<cs.length(); i++) {
                             commentsArray.add(
@@ -163,12 +164,19 @@ public class DisplayRiddleActivity extends AppCompatActivity {
     }
 
     public void setupUI() {
-        TextView votes_tv = findViewById(R.id.riddle_details_votes_tv);
+        votes_tv = findViewById(R.id.riddle_details_votes_tv);
         votes_tv.setText(String.valueOf(riddle.getCalculatedVotes()));
         TextView riddle_tv = findViewById(R.id.riddle_details_riddle_tv);
         riddle_tv.setText(String.valueOf(riddle.getRiddle()));
         TextView answer_tv = findViewById(R.id.riddle_details_answer_tv);
         answer_tv.setText(String.valueOf(riddle.getAnswer()));
+
+        if (riddle.getVoted() == 1) {
+            upvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+        }
+        else if (riddle.getVoted() == 0) {
+            downvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+        }
 
         //comments_lv.setAdapter(commentArrayAdapter);
 
@@ -181,7 +189,6 @@ public class DisplayRiddleActivity extends AppCompatActivity {
             comments_layout.addView(view);
         }
 
-        hideLoadingScreen();
 
         /*
         comments_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -200,19 +207,33 @@ public class DisplayRiddleActivity extends AppCompatActivity {
         */
     }
 
-    private void showLoadingScreen() {
-        loading_progressBar.setVisibility(View.VISIBLE);
-        loading_screen.setVisibility(View.VISIBLE);
-    }
-    private void hideLoadingScreen() {
-        loading_progressBar.setVisibility(View.GONE);
-        loading_screen.setVisibility(View.GONE);
-    }
 
-    private void downvote() {
-        String url = getResources().getString(R.string.url_downvote)+riddle.getId();
+    private void vote(boolean v) {
+        if (v && riddle.getVoted()==1) { return; }
+        if (!v && riddle.getVoted()==0) { return; }
+
+        if (v) {
+            upvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+            downvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+        }
+        else {
+            downvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+            upvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+        }
+
+        final String vote = v ? "1" : "0";
+        final RequestBody postBody = new FormBody.Builder()
+                .add("type", "riddle")
+                .add("id", String.valueOf(riddle_id))
+                .add("vote", vote)
+                .build();
+
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder()
+                .url(getResources().getString(R.string.url_vote))
+                .header("Authorization", "Bearer" + application.getToken())
+                .post(postBody)
+                .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -223,106 +244,92 @@ public class DisplayRiddleActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                boolean success=false;
                 if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
 
-                        if (all.has("error")) {
-                            //error
-                            Log.e("DisplayRiddleActivity", "Error: "+ all.getString("error"));
-                            displayError("Error: "+all.getString("error"));
-                        }
-                        else if (all.has("msg")) {
+                        /*
+                            Possible responses:
+                            "error": <>
+                            "success":"vote_unchanged"
+                            "success":"vote_saved"
+                            "success":"vote_updated"
+                        */
+
+                        if (all.has("success")) {
                             //success
                             Log.e("DisplayRiddleActivity", "Success");
-                            downvoteUI();
+                            success=true;
+                            onVoteSuccess(vote);
                         }
                         else {
-                            //unknown error
                             Log.e("DisplayRiddleActivity", "Unknown Error: "+ all.toString());
                             displayError("An unknown error occurred. Please try again");
                         }
                     }
                     catch (JSONException e) {
                         Log.e("err", e.getMessage());
+                        displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
+                }
+                resetButtons();
+            }
+        });
+    }
+
+    private void resetButtons() {
+        DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (riddle.getVoted() == 0) {
+                    upvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+                    downvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+                } else if (riddle.getVoted() == 1) {
+                    upvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+                    downvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+                } else {
+                    upvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+                    downvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
                 }
             }
         });
     }
 
-    private void downvoteUI() {
+    private void onVoteSuccess(final String v) {
         DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-            }
-        });
-    }
-
-    private void upvote() {
-        String url = getResources().getString(R.string.url_upvote)+riddle.getId();
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                displayError("Could not connect to server. Please try again");
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                if (v.equals("1")) {
+                    //upvote
+                    if (riddle.getVoted()==0) {
+                        riddle.updateUpvotes(1);
+                        riddle.updateDownvotes(-1);
+                    }
+                    else if (riddle.getVoted()==-1) {
+                        riddle.updateUpvotes(1);
+                    }
                 }
                 else {
-                    try {
-                        JSONObject all = new JSONObject(response.body().string());
-
-                        if (all.has("error")) {
-                            //error
-                            Log.e("DisplayRiddleActivity", "Error: "+ all.getString("error"));
-                            displayError("Error: "+all.getString("error"));
-                        }
-                        else if (all.has("msg")) {
-                            //success
-                            Log.e("DisplayRiddleActivity", "Success");
-                            //We can't update the UI on a background thread, so run on the UI thread
-                            upvoteUI();
-                        }
-                        else {
-                            //unknown error
-                            Log.e("DisplayRiddleActivity", "Unknown Error: "+ all.toString());
-                            displayError("An unknown error occurred. Please try again");
-                        }
-
-
+                    //downvote
+                    if (riddle.getVoted()==1) {
+                        riddle.updateDownvotes(1);
+                        riddle.updateUpvotes(-1);
                     }
-                    catch (JSONException e) {
-                        Log.e("err", e.getMessage());
-                        e.printStackTrace();
+                    else if (riddle.getVoted()==-1) {
+                        riddle.updateDownvotes(1);
                     }
                 }
+                votes_tv.setText(String.valueOf(riddle.getCalculatedVotes()));
+                riddle.setVoted(Integer.valueOf(v));
             }
         });
     }
 
-    private void upvoteUI() {
-        DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
-    }
 
     private void displayError(final String s) {
         DisplayRiddleActivity.this.runOnUiThread(new Runnable() {
@@ -353,19 +360,6 @@ public class DisplayRiddleActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_CANCELED) {
                 //user pressed back btn
             }
-        }
-    }
-
-
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -29,7 +29,7 @@ public class MainActivity extends RPGCActivity {
 	 *
 	 *
 	 */
-	private TextView webalert_tv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,6 @@ public class MainActivity extends RPGCActivity {
         ImageButton adventures_btn = findViewById(R.id.main_adventures_button);
         ImageButton riddles_btn = findViewById(R.id.main_riddles_button);
         ImageButton misc_btn = findViewById(R.id.main_misc_button);
-
-        webalert_tv = findViewById(R.id.main_web_alert_tv);
-
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
@@ -93,53 +90,6 @@ public class MainActivity extends RPGCActivity {
         adventures_btn.setOnClickListener(buttonHandler);
         misc_btn.setOnClickListener(buttonHandler);
 
-        getWebAlert();
-
-        application.checkToken();
-    }
-
-    private void getWebAlert() {
-        String hooks_url = getResources().getString(R.string.url_get_webalert);
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(hooks_url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                }
-                else {
-                    JSONObject r = null;
-                    String o = "";
-                    try {
-                        r = new JSONObject(response.body().string());
-                        o = r.getString("msg");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    if (o.length()>0) {
-                        //We can't update the UI on a background thread, so run on the UI thread
-                        final String output = o;
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                webalert_tv.setText(output);
-                                webalert_tv.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
-                }
-            }
-        });
+        application.checkToken(this);
     }
 }

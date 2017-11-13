@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,14 +13,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.mpvreeken.rpgcompanion.NewPostActivity;
 import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -30,7 +28,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class HooksActivity extends AppCompatActivity {
+public class HooksActivity extends RPGCActivity {
 
     ArrayList<Hook> hooksArray = new ArrayList<>();
     HookArrayAdapter hookArrayAdapter;
@@ -60,8 +58,7 @@ public class HooksActivity extends AppCompatActivity {
         new_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, NewPostActivity.class);
-                intent.putExtra("type", "hook");
+                Intent intent = new Intent(context, NewHookActivity.class);
                 startActivity(intent);
             }
         });
@@ -89,8 +86,7 @@ public class HooksActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                     try {
@@ -100,12 +96,14 @@ public class HooksActivity extends AppCompatActivity {
                                 new Hook(
                                     r.getJSONObject(i).getString("id"),
                                     r.getJSONObject(i).getString("title"),
-                                    r.getJSONObject(i).getString("user_id"),
+                                    r.getJSONObject(i).getString("username"),
+                                    r.getJSONObject(i).getInt("user_id"),
                                     r.getJSONObject(i).getString("description"),
                                     r.getJSONObject(i).getInt("upvotes"),
                                     r.getJSONObject(i).getInt("downvotes"),
                                     r.getJSONObject(i).getInt("voted"),
-                                    r.getJSONObject(i).getString("created_at")
+                                    r.getJSONObject(i).getString("created_at"),
+                                    r.getJSONObject(i).getString("updated_at")
                                 )
                             );
                         }
@@ -149,7 +147,7 @@ public class HooksActivity extends AppCompatActivity {
                 Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("HOOK_OBJ", (Serializable) hooksArray.get(position));
+                bundle.putString("HOOK_ID", hooksArray.get(position).getId());
                 intent.putExtras(bundle);
                 //intent.putExtra("hook_id", riddlesArray.get(position).getId());
                 startActivity(intent);
@@ -187,12 +185,14 @@ public class HooksActivity extends AppCompatActivity {
                                     new Hook(
                                             r.getJSONObject(i).getString("id"),
                                             r.getJSONObject(i).getString("title"),
-                                            r.getJSONObject(i).getString("user_id"),
+                                            r.getJSONObject(i).getString("username"),
+                                            r.getJSONObject(i).getInt("user_id"),
                                             r.getJSONObject(i).getString("description"),
                                             r.getJSONObject(i).getInt("upvotes"),
                                             r.getJSONObject(i).getInt("downvotes"),
                                             r.getJSONObject(i).getInt("voted"),
-                                            r.getJSONObject(i).getString("created_at")
+                                            r.getJSONObject(i).getString("created_at"),
+                                            r.getJSONObject(i).getString("updated_at")
                                     )
                             );
                         }

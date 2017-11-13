@@ -1,7 +1,9 @@
 package com.mpvreeken.rpgcompanion.Hooks;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.mpvreeken.rpgcompanion.LoginActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -22,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class NewHookActivity extends RPGCActivity {
 
@@ -29,6 +32,14 @@ public class NewHookActivity extends RPGCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_hook);
+
+        //TODO how to better handle this?
+        if (!application.getLoggedIn()) {
+            Toast.makeText(this, "You must be logged in to post a new Hook", Toast.LENGTH_LONG).show();
+            //Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            //finish();
+            //startActivity(intent);
+        }
 
 
         Button cancel_btn = findViewById(R.id.new_hook_cancel_btn);
@@ -57,9 +68,9 @@ public class NewHookActivity extends RPGCActivity {
                     .add("hook_title", title)
                     .build();
 
-            //.header("Authorization", "Bearer" + limelightApplication.getToken())
             Request request = new Request.Builder()
                     .url(getResources().getString(R.string.url_submit_hook))
+                    .header("Authorization", "Bearer" + application.getToken())
                     .post(requestBody)
                     .build();
 
@@ -81,26 +92,17 @@ public class NewHookActivity extends RPGCActivity {
                             JSONObject all = new JSONObject(response.body().string());
 
                             if (all.has("error")) {
-                                Log.e("NewPostActivity", "Error: "+ all.getString("error"));
+                                Log.e("NewHookActivity", "Error: "+ all.getString("error"));
                                 onHttpCallbackFail(all.getString("error"));
                             }
-                            else if (all.has("msg")) {
-                                //success
-                                Log.e("NewPostActivity", "Success");
-                                //TODO
+                            else if (all.has("success") && all.has("id")) {
+                                Intent intent = new Intent(NewHookActivity.this, DisplayHookActivity.class);
 
-                                //We can't update the UI on a background thread, so run on the UI thread
-                                NewHookActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Log.d("NewPostActivity", "Post Successful");
-                                        //After successful post
-                                        //Intent returnIntent = new Intent();
-                                        //returnIntent.putExtra("result",result);
-                                        //setResult(Activity.RESULT_OK,returnIntent);
-                                        //finish();
-                                    }
-                                });
+                                Bundle bundle = new Bundle();
+                                bundle.putString("HOOK_ID", all.getString("id"));
+                                intent.putExtras(bundle);
+                                finish();
+                                startActivity(intent);
                             }
                             else {
                                 //TODO

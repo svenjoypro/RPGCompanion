@@ -82,7 +82,7 @@ public class ConfirmEmailActivity extends RPGCActivity {
     }
 
     private void loginAndRedirect(String token) {
-        application.login(token);
+        application.login(token, this);
         Toast.makeText(getBaseContext(), "Account verified successfully", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         finish();

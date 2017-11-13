@@ -36,7 +36,7 @@ import com.mpvreeken.rpgcompanion.NPC.NPCLayout;
  * @version 2017.0727
  * @since 1.0
  */
-public class RandomNPCActivity extends AppCompatActivity {
+public class RandomNPCActivity extends RPGCActivity {
 
     NPCData npcData;
     TextView npc_tv;
@@ -47,11 +47,6 @@ public class RandomNPCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random_npc);
-
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         //Get the json data from raw, then parse it into a nicer, more accessible object
         npcData = new NPCData(getApplicationContext());
@@ -165,15 +160,4 @@ public class RandomNPCActivity extends AppCompatActivity {
         npcLayout.setNPC(currentNPC);
     }
 
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

@@ -8,6 +8,8 @@
     <color name="bg">#f6f6f6</color>
     <color name="textAccent">#3366cc</color>
     <color name="textPrimary">#343434</color>
+    <color name="textVoted">#3366cc</color>
+    <color name="textButtonPrimary">#000000</color>
 
 
     <color name="hook_list_item_gradient_start">#444444</color>

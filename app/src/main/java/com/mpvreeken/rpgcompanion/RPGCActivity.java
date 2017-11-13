@@ -1,5 +1,6 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -28,17 +29,18 @@ public class RPGCActivity extends AppCompatActivity {
 
     public RPGCApplication application;
     private View loading_anim;
+    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Set up back button to appear in action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         application = (RPGCApplication) getApplication();
+        context = getBaseContext();
     }
 
 
@@ -67,7 +69,7 @@ public class RPGCActivity extends AppCompatActivity {
                 if (error.equals("token_expired") || error.equals("token_invalid")) {
                     //TODO go to login activity
                     //I don't think we currently have expirations on our tokens, but we should check
-                    application.logout();
+                    application.logout(RPGCActivity.this);
                     //TODO should this be startactivityforresult?
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
@@ -100,9 +102,9 @@ public class RPGCActivity extends AppCompatActivity {
         String readable_error = "An unknown error has occurred. Please try again.";
         try {
             JSONObject r = new JSONObject(response.body().string());
+            Log.d("onUnsuccessfulResponse", r.toString());
             //Error
             String error = r.has("error") ? r.getString("error") : "unknown_error";
-
             switch (error) {
                 case "token_not_provided":
                     readable_error = "You are not logged in. Please log in first.";
@@ -112,17 +114,32 @@ public class RPGCActivity extends AppCompatActivity {
                     readable_error = "Your session has expired. Please log in again.";
                     //TODO redirect to login
                     break;
+                case "invalid_credentials":
+                    readable_error = "Your username or password are incorrect";
+                    break;
+                case "account_unconfirmed":
+                    Intent intent = new Intent(getApplicationContext(), ResendEmailActivity.class);
+                    startActivity(intent);
+                    readable_error = "Please confirm your account by checking your email.";
+                    break;
                 default:
                     readable_error = "An unknown error has occurred. Please try again.";
                     break;
             }
         }
         catch (JSONException e) {
-            Log.d("RPGCApplication", e.getMessage());
+            Log.d("RPGCActivity", e.getMessage());
         } catch (IOException e) {
-            Log.d("RPGCApplication", e.getMessage());
+            Log.d("RPGCActivity", e.getMessage());
         }
-        Toast.makeText(this, readable_error, Toast.LENGTH_LONG).show();
+        final String uiError = readable_error;
+
+        RPGCActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(RPGCActivity.this, uiError, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     protected void onHttpCallbackFail(final String s) {
@@ -145,6 +162,12 @@ public class RPGCActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -171,6 +194,10 @@ public class RPGCActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
+            case R.id.menu_release_notes:
+                intent = new Intent(getApplicationContext(), ReleaseNotesActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.menu_settings:
                 intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);
@@ -180,7 +207,7 @@ public class RPGCActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.menu_logout:
-                //TODO
+                application.logout(this);
                 return true;
             case R.id.menu_register:
                 intent = new Intent(getApplicationContext(), RegisterActivity.class);

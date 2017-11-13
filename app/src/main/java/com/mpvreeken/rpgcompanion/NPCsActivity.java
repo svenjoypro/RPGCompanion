@@ -15,7 +15,7 @@ import android.widget.ListView;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPCCursorAdapter;
 
-public class NPCsActivity extends AppCompatActivity {
+public class NPCsActivity extends RPGCActivity {
 
     private DBHelper dbHelper;
     private ListView npcListView;
@@ -24,12 +24,6 @@ public class NPCsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_npcs);
-
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
 
         Button random_btn = findViewById(R.id.npcs_random_btn);
         random_btn.setOnClickListener(new View.OnClickListener() {
@@ -96,16 +90,4 @@ public class NPCsActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

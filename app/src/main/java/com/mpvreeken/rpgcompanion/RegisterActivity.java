@@ -23,6 +23,8 @@ import okhttp3.Response;
 
 public class RegisterActivity extends RPGCActivity {
 
+    private TextView errors_tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,17 +32,38 @@ public class RegisterActivity extends RPGCActivity {
 
         setupLoadingAnim();
 
+        errors_tv = findViewById(R.id.register_errors_tv);
 
         Button register_btn = findViewById(R.id.register_register_btn);
         register_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                errors_tv.setText("");
                 EditText username_et = findViewById(R.id.register_username_et);
                 EditText email_et = findViewById(R.id.register_email_et);
                 EditText password_et = findViewById(R.id.register_password_et);
                 EditText pconfirm_et = findViewById(R.id.register_pconfirm_et);
+                String username = username_et.getText().toString();
+                String password = password_et.getText().toString();
+                String email = email_et.getText().toString();
 
-                if (!password_et.getText().toString().equals(pconfirm_et.getText().toString())) {
+                if (password.length() < 6) {
+                    showError("Your password must be a minimum of 6 characters (this is the only restriction)");
+                    return;
+                }
+                if (!password.equals(pconfirm_et.getText().toString())) {
                     showError("Passwords don't match");
+                    return;
+                }
+                if (!username.matches("^[a-zA-Z0-9._-]{3,}$")) {
+                    showError("Your username may only contain letters, numbers, periods, dashes, and underscores, and must be at least 3 characters long");
+                    return;
+                }
+                if (username.equals("admin") || username.equals("administrator")) {
+                    showError("You are not an admin :)");
+                    return;
+                }
+                if (email.indexOf("@")==-1 || email.indexOf(".")==-1) {
+                    showError("Please enter a valid email address");
                     return;
                 }
 
@@ -48,9 +71,9 @@ public class RegisterActivity extends RPGCActivity {
 
 
                 final RequestBody postBody = new FormBody.Builder()
-                        .add("username", username_et.getText().toString())
-                        .add("email", email_et.getText().toString())
-                        .add("password", password_et.getText().toString())
+                        .add("username", username)
+                        .add("email", email)
+                        .add("password", password)
                         .build();
 
                 OkHttpClient client = new OkHttpClient();
@@ -117,7 +140,6 @@ public class RegisterActivity extends RPGCActivity {
 
     public void showError(String error) {
         Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
-        TextView errors_tv = findViewById(R.id.register_errors_tv);
         errors_tv.setText(error);
     }
 }

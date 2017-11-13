@@ -1,8 +1,10 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,6 +49,7 @@ public class RPGCApplication extends Application {
     private SharedPreferences prefs;
     public User user;
 
+    private Activity activity;
 
     @Override
     public void onCreate () {
@@ -65,16 +68,19 @@ public class RPGCApplication extends Application {
 
     }
 
-    public void login(String token) {
+    public void login(String token, Activity a) {
         this.token = token;
         this.loggedIn = true;
         prefs.edit().putString("token", this.token).apply();
+        a.invalidateOptionsMenu();
     }
 
-    public void logout() {
+    public void logout(Activity a) {
         this.token = "";
         this.loggedIn = false;
         prefs.edit().putString("token", this.token).apply();
+        a.invalidateOptionsMenu();
+        //TODO finish()? what if they are on a logged in only page?
     }
 
     public void setUserData(User u) {
@@ -109,7 +115,8 @@ public class RPGCApplication extends Application {
 
     public Boolean getLoggedIn() { return this.loggedIn; }
 
-    public void checkToken() {
+    public void checkToken(Activity a) {
+        this.activity=a;
         if (token.length()==0) { return; }
 
         OkHttpClient client = new OkHttpClient();
@@ -128,7 +135,8 @@ public class RPGCApplication extends Application {
             public void onResponse(Call call, final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     //response code isn't 200
-                    onUnsuccessfulResponse(response);
+                    //onUnsuccessfulResponse(response);
+                    Log.d("$$$$$$$$", response.body().string());
                 }
                 else {
                             /*
@@ -142,6 +150,7 @@ public class RPGCApplication extends Application {
                         if (r.has("success")) {
                             //TODO what do I do with this? Nothing?
                             loggedIn=true;
+                            activity.invalidateOptionsMenu();
                         }
                         else {
                             //"An unknown error has occurred. Please try again.";
@@ -154,7 +163,7 @@ public class RPGCApplication extends Application {
             }
         });
     }
-
+    /*
     public void onUnsuccessfulResponse(Response response) {
         String readable_error = "An unknown error has occurred. Please try again.";
         try {
@@ -183,5 +192,6 @@ public class RPGCApplication extends Application {
         }
         Toast.makeText(this, readable_error, Toast.LENGTH_LONG).show();
     }
+    */
 }
 

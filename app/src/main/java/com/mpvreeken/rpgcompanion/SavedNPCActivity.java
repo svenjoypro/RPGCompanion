@@ -15,7 +15,7 @@ import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCLayout;
 
-public class SavedNPCActivity extends AppCompatActivity {
+public class SavedNPCActivity extends RPGCActivity {
 
     private NPC npc;
     private DBHelper dbHelper;
@@ -25,11 +25,6 @@ public class SavedNPCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_npc);
-
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         dbHelper = new DBHelper(this.getBaseContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -72,15 +67,4 @@ public class SavedNPCActivity extends AppCompatActivity {
         db.update(DBHelper.NPCS_TABLE_NAME, values, "_id="+id, null);
     }
 
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

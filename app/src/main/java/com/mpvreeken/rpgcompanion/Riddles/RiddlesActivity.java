@@ -3,10 +3,7 @@ package com.mpvreeken.rpgcompanion.Riddles;
 import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,7 +11,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.mpvreeken.rpgcompanion.NewPostActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -23,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -49,6 +44,13 @@ public class RiddlesActivity extends RPGCActivity {
 
     private int GET_QUANTITY;
 
+    /*
+        //TODO
+        add a variable to application that holds the id of a recent vote. then in onResume of this
+        activity inc/dec the votes of the item voted on
+
+    */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +71,7 @@ public class RiddlesActivity extends RPGCActivity {
         new_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, NewPostActivity.class);
-                intent.putExtra("type", "riddle");
+                Intent intent = new Intent(context, NewRiddleActivity.class);
                 startActivity(intent);
             }
         });
@@ -108,16 +109,18 @@ public class RiddlesActivity extends RPGCActivity {
                         JSONArray r = o.getJSONArray("riddles");
                         for (int i=0; i<r.length(); i++) {
                             riddlesArray.add(
-                                    new Riddle(
-                                            r.getJSONObject(i).getString("id"),
-                                            r.getJSONObject(i).getString("user_id"),
-                                            r.getJSONObject(i).getString("riddle"),
-                                            r.getJSONObject(i).getString("answer"),
-                                            r.getJSONObject(i).getInt("upvotes"),
-                                            r.getJSONObject(i).getInt("downvotes"),
-                                            r.getJSONObject(i).getInt("voted"),
-                                            r.getJSONObject(i).getString("created_at")
-                                    )
+                                new Riddle(
+                                    r.getJSONObject(i).getInt("id"),
+                                    r.getJSONObject(i).getString("username"),
+                                    r.getJSONObject(i).getInt("user_id"),
+                                    r.getJSONObject(i).getString("riddle"),
+                                    r.getJSONObject(i).getString("answer"),
+                                    r.getJSONObject(i).getInt("upvotes"),
+                                    r.getJSONObject(i).getInt("downvotes"),
+                                    r.getJSONObject(i).getInt("voted"),
+                                    r.getJSONObject(i).getString("created_at"),
+                                    r.getJSONObject(i).getString("updated_at")
+                                )
                             );
                         }
 
@@ -160,7 +163,7 @@ public class RiddlesActivity extends RPGCActivity {
                 Intent intent = new Intent(parent.getContext(), DisplayRiddleActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("RIDDLE_OBJ", (Serializable) riddlesArray.get(position));
+                bundle.putInt("RIDDLE_ID", riddlesArray.get(position).getId());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -247,16 +250,18 @@ public class RiddlesActivity extends RPGCActivity {
                         JSONArray r = o.getJSONArray("riddles");
                         for (int i=0; i<r.length(); i++) {
                             riddlesArray.add(
-                                    new Riddle(
-                                            r.getJSONObject(i).getString("id"),
-                                            r.getJSONObject(i).getString("user_id"),
-                                            r.getJSONObject(i).getString("riddle"),
-                                            r.getJSONObject(i).getString("answer"),
-                                            r.getJSONObject(i).getInt("upvotes"),
-                                            r.getJSONObject(i).getInt("downvotes"),
-                                            r.getJSONObject(i).getInt("voted"),
-                                            r.getJSONObject(i).getString("created_at")
-                                    )
+                                new Riddle(
+                                    r.getJSONObject(i).getInt("id"),
+                                    r.getJSONObject(i).getString("username"),
+                                    r.getJSONObject(i).getInt("user_id"),
+                                    r.getJSONObject(i).getString("riddle"),
+                                    r.getJSONObject(i).getString("answer"),
+                                    r.getJSONObject(i).getInt("upvotes"),
+                                    r.getJSONObject(i).getInt("downvotes"),
+                                    r.getJSONObject(i).getInt("voted"),
+                                    r.getJSONObject(i).getString("created_at"),
+                                    r.getJSONObject(i).getString("updated_at")
+                                )
                             );
                         }
 

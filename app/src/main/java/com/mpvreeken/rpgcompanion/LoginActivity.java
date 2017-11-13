@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,11 +77,11 @@ public class LoginActivity extends RPGCActivity {
                     public void onResponse(Call call, final Response response) throws IOException {
                         hideLoadingAnim();
                         if (!response.isSuccessful()) {
-                            onHttpResponseError("Unexpected error");
-                            throw new IOException("Unexpected code " + response);
+                            onUnsuccessfulResponse(response);
                         }
                         else {
                             /*
+                                //TODO these mostly arent relevant anymore with onUnsuccessful catching most (all?)
                              *    possible responses:
                              * { "error":"invalid_credentials" }
                              * { "error":"could_not_create_token" }
@@ -127,14 +128,14 @@ public class LoginActivity extends RPGCActivity {
 
     public void onResponseSuccess(final String token) {
         //If login is successful, flag as logged in in application,
-        // finish this activity, and start the MyAccount activity
+        // finish this activity
         LoginActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                application.login(token);
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                Toast.makeText(getBaseContext(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+                application.login(token, LoginActivity.this);
+                invalidateOptionsMenu();
                 finish();
-                startActivity(intent);
             }
         });
     }

@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/">]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://192.168.1.100/rpg_companion/api/">]>
 
 <resources>
+    <string name="base">http://107.150.7.141/</string>
     <string name="app_name">RPG Companion</string>
     <string name="action_settings">Settings</string>
     <string name="main_title_string">Choose a section</string>
@@ -16,6 +17,7 @@
 
     <string name="url_register">&baseurl;register</string>
     <string name="url_confirm_email">&baseurl;confirm-email</string>
+    <string name="url_resend_email">&baseurl;resend-email</string>
 
     <string name="url_login">&baseurl;login</string>
     <string name="url_check_token">&baseurl;admin/check-token</string>
@@ -28,15 +30,15 @@
     <string name="url_get_riddles_first">&baseurl;riddles?qty=5&amp;random=true</string>
     <string name="url_get_riddles_ids">&baseurl;riddles?</string>
     <string name="url_get_riddle">&baseurl;riddles/</string>
+    <string name="url_submit_riddle">&baseurl;riddles/new</string>
 
 
-    <string name="url_downvote">&baseurl;downvote</string>
-    <string name="url_upvote">&baseurl;upvote</string>
+    <string name="url_vote">&baseurl;vote</string>
 
     <string name="url_submit_comment">&baseurl;comments/post</string>
     <string name="url_submit_post">&baseurl;posts/post</string>
 
-    <string name="url_get_webalert">&baseurl;webalert</string>
+    <string name="url_get_release_notes">&baseurl;release-notes</string>
 
     <string name="npc_activity_title">Generated NPC</string>
 </resources>
