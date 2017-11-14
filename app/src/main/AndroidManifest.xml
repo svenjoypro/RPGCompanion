@@ -31,8 +31,9 @@
         <activity android:name=".Riddles.RiddlesActivity" />
         <activity android:name=".Riddles.DisplayRiddleActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity"
-                android:noHistory="true"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:noHistory="true" />
         <activity android:name=".SettingsActivity" />
         <activity
             android:name=".DeepLinkURLActivity"
@@ -57,7 +58,8 @@
             android:name=".ResendEmailActivity"
             android:noHistory="true" />
         <activity android:name=".Riddles.NewRiddleActivity" />
-        <activity android:name=".ReleaseNotesActivity"></activity>
+        <activity android:name=".ReleaseNotesActivity" />
+        <activity android:name=".ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

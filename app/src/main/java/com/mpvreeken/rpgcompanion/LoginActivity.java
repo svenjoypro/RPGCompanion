@@ -45,6 +45,15 @@ public class LoginActivity extends RPGCActivity {
             }
         }
 
+        TextView forgot_pw = findViewById(R.id.login_forgot_password_tv);
+        forgot_pw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button login_btn = findViewById(R.id.login_login_btn);
         login_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -81,7 +90,7 @@ public class LoginActivity extends RPGCActivity {
                         }
                         else {
                             /*
-                                //TODO these mostly arent relevant anymore with onUnsuccessful catching most (all?)
+                                //TODO these mostly arent relevant anymore with onUnsuccessfulResponse() catching most (all?)
                              *    possible responses:
                              * { "error":"invalid_credentials" }
                              * { "error":"could_not_create_token" }
