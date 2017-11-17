@@ -23,21 +23,17 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Random;
 
-public class MiscActivity extends AppCompatActivity {
+public class MiscActivity extends RPGCActivity {
 
     private JSONArray tavern_adjs, tavern_nouns, long_rests, road_encounters, romantic_love_interests, slums_encounters, strange_encounters, trail_encounters, backpack_contents_tools, backpack_contents_edibles, backpack_contents_personals, backpack_contents_strange, book_titles, necromancers_lair, curious_items, kitchen_items, magic_umbrellas, minor_magic_items, mundane_treasures, potion_colors, potion_scents, potion_appearances, potion_effects, ruined_building_contents, weapon_names, tavern_drinks, tavern_foods, deep_dark_woods, trinkets, magic_skulls, town_names, curses, flawed_utopias, lone_graves;
     private JSONArray good_smells, witches, monster_deaths, blacksmith_wares, suspicious_village_encounters, nice_village_encounters, jungle_encounters, misc_items, antagonist_bios, necromantic_effects, unique_horses, rich_corpses, zombie_variations, unique_spellbooks, gossip, plants_trees, rival_parties;
+    private JSONArray interesting_books, stores_shops, dungeon_levers, pilgrimage_quests;
     private TextView output_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_misc);
-
-        //Set up back button to appear in action bar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         output_tv = findViewById(R.id.misc_output_tv);
 
@@ -91,6 +87,13 @@ public class MiscActivity extends AppCompatActivity {
         Button ne_btn = findViewById(R.id.misc_necromantic_effects_btn);
         Button g_btn = findViewById(R.id.misc_gossip_btn);
 
+        Button ib_btn = findViewById(R.id.misc_interesting_books_btn);
+        Button pq_btn = findViewById(R.id.misc_pilgrimage_quests_btn);
+        Button dl_btn = findViewById(R.id.misc_dungeon_levers_btn);
+        Button ss_btn = findViewById(R.id.misc_stores_shops_btn);
+
+
+
 
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
@@ -132,6 +135,10 @@ public class MiscActivity extends AppCompatActivity {
                     case R.id.misc_book_titles_btn:
                         if (book_titles == null) { book_titles = loadJSON(R.raw.d100_book_titles, "book_titles"); }
                         showOutput(getRandomBasic(book_titles));
+                        break;
+                    case R.id.misc_interesting_books_btn:
+                        if (interesting_books == null) { interesting_books = loadJSON(R.raw.d100_interesting_books, "interesting_books"); }
+                        showOutput(getRandomBasic(interesting_books));
                         break;
                     case R.id.misc_creepy_necromancers_lair_btn:
                         if (necromancers_lair == null) { necromancers_lair = loadJSON(R.raw.d100_creepy_things_in_necromancers_lair, "creepy_things_in_necromancers_lair"); }
@@ -321,6 +328,24 @@ public class MiscActivity extends AppCompatActivity {
                         }
                         showOutput(getRandomBasic(gossip));
                         break;
+                    case R.id.misc_stores_shops_btn:
+                        if (stores_shops == null) {
+                            stores_shops = loadJSON(R.raw.d100_stores_shops, "stores_shops");
+                        }
+                        showOutput(getRandomBasic(stores_shops));
+                        break;
+                    case R.id.misc_dungeon_levers_btn:
+                        if (dungeon_levers == null) {
+                            dungeon_levers = loadJSON(R.raw.d100_dungeon_levers, "dungeon_levers");
+                        }
+                        showOutput(getRandomBasic(dungeon_levers));
+                        break;
+                    case R.id.misc_pilgrimage_quests_btn:
+                        if (pilgrimage_quests == null) {
+                            pilgrimage_quests = loadJSON(R.raw.d100_pilgrimage_quests, "pilgrimage_quests");
+                        }
+                        showOutput(getRandomBasic(pilgrimage_quests));
+                        break;
                     default:
 
                 }
@@ -372,6 +397,11 @@ public class MiscActivity extends AppCompatActivity {
         ne_btn.setOnClickListener(buttonHandler);
         g_btn.setOnClickListener(buttonHandler);
         rp_btn.setOnClickListener(buttonHandler);
+
+        ib_btn.setOnClickListener(buttonHandler);
+        pq_btn.setOnClickListener(buttonHandler);
+        dl_btn.setOnClickListener(buttonHandler);
+        ss_btn.setOnClickListener(buttonHandler);
 
     }
 
@@ -469,8 +499,7 @@ public class MiscActivity extends AppCompatActivity {
         try {
             obj = new JSONObject(writer.toString());
         } catch (JSONException e) {
-            //TODO close activity
-            Log.e("TownBuilder", e.getMessage());
+            Log.e("MiscActivity", e.getMessage());
             e.printStackTrace();
         }
 
@@ -496,16 +525,4 @@ public class MiscActivity extends AppCompatActivity {
         return s;
     }
 
-
-    //Set click listener for back button in action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

@@ -2,6 +2,7 @@ package com.mpvreeken.rpgcompanion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -61,7 +62,6 @@ public class RPGCActivity extends AppCompatActivity {
     }
 
     public void onHttpResponseError(final String error) {
-
         RPGCActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -116,6 +116,9 @@ public class RPGCActivity extends AppCompatActivity {
                     break;
                 case "invalid_credentials":
                     readable_error = "Your username or password are incorrect";
+                    break;
+                case "invalid_email":
+                    readable_error = "The email you entered is invali";
                     break;
                 case "account_unconfirmed":
                     Intent intent = new Intent(getApplicationContext(), ResendEmailActivity.class);
@@ -213,6 +216,9 @@ public class RPGCActivity extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.menu_email:
+                intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","svenjoypro@gmail.com", null));
+                startActivity(Intent.createChooser(intent, "Send email..."));
             case android.R.id.home:
                 this.finish();
                 return true;

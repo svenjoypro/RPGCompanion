@@ -7,8 +7,8 @@ android {
         applicationId "com.mpvreeken.rpgcompanion"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 9
-        versionName "0.5.2"
+        versionCode 10
+        versionName "0.5.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -76,7 +77,13 @@ public class RegisterActivity extends RPGCActivity {
                         .add("password", password)
                         .build();
 
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient.Builder b = new OkHttpClient.Builder();
+                b.connectTimeout(15, TimeUnit.SECONDS);
+                b.readTimeout(15, TimeUnit.SECONDS);
+                b.writeTimeout(15, TimeUnit.SECONDS);
+
+                OkHttpClient client = b.build();
+
                 Request request = new Request.Builder()
                         .url(getResources().getString(R.string.url_register))
                         .post(postBody)

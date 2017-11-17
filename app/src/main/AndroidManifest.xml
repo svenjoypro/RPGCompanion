@@ -37,7 +37,8 @@
         <activity android:name=".SettingsActivity" />
         <activity
             android:name=".DeepLinkURLActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -51,6 +52,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ResetPasswordDeepLinkActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="107.150.7.141" />
+                <data android:pathPrefix="/rpg_companion/api/reset-password" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ConfirmEmailActivity"
             android:noHistory="true" />
         <activity android:name=".Hooks.NewHookActivity" />
@@ -59,7 +76,7 @@
             android:noHistory="true" />
         <activity android:name=".Riddles.NewRiddleActivity" />
         <activity android:name=".ReleaseNotesActivity" />
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@
     <string name="url_register">&baseurl;register</string>
     <string name="url_confirm_email">&baseurl;confirm-email</string>
     <string name="url_resend_email">&baseurl;resend-email</string>
+    <string name="url_create_pw_reset">&baseurl;create-password-reset</string>
     <string name="url_reset_pw">&baseurl;reset-password</string>
 
 

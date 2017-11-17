@@ -116,6 +116,12 @@
                 android:text="Book Titles" />
 
             <Button
+                android:id="@+id/misc_interesting_books_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Interesting Books" />
+
+            <Button
                 android:id="@+id/misc_creepy_necromancers_lair_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -330,6 +336,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Gossip" />
+
+            <Button
+                android:id="@+id/misc_dungeon_levers_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dungeon Lever Consequences" />
+
+            <Button
+                android:id="@+id/misc_pilgrimage_quests_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Holy Pilgrimage Quests" />
+
+            <Button
+                android:id="@+id/misc_stores_shops_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unique Stores and Shops" />
 
             <Space
                 android:layout_width="match_parent"
