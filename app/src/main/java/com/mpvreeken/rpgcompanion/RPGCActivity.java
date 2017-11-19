@@ -118,7 +118,7 @@ public class RPGCActivity extends AppCompatActivity {
                     readable_error = "Your username or password are incorrect";
                     break;
                 case "invalid_email":
-                    readable_error = "The email you entered is invali";
+                    readable_error = "The email you entered is invalid";
                     break;
                 case "account_unconfirmed":
                     Intent intent = new Intent(getApplicationContext(), ResendEmailActivity.class);
