@@ -38,8 +38,6 @@ import okhttp3.Response;
     *   we should use SharedPreferences
     *   https://developer.android.com/reference/android/content/SharedPreferences.html
     *
-    *   It may be wise to integrate SharedPreferences here too, so
-    *   we always have persistent data
     */
 
 public class RPGCApplication extends Application {
@@ -111,13 +109,27 @@ public class RPGCApplication extends Application {
         prefs.edit().putString("username", this.username).apply();
     }
 
-    public String getToken() { return token; }
+    public String getToken() {
+        if (token == null) {
+            prefs = this.getSharedPreferences("com.mpvreeken.rpgcompanion", Context.MODE_PRIVATE);
+            token = prefs.getString("token", "");
+        }
+        return token;
+    }
 
-    public Boolean getLoggedIn() { return this.loggedIn; }
+    public Boolean getLoggedIn() {  return loggedIn; }
 
     public void checkToken(Activity a) {
+        if (token==null) {
+            prefs = this.getSharedPreferences("com.mpvreeken.rpgcompanion", Context.MODE_PRIVATE);
+            token = prefs.getString("token", "");
+        }
+        if (token.length()==0) {
+            loggedIn=false;
+            return;
+        }
+
         this.activity=a;
-        if (token.length()==0) { return; }
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -133,9 +145,9 @@ public class RPGCApplication extends Application {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                loggedIn=false;
                 if (!response.isSuccessful()) {
                     //response code isn't 200
-                    //onUnsuccessfulResponse(response);
                     Log.d("$$$$$$$$", response.body().string());
                 }
                 else {
@@ -163,35 +175,5 @@ public class RPGCApplication extends Application {
             }
         });
     }
-    /*
-    public void onUnsuccessfulResponse(Response response) {
-        String readable_error = "An unknown error has occurred. Please try again.";
-        try {
-            JSONObject r = new JSONObject(response.body().string());
-            //Error
-            String error = r.has("error") ? r.getString("error") : "unknown_error";
-
-            switch (error) {
-                case "token_not_provided":
-                    readable_error = "You are not logged in. Please log in first.";
-                    //TODO Redirect to login
-                    break;
-                case "token_expired":
-                    readable_error = "Your session has expired. Please log in again.";
-                    //TODO redirect to login
-                    break;
-                default:
-                    readable_error = "An unknown error has occurred. Please try again.";
-                    break;
-            }
-        }
-        catch (JSONException e) {
-            Log.d("RPGCApplication", e.getMessage());
-        } catch (IOException e) {
-            Log.d("RPGCApplication", e.getMessage());
-        }
-        Toast.makeText(this, readable_error, Toast.LENGTH_LONG).show();
-    }
-    */
 }
 
