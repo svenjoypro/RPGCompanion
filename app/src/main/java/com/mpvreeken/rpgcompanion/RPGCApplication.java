@@ -70,14 +70,18 @@ public class RPGCApplication extends Application {
         this.token = token;
         this.loggedIn = true;
         prefs.edit().putString("token", this.token).apply();
-        a.invalidateOptionsMenu();
+        if (a!=null) {
+            a.invalidateOptionsMenu();
+        }
     }
 
     public void logout(Activity a) {
         this.token = "";
         this.loggedIn = false;
         prefs.edit().putString("token", this.token).apply();
-        a.invalidateOptionsMenu();
+        if (a!=null) {
+            a.invalidateOptionsMenu();
+        }
         //TODO finish()? what if they are on a logged in only page?
     }
 
@@ -128,8 +132,9 @@ public class RPGCApplication extends Application {
             loggedIn=false;
             return;
         }
-
-        this.activity=a;
+        if (a!=null) {
+            this.activity = a;
+        }
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -162,7 +167,9 @@ public class RPGCApplication extends Application {
                         if (r.has("success")) {
                             //TODO what do I do with this? Nothing?
                             loggedIn=true;
-                            activity.invalidateOptionsMenu();
+                            if (activity!=null) {
+                                activity.invalidateOptionsMenu();
+                            }
                         }
                         else {
                             //"An unknown error has occurred. Please try again.";
