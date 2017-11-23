@@ -77,6 +77,8 @@
         <activity android:name=".Riddles.NewRiddleActivity" />
         <activity android:name=".ReleaseNotesActivity" />
         <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".LootGeneratorActivity"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

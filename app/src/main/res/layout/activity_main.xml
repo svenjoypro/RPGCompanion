@@ -46,7 +46,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:alpha=".4"
                 android:background="@null"
                 android:scaleType="centerInside"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -113,6 +112,7 @@
                 android:scaleType="centerInside"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/main_riddles_button"
                 app:srcCompat="@mipmap/unique_items_button" />
 
@@ -128,12 +128,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/main_adventures_button"
                 app:srcCompat="@mipmap/misc_button" />
 
+            <ImageButton
+                android:id="@+id/main_loot_gen_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_items_button"
+                app:srcCompat="@mipmap/loot_generator_button" />
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/main_misc_button"/>
+                app:layout_constraintTop_toBottomOf="@+id/main_loot_gen_button"/>
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

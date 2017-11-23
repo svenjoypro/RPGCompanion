@@ -48,6 +48,7 @@ public class MainActivity extends RPGCActivity {
         ImageButton adventures_btn = findViewById(R.id.main_adventures_button);
         ImageButton riddles_btn = findViewById(R.id.main_riddles_button);
         ImageButton misc_btn = findViewById(R.id.main_misc_button);
+        ImageButton loot_gen_btn = findViewById(R.id.main_loot_gen_button);
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
@@ -74,6 +75,9 @@ public class MainActivity extends RPGCActivity {
                     case R.id.main_misc_button:
                         intent = new Intent(v.getContext(), MiscActivity.class);
                         break;
+                    case R.id.main_loot_gen_button:
+                        intent = new Intent(v.getContext(), LootGeneratorActivity.class);
+                        break;
                     default:
                         intent = new Intent(v.getContext(), NPCsActivity.class);
                 }
@@ -83,12 +87,13 @@ public class MainActivity extends RPGCActivity {
         };
 
         hooks_btn.setOnClickListener(buttonHandler);
-        //encounters_btn.setOnClickListener(buttonHandler);
+        encounters_btn.setOnClickListener(buttonHandler);
         //puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
         riddles_btn.setOnClickListener(buttonHandler);
         adventures_btn.setOnClickListener(buttonHandler);
         misc_btn.setOnClickListener(buttonHandler);
+        loot_gen_btn.setOnClickListener(buttonHandler);
 
         application.checkToken(this);
     }
