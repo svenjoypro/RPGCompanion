@@ -1,4 +1,7 @@
 package com.mpvreeken.rpgcompanion.NPC;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 
@@ -127,6 +130,45 @@ public class NPC {
         return s;
     }
     */
+
+    public SpannableStringBuilder getNPCText() {
+        SpannableStringBuilder s = new SpannableStringBuilder();
+
+        s.append(formatString("Name: ",name));
+        s.append(formatString("\nRace: ", raceName));
+        s.append(formatString("\nSex: ", sex));
+        s.append(formatString("\nAge: ", age));
+        s.append(formatString("\nAppearance: ",appearance));
+        s.append(formatString("\nVoice: ",voice));
+        s.append(formatString("\nPersonality: ",personality));
+        s.append(formatString("\nTrait: ",trait));
+        s.append(formatString("\nBond: ",bond));
+        s.append(formatString("\nMotivated by: ",motivation));
+        s.append(formatString("\nIdeal: ",ideal));
+        s.append(formatString("\nFlaw: ",flaw));
+        s.append(formatString("\nQuirk: ",quirk));
+        s.append(formatString("\nDetail: ",detail));
+
+        s.append(formatString("\nProfession: ",profession));
+        s.append(formatString("\nReligion: ",worshipHabit));
+        s.append(formatString("\nRelationship Status: ",relationship));
+        s.append(formatString("\nLife Event: ",lifeEvent));
+        s.append(formatString("\nSpeed: ", speed));
+        s.append(formatString("\nFly Speed: ", flySpeed.length()>0 ? speed : "0"));
+
+        s.append(formatString("\nSTR: ",strength));
+        s.append(formatString("   DEX: ",dexterity));
+        s.append(formatString("\nCON: ",constitution));
+        s.append(formatString("   INT: ",intelligence));
+        s.append(formatString("\nWIS: ",wisdom));
+        s.append(formatString("   CHA: ",charisma));
+        s.append(formatString("\nLanguages: ", languages));
+        s.append(formatString("\nRacial Extras: ", racials));
+        s.append(formatString("\nPlot Hook: ",hook));
+        s.append(formatString("\nSummary: ", summary.equals(DEFAULT_SUMMARY) ? "" : summary));
+
+        return s;
+    }
 
 
     public String getRace() {return raceName;}

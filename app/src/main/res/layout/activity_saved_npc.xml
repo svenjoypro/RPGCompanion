@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.mpvreeken.rpgcompanion.RandomNPCActivity">
 
+
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="0dp"
@@ -23,5 +25,17 @@
             android:layout_width="match_parent" >
         </com.mpvreeken.rpgcompanion.NPC.NPCLayout>
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/saved_npc_copy_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        android:alpha=".5"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/copy" />
 
 </android.support.constraint.ConstraintLayout>

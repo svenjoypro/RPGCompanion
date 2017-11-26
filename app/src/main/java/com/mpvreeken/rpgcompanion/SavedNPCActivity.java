@@ -1,14 +1,15 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
@@ -43,6 +44,20 @@ public class SavedNPCActivity extends RPGCActivity {
         NPCLayout npcLayout = findViewById(R.id.saved_npc_npclayout);
         npcLayout.setNPC(npc);
         npcLayout.setSaveable(this);
+
+        ImageButton copy_btn = findViewById(R.id.saved_npc_copy_btn);
+        copy_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (npc != null) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("NPCData", npc.getNPCText());
+                    clipboard.setPrimaryClip(clip);
+
+                    Toast.makeText(context, "NPC copied to clipboard", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void updateNPC() {
@@ -66,5 +81,7 @@ public class SavedNPCActivity extends RPGCActivity {
 
         db.update(DBHelper.NPCS_TABLE_NAME, values, "_id="+id, null);
     }
+
+
 
 }

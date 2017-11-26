@@ -25,3 +25,5 @@
 #-renamesourcefileattribute SourceFile
 
 -ignorewarnings
+
+-printmapping build/outputs/mapping/release/mapping.txt

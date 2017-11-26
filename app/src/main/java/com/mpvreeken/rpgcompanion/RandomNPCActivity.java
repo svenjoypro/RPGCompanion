@@ -2,7 +2,10 @@ package com.mpvreeken.rpgcompanion;
 
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -17,8 +20,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
@@ -79,6 +85,20 @@ public class RandomNPCActivity extends RPGCActivity {
         //By default set result to canceled, we re-set this to RESULT_OK if we need to later
         Intent returnIntent = new Intent();
         setResult(RESULT_CANCELED, returnIntent);
+
+        ImageButton copy_btn = findViewById(R.id.saved_npc_copy_btn);
+        copy_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentNPC != null) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("NPCData", currentNPC.getNPCText());
+                    clipboard.setPrimaryClip(clip);
+
+                    Toast.makeText(context, "NPC copied to clipboard", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void showSaveDialog() {
