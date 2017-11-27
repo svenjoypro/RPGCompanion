@@ -27,7 +27,6 @@
         <activity android:name=".AdventuresActivity" />
         <activity android:name=".RandomNPCActivity" />
         <activity android:name=".SavedNPCActivity" />
-        <activity android:name=".MiscActivity" />
         <activity android:name=".Riddles.RiddlesActivity" />
         <activity android:name=".Riddles.DisplayRiddleActivity" />
         <activity android:name=".LoginActivity" />
@@ -77,8 +76,10 @@
         <activity android:name=".Riddles.NewRiddleActivity" />
         <activity android:name=".ReleaseNotesActivity" />
         <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".LootGeneratorActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".LootGeneratorActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".D100Activity"></activity>
     </application>
 
 </manifest>
