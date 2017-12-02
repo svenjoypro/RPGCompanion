@@ -143,9 +143,21 @@ public class LootGeneratorActivity extends RPGCActivity {
     private void generateLoot() {
         //String s = spinner.getSelectedItemsAsString();
         //Log.e("getSelected", s);
-
-        int cr = Integer.valueOf(cr_et.getText().toString());
-        int enemies = Integer.valueOf(enemies_et.getText().toString());
+        int cr, enemies;
+        try {
+            cr = cr_et.getText().toString().replaceAll("\\D", "").length() == 0 ? 0 : Integer.valueOf(cr_et.getText().toString().replaceAll("\\D", ""));
+            if (cr < 0) {
+                cr = cr * -1;
+            }
+            enemies = enemies_et.getText().toString().replaceAll("\\D", "").length() == 0 ? 0 : Integer.valueOf(enemies_et.getText().toString().replaceAll("\\D", ""));
+            if (enemies < 0) {
+                enemies = enemies * -1;
+            }
+        }
+        catch (Exception e) {
+            cr=0;
+            enemies=0;
+        }
 
         List<String> commons = Arrays.asList("common", "uncommon", "rare", "very_rare", "legendary");
         int commonIndex = (int) cr/4;
@@ -263,10 +275,13 @@ public class LootGeneratorActivity extends RPGCActivity {
             while(spell.length()==0) {
                 int x = ran.nextInt(spells.length());
                 JSONObject o = spells.getJSONObject(x);
-                String level = o.get("level").toString();
+                String level = o.get("level").toString().replaceAll("\\D","").length() == 0 ? "0" : o.get("level").toString().replaceAll("\\D","");
                 int lvl = 0;
                 if (!level.equals("cantrip")) {
-                    lvl = Integer.valueOf(level);
+                    try {
+                        lvl = Integer.valueOf(level);
+                    }
+                    catch (Exception e) { }
                 }
                 if (lvl < (cr / 2)+2) {
                     spell = "Spell Scroll: "+o.get("name").toString() + " (Level: "+level+")";

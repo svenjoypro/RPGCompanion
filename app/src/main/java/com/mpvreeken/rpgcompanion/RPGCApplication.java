@@ -49,11 +49,13 @@ public class RPGCApplication extends Application {
 
     private Activity activity;
 
+    private final String SHARED_PREFS = "com.mpvreeken.rpgcompanion";
+
     @Override
     public void onCreate () {
         super.onCreate();
 
-        prefs = this.getSharedPreferences("com.mpvreeken.rpgcompanion", Context.MODE_PRIVATE);
+        prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
         //TODO get user from sharedPreferences, also save it to preferences at some point
 
@@ -69,20 +71,20 @@ public class RPGCApplication extends Application {
     public void login(String token, Activity a) {
         this.token = token;
         this.loggedIn = true;
+        if (prefs==null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
         prefs.edit().putString("token", this.token).apply();
-        if (a!=null) {
-            a.invalidateOptionsMenu();
-        }
+        if (a!=null) { a.invalidateOptionsMenu(); }
     }
 
-    public void logout(Activity a) {
+    public void logout(RPGCActivity a) {
         this.token = "";
         this.loggedIn = false;
+        if (prefs==null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
         prefs.edit().putString("token", this.token).apply();
         if (a!=null) {
             a.invalidateOptionsMenu();
+            a.onLoggedOut();
         }
-        //TODO finish()? what if they are on a logged in only page?
     }
 
     public void setUserData(User u) {
@@ -114,27 +116,21 @@ public class RPGCApplication extends Application {
     }
 
     public String getToken() {
-        if (token == null) {
-            prefs = this.getSharedPreferences("com.mpvreeken.rpgcompanion", Context.MODE_PRIVATE);
-            token = prefs.getString("token", "");
-        }
+        if (prefs == null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
+        if (token == null) { token = prefs.getString("token", ""); }
         return token;
     }
 
     public Boolean getLoggedIn() {  return loggedIn; }
 
     public void checkToken(Activity a) {
-        if (token==null) {
-            prefs = this.getSharedPreferences("com.mpvreeken.rpgcompanion", Context.MODE_PRIVATE);
-            token = prefs.getString("token", "");
-        }
+        if (prefs == null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
+        if (token==null) { token = prefs.getString("token", ""); }
         if (token.length()==0) {
             loggedIn=false;
             return;
         }
-        if (a!=null) {
-            this.activity = a;
-        }
+        if (a!=null) { this.activity = a; }
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -145,7 +141,8 @@ public class RPGCApplication extends Application {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("RPGCApplication", call.request().body().toString());
+                //TODO keep this?
+                loggedIn=false;
             }
 
             @Override
