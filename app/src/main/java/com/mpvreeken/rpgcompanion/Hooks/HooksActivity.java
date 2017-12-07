@@ -71,7 +71,6 @@ public class HooksActivity extends RPGCActivity {
             public void onFailure(Call call, IOException e) {
                 displayError("Could not connect to server. Please try again");
                 hideLoadingAnim();
-                e.printStackTrace();
             }
 
             @Override

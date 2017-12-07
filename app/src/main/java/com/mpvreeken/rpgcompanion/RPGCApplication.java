@@ -26,17 +26,8 @@ import okhttp3.Response;
 /**
  * Created by Sven on 11/1/2017.
  */
-/*
-    *   This data will only persist for the lifetime of the app
-    *
-    *   If the app is sent to the background and garbage collection
-    *   comes through, it may destroy this and all data it carries
-    *   so at the very least initialize all vars with data so we
-    *   don't get NullPointerException crashes.
-    *
-    *   If we need to persist data between application shutdowns
-    *   we should use SharedPreferences
-    *   https://developer.android.com/reference/android/content/SharedPreferences.html
+
+    /*
     *
     */
 
@@ -62,10 +53,7 @@ public class RPGCApplication extends Application {
         this.username = prefs.getString("username", "");//second param is default value
         this.token = prefs.getString("token", "");
 
-
-        //TODO check if token is valid, if so mark loggedIn as true
         this.loggedIn = false;
-
     }
 
     public void login(String token, Activity a) {
