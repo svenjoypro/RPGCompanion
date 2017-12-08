@@ -97,6 +97,8 @@ public class RPGCActivity extends AppCompatActivity {
 
     }
 
+    public void onLoggedOut() {}
+
 
     public void onUnsuccessfulResponse(Response response) {
         String readable_error = "An unknown error has occurred. Please try again.";
@@ -106,19 +108,49 @@ public class RPGCActivity extends AppCompatActivity {
             //Error
             String error = r.has("error") ? r.getString("error") : "unknown_error";
             switch (error) {
+                case "username_in_use":
+                    readable_error = "That username is already taken";
+                    break;
+                case "email_in_use":
+                    readable_error = "That email is already associated with an account";
+                    break;
                 case "token_not_provided":
                     readable_error = "You are not logged in. Please log in first.";
-                    //TODO Redirect to login
+                    //TODO Redirect to login ?
                     break;
                 case "token_expired":
                     readable_error = "Your session has expired. Please log in again.";
-                    //TODO redirect to login
+                    //TODO redirect to login ?
                     break;
                 case "invalid_credentials":
                     readable_error = "Your username or password are incorrect";
                     break;
+                case "invalid_code":
+                    readable_error = "Invalid confirmation code";
+                    break;
+                case "invalid_password":
+                    readable_error = "Your password must be at least 6 characters long";
+                    break;
                 case "invalid_email":
                     readable_error = "The email you entered is invalid";
+                    break;
+                case "invalid_parameters":
+                    readable_error = "The data you supplied is invalid. Please try again.";
+                    break;
+                case "missing_data":
+                    readable_error = "The data you supplied is invalid. Please try again.";
+                    break;
+                case "db_error":
+                    readable_error = "An unknown error has occurred. Please try again.";
+                    break;
+                case "unable_to_send_email":
+                    readable_error = "An unknown error has occurred. Please try again.";
+                    break;
+                case "could_not_create_token":
+                    readable_error = "An unknown error has occurred. Please try again.";
+                    break;
+                case "account_already_confirmed":
+                    readable_error = "This account has already been confirmed.";
                     break;
                 case "account_unconfirmed":
                     Intent intent = new Intent(getApplicationContext(), ResendEmailActivity.class);
