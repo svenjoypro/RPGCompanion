@@ -79,7 +79,10 @@
         <activity
             android:name=".LootGeneratorActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".D100Activity"></activity>
+        <activity android:name=".D100Activity" />
+        <activity android:name=".Maps.EncMapsActivity" />
+        <activity android:name=".Maps.DisplayEncMapActivity" />
+        <activity android:name=".Maps.NewEncMapActivity"></activity>
     </application>
 
 </manifest>

@@ -146,6 +146,9 @@ public class RPGCActivity extends AppCompatActivity {
                 case "unable_to_send_email":
                     readable_error = "An unknown error has occurred. Please try again.";
                     break;
+                case "img_error":
+                    readable_error = "The thumbnail image url you provided is invalid.";
+                    break;
                 case "could_not_create_token":
                     readable_error = "An unknown error has occurred. Please try again.";
                     break;

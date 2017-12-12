@@ -12,7 +12,7 @@ public class EncountersActivity extends RPGCActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_encounters);
+        setContentView(R.layout.activity_enc_maps);
 
         TextView msg = findViewById(R.id.activity_message_tv);
         msg.setText("Perhaps in the future I will implement something for Encounters, " +

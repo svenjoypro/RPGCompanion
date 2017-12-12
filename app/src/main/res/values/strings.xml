@@ -34,6 +34,12 @@
     <string name="url_get_riddle">&baseurl;riddles/</string>
     <string name="url_submit_riddle">&baseurl;riddles/new</string>
 
+    <string name="url_get_environments">http://192.168.1.100/rpg_companion/api/maps/get-environments</string>
+    <string name="url_get_maps">http://192.168.1.100/rpg_companion/api/maps</string>
+    <string name="url_get_map">http://192.168.1.100/rpg_companion/api/maps/</string>
+    <string name="url_submit_map">http://192.168.1.100/rpg_companion/api/maps/new</string>
+    <string name="url_map_thumbs">http://192.168.1.100/rpg_companion/public/maps/</string>
+
 
     <string name="url_vote">&baseurl;vote</string>
 
