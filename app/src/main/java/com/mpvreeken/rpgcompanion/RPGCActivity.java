@@ -37,6 +37,7 @@ public class RPGCActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Set up back button to appear in action bar
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -165,9 +166,7 @@ public class RPGCActivity extends AppCompatActivity {
                     break;
             }
         }
-        catch (JSONException e) {
-            Log.d("RPGCActivity", e.getMessage());
-        } catch (IOException e) {
+        catch (JSONException | IOException e) {
             Log.d("RPGCActivity", e.getMessage());
         }
         final String uiError = readable_error;
@@ -198,6 +197,7 @@ public class RPGCActivity extends AppCompatActivity {
 
     public void disableUpButton() {
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
     }

@@ -1,16 +1,14 @@
 package com.mpvreeken.rpgcompanion.Hooks;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.ActionBar;
+import android.support.annotation.NonNull;
 import android.os.Bundle;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
 import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.R;
@@ -68,13 +66,13 @@ public class HooksActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 displayError("Could not connect to server. Please try again");
                 hideLoadingAnim();
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     onUnsuccessfulResponse(response);
@@ -158,18 +156,17 @@ public class HooksActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                     try {

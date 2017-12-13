@@ -1,6 +1,7 @@
 package com.mpvreeken.rpgcompanion.Hooks;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,9 @@ public class HookArrayAdapter extends ArrayAdapter<Hook> {
         this.hooks = values;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         final Hook hook = hooks.get(position);
 
@@ -38,9 +40,9 @@ public class HookArrayAdapter extends ArrayAdapter<Hook> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(R.layout.hooks_list_item_layout, parent, false);
-        TextView title_tv = (TextView) rowView.findViewById(R.id.hook_list_item_title_tv);
-        TextView votes_tv = (TextView) rowView.findViewById(R.id.hook_list_item_votes_tv);
-        TextView desc_tv = (TextView) rowView.findViewById(R.id.hook_list_item_desc_tv);
+        TextView title_tv = rowView.findViewById(R.id.hook_list_item_title_tv);
+        TextView votes_tv = rowView.findViewById(R.id.hook_list_item_votes_tv);
+        TextView desc_tv = rowView.findViewById(R.id.hook_list_item_desc_tv);
 
         title_tv.setText(hook.getTitle());
         votes_tv.setText(hook.getListItemVotes());

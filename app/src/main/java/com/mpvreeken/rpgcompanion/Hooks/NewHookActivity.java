@@ -2,8 +2,6 @@ package com.mpvreeken.rpgcompanion.Hooks;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.mpvreeken.rpgcompanion.LoginActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -20,6 +18,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -76,14 +75,14 @@ public class NewHookActivity extends RPGCActivity {
 
             client.newCall(request).enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     //e.printStackTrace();
                     Log.e("NewHookActivity", "okhttp onFailure()");
                     onHttpCallbackFail("Unable to connect to server");
                 }
 
                 @Override
-                public void onResponse(Call call, final Response response) throws IOException {
+                public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                     if (!response.isSuccessful()) {
                         onUnsuccessfulResponse(response);
                     }
