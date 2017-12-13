@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -51,6 +52,7 @@ public class DisplayHookActivity extends RPGCActivity {
 
         Intent intent = getIntent();
         final Bundle hookBundle = intent.getExtras();
+        assert hookBundle != null;
         hook_id = hookBundle.getString("HOOK_ID");
 
         upvote_btn = findViewById(R.id.hook_details_vote_up_btn);
@@ -98,24 +100,20 @@ public class DisplayHookActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
-                e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     onUnsuccessfulResponse(response);
-                    //displayError("An unknown error occurred. Please try again");
-                    //throw new IOException("Unexpected code " + response);
                 }
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
-                        Log.d("@@@@@@@@@@@@@@@", all.toString());
 
                         JSONObject h = all.getJSONObject("hook");
                         hook = new Hook(h.getString("id"),
@@ -182,7 +180,7 @@ public class DisplayHookActivity extends RPGCActivity {
 
         for (int i=0; i<commentsArray.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.comment_layout, null);
-            TextView comment_tv = (TextView) view.findViewById(R.id.comment_layout_comment_tv);
+            TextView comment_tv = view.findViewById(R.id.comment_layout_comment_tv);
 
 
             comment_tv.setText(commentsArray.get(i).getComment());
@@ -219,13 +217,13 @@ public class DisplayHookActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 displayError("Could not connect to server. Please try again");
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 boolean success=false;
                 if (!response.isSuccessful()) {
                     onUnsuccessfulResponse(response);
@@ -233,14 +231,6 @@ public class DisplayHookActivity extends RPGCActivity {
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
-
-                        /*
-                            Possible responses:
-                            "error": <>
-                            "success":"vote_unchanged"
-                            "success":"vote_saved"
-                            "success":"vote_updated"
-                        */
 
                         if (all.has("success")) {
                             //success
@@ -336,7 +326,7 @@ public class DisplayHookActivity extends RPGCActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Should only happen after comment is submitted or cancelled
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK){
                 //String result=data.getStringExtra("result");
                 //TODO Add user's new comment to the list of comments
             }
