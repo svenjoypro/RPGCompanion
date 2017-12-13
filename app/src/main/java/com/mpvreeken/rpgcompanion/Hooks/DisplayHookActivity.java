@@ -108,8 +108,9 @@ public class DisplayHookActivity extends RPGCActivity {
             public void onResponse(Call call, final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                    onUnsuccessfulResponse(response);
+                    //displayError("An unknown error occurred. Please try again");
+                    //throw new IOException("Unexpected code " + response);
                 }
                 else {
                     try {
@@ -187,22 +188,6 @@ public class DisplayHookActivity extends RPGCActivity {
             comment_tv.setText(commentsArray.get(i).getComment());
             comments_layout.addView(view);
         }
-
-        /*
-        comments_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
-
-                Bundle bundle = new Bundle();
-                //bundle.putSerializable("MOVIE_OBJ", (Serializable) moviesArray.get(position));
-
-                //intent.putExtras(bundle);
-                intent.putExtra("hook_id", HooksArray.get(position).getId());
-                startActivity(intent);
-            }
-        });
-        */
     }
 
     private void vote(boolean v) {
