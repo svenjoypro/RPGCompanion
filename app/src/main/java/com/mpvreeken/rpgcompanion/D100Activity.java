@@ -49,7 +49,17 @@ public class D100Activity extends RPGCActivity {
         });
 
         categories = new ArrayList<>();
+        categories.add("Encounters");
+        categories.add("Items");
+        categories.add("NPCs");
+        categories.add("World Building");
+        categories.add("Misc");
         jsonObjects = new ArrayList<>();
+        jsonObjects.add(new ArrayList<JSONObject>());
+        jsonObjects.add(new ArrayList<JSONObject>());
+        jsonObjects.add(new ArrayList<JSONObject>());
+        jsonObjects.add(new ArrayList<JSONObject>());
+        jsonObjects.add(new ArrayList<JSONObject>());
 
         try {
             String[] f = getAssets().list("d100");

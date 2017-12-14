@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/">]>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/">
+    <!ENTITY publicurl "http://107.150.7.141/rpg_companion/public/">
+]>
 
 <resources>
     <string name="app_name">RPG Companion</string>
@@ -34,11 +38,11 @@
     <string name="url_get_riddle">&baseurl;riddles/</string>
     <string name="url_submit_riddle">&baseurl;riddles/new</string>
 
-    <string name="url_get_environments">http://192.168.1.100/rpg_companion/api/maps/get-environments</string>
-    <string name="url_get_maps">http://192.168.1.100/rpg_companion/api/maps</string>
-    <string name="url_get_map">http://192.168.1.100/rpg_companion/api/maps/</string>
-    <string name="url_submit_map">http://192.168.1.100/rpg_companion/api/maps/new</string>
-    <string name="url_map_thumbs">http://192.168.1.100/rpg_companion/public/maps/</string>
+    <string name="url_get_environments">&baseurl;maps/get-environments</string>
+    <string name="url_get_maps">&baseurl;maps</string>
+    <string name="url_get_map">&baseurl;maps/</string>
+    <string name="url_submit_map">&baseurl;maps/new</string>
+    <string name="url_map_thumbs">&publicurl;maps/</string>
 
 
     <string name="url_vote">&baseurl;vote</string>
