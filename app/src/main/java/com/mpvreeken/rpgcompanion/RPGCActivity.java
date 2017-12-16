@@ -2,8 +2,10 @@ package com.mpvreeken.rpgcompanion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -48,11 +50,18 @@ public class RPGCActivity extends AppCompatActivity {
 
 
 
-
-    public void setupLoadingAnim() {
+    //Create 2 public setups, the default gives the spinner a white bg
+    //the second ...Transaparent will show the spinner without a bg
+    public void setupLoadingAnim() { setupLoadingAnim(false); }
+    public void setupLoadingAnimTransparent() { setupLoadingAnim(true); }
+    private void setupLoadingAnim(Boolean b) {
         final ViewGroup root_view = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
         LayoutInflater li = LayoutInflater.from(getBaseContext());
         loading_anim = li.inflate(R.layout.layout_loading_anim, root_view, false);
+        if (b) {
+            ConstraintLayout r = loading_anim.findViewById(R.id.loadingAnimRoot);
+            r.setBackgroundColor(Color.parseColor("#00000000"));
+        }
         root_view.addView(loading_anim);
 
         //TODO for some reason the cancel/change buttons appear above (z-depth) this loading anim
