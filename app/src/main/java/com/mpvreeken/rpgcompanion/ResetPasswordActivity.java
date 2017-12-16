@@ -66,7 +66,7 @@ public class ResetPasswordActivity extends RPGCActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         hideLoadingAnim();
-                        onHttpResponseError(e.getMessage());
+                        onHttpResponseError("Unable to connect to server");
                     }
 
                     @Override
@@ -76,17 +76,9 @@ public class ResetPasswordActivity extends RPGCActivity {
                             onUnsuccessfulResponse(response);
                         }
                         else {
-                            /*
-                                //TODO these mostly arent relevant anymore with onUnsuccessfulResponse() catching most (all?)
-                             *    possible responses:
-                             * { "error":"invalid_email" }
-                             * { "error":"could_not_send_email" }
-                             * { "success":"email_sent" }
-                             *
-                             */
                             try {
                                 JSONObject r = new JSONObject(response.body().string());
-                                Log.d("$$$$$$$$$$$", r.toString());
+
                                 if (r.has("success")) {
                                     //Success
                                     onResponseSuccess();

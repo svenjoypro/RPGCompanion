@@ -41,19 +41,12 @@ public class ConfirmEmailActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+            public void onFailure(Call call, IOException e) { onHttpCallbackFail(e.getMessage()); }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) { throw new IOException("Unexpected code " + response); }
+                if (!response.isSuccessful()) { onUnsuccessfulResponse(response); }
                 else {
-                            /*
-                             *    possible responses:
-                             * { "error":"invalid_code" }
-                             * { "error":"db_error" }
-                             * { "success":"account_verified", "jwt":<TOKEN> }
-                             *
-                             */
                     try {
                         JSONObject r = new JSONObject(response.body().string());
 

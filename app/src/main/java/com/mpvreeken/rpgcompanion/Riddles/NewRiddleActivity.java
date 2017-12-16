@@ -77,8 +77,6 @@ public class NewRiddleActivity extends RPGCActivity {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        //e.printStackTrace();
-                        Log.e("NewRiddleActivity", "okhttp onFailure()");
                         onHttpCallbackFail("Unable to connect to server");
                     }
 

@@ -76,6 +76,12 @@ public class NewEncMapActivity extends RPGCActivity {
                     return;
                 }
 
+                String suffix = img.substring(img.length()-4);
+                if (!suffix.equals(".jpg") && !suffix.equals(".png")) {
+                    Toast.makeText(context, "The thumbnail image url must be a direct link to a jpg or png file", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String ar = "";
                 for(int i:spinner.getSelectedIndicies()) {
                     ar+=i+",";
@@ -108,7 +114,6 @@ public class NewEncMapActivity extends RPGCActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         hideLoadingAnim();
-                        Log.e("NewEncMapActivity", "okhttp onFailure()");
                         onHttpCallbackFail("Unable to connect to server");
                     }
 

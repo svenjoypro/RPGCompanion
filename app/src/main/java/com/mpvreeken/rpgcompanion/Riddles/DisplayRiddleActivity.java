@@ -104,15 +104,13 @@ public class DisplayRiddleActivity extends RPGCActivity {
             public void onFailure(Call call, IOException e) {
                 hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
-                e.printStackTrace();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                     try {

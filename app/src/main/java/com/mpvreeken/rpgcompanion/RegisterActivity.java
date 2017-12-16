@@ -100,17 +100,9 @@ public class RegisterActivity extends RPGCActivity {
                     public void onResponse(Call call, final Response response) throws IOException {
                         hideLoadingAnim();
                         if (!response.isSuccessful()) {
-                            onHttpResponseError("Unexpected error occurred");
-                            throw new IOException("Unexpected code " + response);
+                            onUnsuccessfulResponse(response);
                         }
                         else {
-                            /*
-                             *    possible responses:
-                             * { "error":"<Validator Error>" } - username is already taken, etc
-                             * { "error":"could_not_create_user" }
-                             * { "success":"Confirmation Email Sent" }
-                             *
-                             */
                             try {
                                 JSONObject r = new JSONObject(response.body().string());
 

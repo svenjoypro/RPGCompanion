@@ -90,15 +90,6 @@ public class LoginActivity extends RPGCActivity {
                             onUnsuccessfulResponse(response);
                         }
                         else {
-                            /*
-                                //TODO these mostly arent relevant anymore with onUnsuccessfulResponse() catching most (all?)
-                             *    possible responses:
-                             * { "error":"invalid_credentials" }
-                             * { "error":"could_not_create_token" }
-                             * { "error":"account_unconfirmed" }
-                             * { "jwt":"<TOKEN>" }
-                             *
-                             */
                             try {
                                 JSONObject r = new JSONObject(response.body().string());
                                 if (r.has("jwt")) {

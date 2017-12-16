@@ -79,7 +79,7 @@ public class ResetPasswordDeepLinkActivity extends RPGCActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         hideLoadingAnim();
-                        onHttpResponseError(e.getMessage());
+                        onHttpResponseError("Unable to connect to server");
                     }
 
                     @Override
