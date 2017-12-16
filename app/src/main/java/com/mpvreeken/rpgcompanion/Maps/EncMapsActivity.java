@@ -2,8 +2,7 @@ package com.mpvreeken.rpgcompanion.Maps;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,7 +18,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,30 +30,32 @@ import okhttp3.Response;
 
 public class EncMapsActivity extends RPGCActivity {
 
-    private List<String> envs;
-    private Menu menu;
+    private ArrayList<String> envs;
     private MultiselectSpinner spinner;
-    private Button get_btn, initial_load_btn;
 
     private ArrayList<EncMap> mapsArray = new ArrayList<>();
     private EncMapArrayAdapter encMapArrayAdapter;
     private ListView maps_lv;
+
+    private String seed; //random seed for server
+    private int page; //pagination for server to get next set of maps
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enc_maps);
 
-        setupLoadingAnim();
+        setupLoadingAnimTransparent();
 
         spinner = findViewById(R.id.maps_envs_spinner);
-        get_btn = findViewById(R.id.maps_get_btn);
 
         maps_lv = findViewById(R.id.maps_lv);
         mapsArray = new ArrayList<>();
         encMapArrayAdapter = new EncMapArrayAdapter(this, mapsArray);
 
-        initial_load_btn = findViewById(R.id.maps_init_load_btn);
+        page = 0;
+        Random rand = new Random();
+        seed = String.valueOf(rand.nextFloat());
 
         getEnvironments();
     }
@@ -72,24 +73,21 @@ public class EncMapsActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 displayError("Could not connect to server. Please try again");
                 hideLoadingAnim();
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
-                    displayError("Unable to get Map data from server");
-                    finish();
-                    return;
-                    //onUnsuccessfulResponse(response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
-                        envs = new ArrayList();
+                        envs = new ArrayList<>();
                         for (int i=0; i<r.length(); i++) {
                             envs.add(r.getString(i));
                         }
@@ -98,7 +96,6 @@ public class EncMapsActivity extends RPGCActivity {
                     catch (JSONException e) {
                         displayError("An unknown error occurred. Please try again");
                         finish();
-                        return;
                     }
                 }
             }
@@ -118,14 +115,6 @@ public class EncMapsActivity extends RPGCActivity {
                 spinner.setItems(envs);
                 spinner.setSelection(envs);
 
-                initial_load_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        loadMoreMaps();
-                    }
-                });
-
-
                 Button btn = new Button(context);
                 btn.setText("Load More");
 
@@ -139,7 +128,6 @@ public class EncMapsActivity extends RPGCActivity {
                 });
 
                 maps_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
                     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                         Intent intent = new Intent(parent.getContext(), DisplayEncMapActivity.class);
 
@@ -152,13 +140,14 @@ public class EncMapsActivity extends RPGCActivity {
 
                 Button new_map_btn = findViewById(R.id.maps_new_btn);
                 new_map_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getBaseContext(), NewEncMapActivity.class);
-                        intent.putStringArrayListExtra("ENVS", new ArrayList<String>(envs));
+                        intent.putStringArrayListExtra("ENVS", new ArrayList<>(envs));
                         startActivity(intent);
                     }
                 });
+
+                loadMoreMaps();
             }
         });
     }
@@ -168,16 +157,16 @@ public class EncMapsActivity extends RPGCActivity {
 
         OkHttpClient client = new OkHttpClient();
 
-        String maps_url = "http://192.168.1.100/rpg_companion/api/maps";
-        //getResources().getString(R.string.url_get_maps)
-        String ar = "";
+        StringBuilder ar = new StringBuilder();
         for(int i:spinner.getSelectedIndicies()) {
-            ar+=i+",";
+            ar.append(i).append(",");
         }
-        ar = ar.substring(0,ar.length()-1);
+        ar = new StringBuilder(ar.substring(0, ar.length() - 1));
 
         RequestBody requestBody = new FormBody.Builder()
-                .add("envs", ar)
+                .add("envs", ar.toString())
+                .add("seed", seed)
+                .add("page", String.valueOf(page))
                 .build();
 
         Request request = new Request.Builder()
@@ -187,22 +176,29 @@ public class EncMapsActivity extends RPGCActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
-                e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
-                    displayError("An unknown error occurred. Please try again");
-                    throw new IOException("Unexpected code " + response);
+                    onUnsuccessfulResponse(response);
                 }
                 else {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
+                        if (r.length()==0) {
+                            if (mapsArray.size() == 0) {
+                                displayError("No Maps Found. Help everyone by submitting new maps.");
+                            }
+                            else {
+                                displayError("No More Maps. Help everyone by submitting new maps.");
+                            }
+                            return;
+                        }
                         for (int i=0; i<r.length(); i++) {
                             mapsArray.add(
                                     new EncMap(
@@ -221,10 +217,12 @@ public class EncMapsActivity extends RPGCActivity {
                             );
                         }
 
+                        //Increment page value for server
+                        page+=1;
+
                         EncMapsActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                initial_load_btn.setVisibility(View.INVISIBLE);
 
                                 //Get scroll position of listview, so we can retain their position after loading more
                                 int firstVisibleItem = maps_lv.getFirstVisiblePosition();

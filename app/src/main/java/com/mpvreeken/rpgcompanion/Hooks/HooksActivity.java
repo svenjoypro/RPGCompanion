@@ -19,11 +19,14 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HooksActivity extends RPGCActivity {
@@ -32,12 +35,19 @@ public class HooksActivity extends RPGCActivity {
     HookArrayAdapter hookArrayAdapter;
     ListView hooks_lv;
 
+    private String seed; //random seed for server
+    private int page; //pagination for server to get next set of maps
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hooks);
+
         setupLoadingAnim();
 
+        page = 0;
+        Random rand = new Random();
+        seed = String.valueOf(rand.nextFloat());
 
         Button new_btn = findViewById(R.id.hooks_new_btn);
 
@@ -54,64 +64,9 @@ public class HooksActivity extends RPGCActivity {
         this.hookArrayAdapter = new HookArrayAdapter(this, hooksArray);
         this.hooks_lv = findViewById(R.id.hooks_lv);
 
-        showLoadingAnim();
+        setupUI();
 
-        String hooks_url = getResources().getString(R.string.url_get_hooks);
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(hooks_url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                displayError("Could not connect to server. Please try again");
-                hideLoadingAnim();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
-                hideLoadingAnim();
-                if (!response.isSuccessful()) {
-                    onUnsuccessfulResponse(response);
-                }
-                else {
-                    try {
-                        JSONArray r = new JSONArray(response.body().string());
-                        for (int i=0; i<r.length(); i++) {
-                            hooksArray.add(
-                                new Hook(
-                                    r.getJSONObject(i).getString("id"),
-                                    r.getJSONObject(i).getString("title"),
-                                    r.getJSONObject(i).getString("username"),
-                                    r.getJSONObject(i).getInt("user_id"),
-                                    r.getJSONObject(i).getString("description"),
-                                    r.getJSONObject(i).getInt("upvotes"),
-                                    r.getJSONObject(i).getInt("downvotes"),
-                                    r.getJSONObject(i).getInt("voted"),
-                                    r.getJSONObject(i).getString("created_at"),
-                                    r.getJSONObject(i).getString("updated_at")
-                                )
-                            );
-                        }
-
-                        //We can't update the UI on a background thread, so run on the UI thread
-                        HooksActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setupUI();
-                            }
-                        });
-                    }
-                    catch (JSONException e) {
-                        displayError("An unknown error occurred. Please try again");
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        loadMoreHooks();
     }
 
     public void setupUI() {
@@ -146,12 +101,16 @@ public class HooksActivity extends RPGCActivity {
     public void loadMoreHooks() {
         showLoadingAnim();
 
-        String hooks_url = getResources().getString(R.string.url_get_hooks);
-
         OkHttpClient client = new OkHttpClient();
 
+        RequestBody requestBody = new FormBody.Builder()
+                .add("seed", seed)
+                .add("page", String.valueOf(page))
+                .build();
+
         Request request = new Request.Builder()
-                .url(hooks_url)
+                .url(getResources().getString(R.string.url_get_hooks))
+                .post(requestBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -159,7 +118,6 @@ public class HooksActivity extends RPGCActivity {
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
-                e.printStackTrace();
             }
 
             @Override
@@ -171,6 +129,12 @@ public class HooksActivity extends RPGCActivity {
                 else {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
+
+                        if (r.length()==0) {
+                            displayError("No More Plot Hooks. Help everyone by submitting new plot hooks.");
+                            return;
+                        }
+
                         for (int i=0; i<r.length(); i++) {
                             hooksArray.add(
                                     new Hook(
@@ -187,6 +151,9 @@ public class HooksActivity extends RPGCActivity {
                                     )
                             );
                         }
+
+                        //Increment page value for server
+                        page+=1;
 
                         HooksActivity.this.runOnUiThread(new Runnable() {
                             @Override
