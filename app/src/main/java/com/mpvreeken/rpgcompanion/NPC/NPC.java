@@ -76,6 +76,8 @@ public class NPC {
      * @return Formatted SpannableString Builder
      */
     public SpannableStringBuilder formatString(String p, String s) {
+        if (s==null) { s=""; }
+        if (p==null) { p=""; }
         SpannableStringBuilder str = new SpannableStringBuilder(p);
         str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, p.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return str.append(s);
