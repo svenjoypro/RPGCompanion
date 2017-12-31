@@ -17,6 +17,10 @@
         android:title="Settings"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/menu_account"
+        android:title="My Account"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/menu_logout"
         android:title="Logout"
         app:showAsAction="never"/>

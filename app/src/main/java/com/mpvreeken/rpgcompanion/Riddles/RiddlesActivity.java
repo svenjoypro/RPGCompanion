@@ -37,11 +37,13 @@ public class RiddlesActivity extends RPGCActivity {
     private String seed; //random seed for server
     private int page; //pagination for server to get next set of maps
 
+    private Boolean firstLoad=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_riddles);
-        setupLoadingAnim();
+        setupLoadingAnimTransparent();
 
         page = 0;
         Random rand = new Random();
@@ -154,17 +156,24 @@ public class RiddlesActivity extends RPGCActivity {
                         RiddlesActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //Get scroll position of listview, so we can retain their position after loading more
-                                int firstVisibleItem = riddles_lv.getFirstVisiblePosition();
-                                int oldCount = riddleArrayAdapter.getCount();
-                                View view = riddles_lv.getChildAt(0);
-                                int pos = (view == null ? 0 :  view.getBottom());
+                                if (firstLoad) {
+                                    firstLoad=false;
+                                    //Set the new data
+                                    riddles_lv.setAdapter(riddleArrayAdapter);
+                                }
+                                else {
+                                    //Get scroll position of listview, so we can retain their position after loading more
+                                    int firstVisibleItem = riddles_lv.getFirstVisiblePosition();
+                                    int oldCount = riddleArrayAdapter.getCount();
+                                    View view = riddles_lv.getChildAt(0);
+                                    int pos = (view == null ? 0 : view.getBottom());
 
-                                //Set the new data
-                                riddles_lv.setAdapter(riddleArrayAdapter);
+                                    //Set the new data
+                                    riddles_lv.setAdapter(riddleArrayAdapter);
 
-                                //Set the listview position back to where they were
-                                riddles_lv.setSelectionFromTop(firstVisibleItem + riddleArrayAdapter.getCount() - oldCount + 1, pos);
+                                    //Set the listview position back to where they were
+                                    riddles_lv.setSelectionFromTop(firstVisibleItem + riddleArrayAdapter.getCount() - oldCount + 1, pos);
+                                }
                             }
                         });
                     }

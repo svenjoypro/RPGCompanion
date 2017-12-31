@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.Auth;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

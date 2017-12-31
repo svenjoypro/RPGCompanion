@@ -1,9 +1,12 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.Puzzles;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 public class PuzzlesActivity extends RPGCActivity {
 

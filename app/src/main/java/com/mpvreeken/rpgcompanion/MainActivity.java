@@ -8,6 +8,9 @@ import android.widget.ImageButton;
 
 import com.mpvreeken.rpgcompanion.Hooks.HooksActivity;
 import com.mpvreeken.rpgcompanion.Maps.EncMapsActivity;
+import com.mpvreeken.rpgcompanion.NPC.NPCsActivity;
+import com.mpvreeken.rpgcompanion.Names.NameGeneratorActivity;
+import com.mpvreeken.rpgcompanion.Puzzles.PuzzlesActivity;
 import com.mpvreeken.rpgcompanion.Riddles.RiddlesActivity;
 
 public class MainActivity extends RPGCActivity {
@@ -28,12 +31,11 @@ public class MainActivity extends RPGCActivity {
         //Remove the "up" or back button from the ActionBar
         disableUpButton();
 
-        //checkLoggedIn();
-
         ImageButton hooks_btn = findViewById(R.id.main_hooks_button);
         ImageButton encounters_btn = findViewById(R.id.main_encounters_button);
         ImageButton puzzles_btn = findViewById(R.id.main_puzzles_button);
         ImageButton npc_btn = findViewById(R.id.main_npc_button);
+        ImageButton names_btn = findViewById(R.id.main_names_button);
         ImageButton adventures_btn = findViewById(R.id.main_adventures_button);
         ImageButton riddles_btn = findViewById(R.id.main_riddles_button);
         ImageButton misc_btn = findViewById(R.id.main_misc_button);
@@ -55,6 +57,9 @@ public class MainActivity extends RPGCActivity {
                         break;
                     case R.id.main_npc_button:
                         intent = new Intent(v.getContext(), NPCsActivity.class);
+                        break;
+                    case R.id.main_names_button:
+                        intent = new Intent(v.getContext(), NameGeneratorActivity.class);
                         break;
                     case R.id.main_adventures_button:
                         intent = new Intent(v.getContext(), AdventuresActivity.class);
@@ -83,6 +88,7 @@ public class MainActivity extends RPGCActivity {
         encounters_btn.setOnClickListener(buttonHandler);
         //puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
+        names_btn.setOnClickListener(buttonHandler);
         riddles_btn.setOnClickListener(buttonHandler);
         adventures_btn.setOnClickListener(buttonHandler);
         misc_btn.setOnClickListener(buttonHandler);

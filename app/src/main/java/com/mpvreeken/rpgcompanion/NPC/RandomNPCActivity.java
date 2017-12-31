@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.NPC;
 
 
 import android.app.Dialog;
@@ -30,6 +30,8 @@ import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCData;
 import com.mpvreeken.rpgcompanion.NPC.NPCLayout;
+import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 /**
  * Activity to display randomly generated NPCs

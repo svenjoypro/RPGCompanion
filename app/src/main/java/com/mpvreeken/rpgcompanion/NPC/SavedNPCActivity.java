@@ -1,4 +1,4 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.NPC;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
 import com.mpvreeken.rpgcompanion.NPC.NPC;
 import com.mpvreeken.rpgcompanion.NPC.NPCLayout;
+import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 public class SavedNPCActivity extends RPGCActivity {
 

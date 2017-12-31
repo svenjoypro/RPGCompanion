@@ -1,19 +1,16 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.NPC;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.mpvreeken.rpgcompanion.Classes.DBHelper;
-import com.mpvreeken.rpgcompanion.NPC.NPCCursorAdapter;
+import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 public class NPCsActivity extends RPGCActivity {
 

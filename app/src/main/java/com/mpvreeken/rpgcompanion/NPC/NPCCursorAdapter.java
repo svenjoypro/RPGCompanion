@@ -3,15 +3,12 @@ package com.mpvreeken.rpgcompanion.NPC;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import com.mpvreeken.rpgcompanion.NPCsActivity;
 import com.mpvreeken.rpgcompanion.R;
-import com.mpvreeken.rpgcompanion.SavedNPCActivity;
 
 /**
  * Created by Sven on 9/3/2017.

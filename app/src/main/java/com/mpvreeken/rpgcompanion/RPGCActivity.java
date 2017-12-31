@@ -17,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.mpvreeken.rpgcompanion.Auth.LoginActivity;
+import com.mpvreeken.rpgcompanion.Auth.RegisterActivity;
+import com.mpvreeken.rpgcompanion.Auth.ResendEmailActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +55,7 @@ public class RPGCActivity extends AppCompatActivity {
 
 
     //Create 2 public setups, the default gives the spinner a white bg
-    //the second ...Transaparent will show the spinner without a bg
+    //the second ...Transparent will show the spinner without a bg
     public void setupLoadingAnim() { setupLoadingAnim(false); }
     public void setupLoadingAnimTransparent() { setupLoadingAnim(true); }
     private void setupLoadingAnim(Boolean b) {
@@ -231,6 +235,8 @@ public class RPGCActivity extends AppCompatActivity {
         else {
             item = menu.findItem(R.id.menu_logout);
             item.setVisible(false);
+            item = menu.findItem(R.id.menu_account);
+            item.setVisible(false);
         }
 
         return true;
@@ -247,6 +253,10 @@ public class RPGCActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_settings:
                 intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menu_account:
+                intent = new Intent(getApplicationContext(), AccountActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_login:

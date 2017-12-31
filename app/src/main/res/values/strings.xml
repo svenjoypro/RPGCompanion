@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/">
-    <!ENTITY publicurl "http://107.150.7.141/rpg_companion/public/">
-]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/"><!ENTITY publicurl "http://107.150.7.141/rpg_companion/public/">]>
 
 <resources>
     <string name="app_name">RPG Companion</string>
@@ -24,6 +20,7 @@
     <string name="url_create_pw_reset">&baseurl;create-password-reset</string>
     <string name="url_reset_pw">&baseurl;reset-password</string>
 
+    <string name="url_get_account_info">&baseurl;admin/account</string>
 
     <string name="url_login">&baseurl;login</string>
     <string name="url_check_token">&baseurl;admin/check-token</string>

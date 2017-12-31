@@ -1,11 +1,13 @@
-package com.mpvreeken.rpgcompanion;
+package com.mpvreeken.rpgcompanion.Auth;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.mpvreeken.rpgcompanion.R;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

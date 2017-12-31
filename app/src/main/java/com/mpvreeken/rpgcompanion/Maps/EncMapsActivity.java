@@ -40,6 +40,8 @@ public class EncMapsActivity extends RPGCActivity {
     private String seed; //random seed for server
     private int page; //pagination for server to get next set of maps
 
+    private Boolean firstLoad=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,20 +225,25 @@ public class EncMapsActivity extends RPGCActivity {
                         EncMapsActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if (firstLoad) {
+                                    firstLoad=false;
+                                    //Set the new data
+                                    maps_lv.setAdapter(encMapArrayAdapter);
+                                }
+                                else {
+                                    //Get scroll position of listview, so we can retain their position after loading more
+                                    int firstVisibleItem = maps_lv.getFirstVisiblePosition();
+                                    int oldCount = encMapArrayAdapter.getCount();
+                                    View view = maps_lv.getChildAt(0);
+                                    int pos = (view == null ? 0 : view.getBottom());
 
-                                //Get scroll position of listview, so we can retain their position after loading more
-                                int firstVisibleItem = maps_lv.getFirstVisiblePosition();
-                                int oldCount = encMapArrayAdapter.getCount();
-                                View view = maps_lv.getChildAt(0);
-                                int pos = (view == null ? 0 :  view.getBottom());
 
+                                    //Set the new data
+                                    maps_lv.setAdapter(encMapArrayAdapter);
 
-
-                                //Set the new data
-                                maps_lv.setAdapter(encMapArrayAdapter);
-
-                                //Set the listview position back to where they were
-                                maps_lv.setSelectionFromTop(firstVisibleItem + encMapArrayAdapter.getCount() - oldCount + 1, pos);
+                                    //Set the listview position back to where they were
+                                    maps_lv.setSelectionFromTop(firstVisibleItem + encMapArrayAdapter.getCount() - oldCount + 1, pos);
+                                }
                             }
                         });
 

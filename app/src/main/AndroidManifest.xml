@@ -20,18 +20,18 @@
         </activity>
         <activity android:name=".Hooks.HooksActivity" />
         <activity android:name=".EncountersActivity" />
-        <activity android:name=".PuzzlesActivity" />
+        <activity android:name=".Puzzles.PuzzlesActivity" />
         <activity android:name=".Hooks.DisplayHookActivity" />
-        <activity android:name=".NPCsActivity" />
+        <activity android:name=".NPC.NPCsActivity" />
         <activity android:name=".CommentActivity" />
         <activity android:name=".AdventuresActivity" />
-        <activity android:name=".RandomNPCActivity" />
-        <activity android:name=".SavedNPCActivity" />
+        <activity android:name=".NPC.RandomNPCActivity" />
+        <activity android:name=".NPC.SavedNPCActivity" />
         <activity android:name=".Riddles.RiddlesActivity" />
         <activity android:name=".Riddles.DisplayRiddleActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Auth.LoginActivity" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Auth.RegisterActivity"
             android:noHistory="true" />
         <activity android:name=".SettingsActivity" />
         <activity
@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResetPasswordDeepLinkActivity"
+            android:name=".Auth.ResetPasswordDeepLinkActivity"
             android:launchMode="singleTop"
             android:noHistory="true">
             <intent-filter>
@@ -71,18 +71,22 @@
             android:noHistory="true" />
         <activity android:name=".Hooks.NewHookActivity" />
         <activity
-            android:name=".ResendEmailActivity"
+            android:name=".Auth.ResendEmailActivity"
             android:noHistory="true" />
         <activity android:name=".Riddles.NewRiddleActivity" />
         <activity android:name=".ReleaseNotesActivity" />
-        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".Auth.ResetPasswordActivity" />
         <activity
             android:name=".LootGeneratorActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".D100Activity" />
         <activity android:name=".Maps.EncMapsActivity" />
         <activity android:name=".Maps.DisplayEncMapActivity" />
-        <activity android:name=".Maps.NewEncMapActivity"></activity>
+        <activity android:name=".Maps.NewEncMapActivity" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".Names.NameGeneratorActivity" />
+        <activity android:name=".Puzzles.NewPuzzleActivity" />
+        <activity android:name=".Puzzles.DisplayPuzzleActivity"></activity>
     </application>
 
 </manifest>

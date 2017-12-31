@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mpvreeken.rpgcompanion.R;
-import com.mpvreeken.rpgcompanion.SavedNPCActivity;
 
 
 /**

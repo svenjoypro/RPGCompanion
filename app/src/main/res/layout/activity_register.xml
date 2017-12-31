@@ -6,7 +6,7 @@
     android:id="@+id/register_viewFlipper"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.mpvreeken.rpgcompanion.RegisterActivity" >
+    tools:context="com.mpvreeken.rpgcompanion.Auth.RegisterActivity" >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
