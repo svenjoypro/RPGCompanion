@@ -99,12 +99,27 @@ public class D100Activity extends RPGCActivity {
                             getRandom(jsonObjects.get(finalI).get(finalJ));
                         }
                     });
+                    btn.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            showSource(jsonObjects.get(finalI).get(finalJ));
+                            return true;
+                        }
+                    });
                     linear.addView(btn);
                 } catch (JSONException e) {
                     Toast.makeText(this, "An error occurred", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void showSource(JSONObject o) {
+        try {
+            output_tv.setText("Source: "+o.get("source").toString());
+        } catch (JSONException e) {
+            Toast.makeText(context, "An unknown error has occurred. Please try again", Toast.LENGTH_LONG).show();
         }
     }
 
