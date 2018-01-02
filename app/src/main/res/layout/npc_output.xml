@@ -9,7 +9,7 @@
         android:id="@+id/popup_npc_edit_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg"
+        android:background="@color/popup_bg"
         android:orientation="vertical"
         android:paddingBottom="32dp"
         android:paddingLeft="24dp"
@@ -236,8 +236,7 @@
         <TextView
             android:id="@+id/npc_summary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorCritical"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

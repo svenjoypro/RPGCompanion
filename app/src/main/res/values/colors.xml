@@ -10,7 +10,7 @@
     <color name="textPrimary">#343434</color>
     <color name="textVoted">#3366cc</color>
     <color name="textButtonPrimary">#000000</color>
-
+    <color name="popup_bg">#efefef</color>
 
     <color name="hook_list_item_gradient_start">#444444</color>
     <color name="hook_list_item_gradient_end">#282828</color>

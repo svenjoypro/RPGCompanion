@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@color/popup_bg"
     android:orientation="vertical"
     android:paddingBottom="32dp"
     android:paddingLeft="24dp"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Summary"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine" />
 
     <LinearLayout
         android:layout_width="match_parent"
