@@ -22,8 +22,6 @@ public class NPC {
             appearance, bond, flaw, ideal, voice, trait, relationship, hook, raceName, sex, age, speed, flySpeed, languages, racials,
             strength, dexterity, constitution, intelligence, wisdom, charisma, summary;
 
-    public static final String DEFAULT_SUMMARY = "*EDIT THIS* This will be displayed as a summary on your list of saved NPCs";
-
     public NPC(Race race, NPCData d) {
 
 
@@ -64,7 +62,7 @@ public class NPC {
         relationship = d.getRandomRelationship();
         hook = d.getRandomHook();
 
-        summary = DEFAULT_SUMMARY;
+        summary = personality + " - Ideal: " + ideal.substring(0, ideal.indexOf(" ")-1) + " - Motivation: " + motivation + ".";
     }
 
     /**
@@ -82,56 +80,6 @@ public class NPC {
         str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, p.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return str.append(s);
     }
-
-    /**
-     * Method that outputs all of the NPC's data in a long \n delineated string, nicely formatted
-     *
-     * @return SpannableStringBuilder output of npc data to be set into a TextView
-     */
-    /*
-    public SpannableStringBuilder output() {
-        //Make things nice to read, bold all descriptive titles
-        SpannableStringBuilder s = new SpannableStringBuilder();
-
-        s.append(formatString("Name: ",name));
-        s.append(formatString("\nRace: ", raceName));
-        s.append(formatString("\nSex: ", sex));
-        s.append(formatString("\nAge: ", age));
-        s.append(formatString("\nAppearance: ",appearance));
-        s.append(formatString("\nVoice: ",voice));
-        s.append(formatString("\nPersonality: ",personality));
-        s.append(formatString("\nTrait: ",trait));
-        s.append(formatString("\nBond: ",bond));
-        s.append(formatString("\nMotivated by: ",motivation));
-        s.append(formatString("\nIdeal: ",ideal));
-        s.append(formatString("\nFlaw: ",flaw));
-        s.append(formatString("\nQuirk: ",quirk));
-        s.append(formatString("\nDetail: ",detail));
-
-        s.append(formatString("\nProfession: ",profession));
-        s.append(formatString("\nReligion: ",worshipHabit));
-        s.append(formatString("\nRelationship Status: ",relationship));
-        s.append(formatString("\nLife Event: ",lifeEvent));
-        s.append(formatString("\nSpeed: ", speed));
-        //Check if there is a fly speed, only show if there is
-        if (flySpeed.length()>0) {
-            //Same line
-            s.append(formatString(", Fly Speed: ", flySpeed));
-        }
-
-        s.append(formatString("\nSTR: ",strength));
-        s.append(formatString("   DEX: ",dexterity));
-        s.append(formatString("\nCON: ",constitution));
-        s.append(formatString("   INT: ",intelligence));
-        s.append(formatString("\nWIS: ",wisdom));
-        s.append(formatString("   CHA: ",charisma));
-        s.append(formatString("\nLanguages: ", languages));
-        s.append(formatString("\nRacial Extras: ", racials));
-        s.append(formatString("\nPlot Hook: ",hook));
-
-        return s;
-    }
-    */
 
     public SpannableStringBuilder getNPCText() {
         SpannableStringBuilder s = new SpannableStringBuilder();
@@ -167,7 +115,7 @@ public class NPC {
         s.append(formatString("\nLanguages: ", languages));
         s.append(formatString("\nRacial Extras: ", racials));
         s.append(formatString("\nPlot Hook: ",hook));
-        s.append(formatString("\nSummary: ", summary.equals(DEFAULT_SUMMARY) ? "" : summary));
+        s.append(formatString("\nSummary: ", summary));
 
         return s;
     }

@@ -72,13 +72,8 @@ public class SavedNPCActivity extends RPGCActivity {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DBHelper.NPCS_COL_NPC, json);
-        values.put(DBHelper.NPCS_COL_NAME, npc.getName()+" - "+npc.getRace()+" "+npc.getProfession());
-        if (npc.getSummary().equals(npc.DEFAULT_SUMMARY)) {
-            values.put(DBHelper.NPCS_COL_SUMMARY, "No Summary Provided");
-        }
-        else {
-            values.put(DBHelper.NPCS_COL_SUMMARY, npc.getSummary());
-        }
+        values.put(DBHelper.NPCS_COL_NAME, npc.getName()+" - "+npc.getSex().substring(0,1) + " " + npc.getRace()+", "+npc.getProfession());
+        values.put(DBHelper.NPCS_COL_SUMMARY, npc.getSummary());
 
 
         db.update(DBHelper.NPCS_TABLE_NAME, values, "_id="+id, null);

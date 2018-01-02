@@ -279,7 +279,7 @@ public class NPCData {
         if (x<3) {
             x = ran.nextInt(titles.length());
             try {
-                title = titles.getString(x);
+                title = " "+titles.getString(x);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

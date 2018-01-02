@@ -139,13 +139,6 @@ public class NPCLayout extends LinearLayout {
         racial_tv.setText(formatString("Racial Extras: ", npc.getRacial()));
         hook_tv.setText(formatString("Plot Hook: ", npc.getHook()));
         summary_tv.setText(formatString("Summary: ", npc.getSummary()));
-        if (npc.getSummary()!=null) {
-            if (npc.getSummary().equals(npc.DEFAULT_SUMMARY)) {
-                summary_tv.setTextColor(getResources().getColor(R.color.colorCritical));
-            } else {
-                summary_tv.setTextColor(getResources().getColor(R.color.textPrimary));
-            }
-        }
 
         View.OnClickListener tvClickHandler = new View.OnClickListener() {
             public void onClick(View v) {
@@ -296,12 +289,7 @@ public class NPCLayout extends LinearLayout {
 
     private void editAttribute() {
         edit_popup.setVisibility(GONE);
-        if (currentEdit.equals("Summary") && edit_popup_input.getText().toString().equals(npc.DEFAULT_SUMMARY)) {
-            summary_tv.setTextColor(getResources().getColor(R.color.colorCritical));
-        }
-        else {
-            summary_tv.setTextColor(getResources().getColor(R.color.textPrimary));
-        }
+
         npc.setAttribute(currentEdit, edit_popup_input.getText().toString());
         setNPC(npc);
         if (dbSaveable && savedNPCActivity!=null) {

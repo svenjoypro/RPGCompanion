@@ -164,13 +164,9 @@ public class RandomNPCActivity extends RPGCActivity {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DBHelper.NPCS_COL_NPC, json);
-        values.put(DBHelper.NPCS_COL_NAME, currentNPC.getName()+" - "+currentNPC.getRace()+" "+currentNPC.getProfession());
-        if (currentNPC.getSummary().equals(currentNPC.DEFAULT_SUMMARY)) {
-            values.put(DBHelper.NPCS_COL_SUMMARY, "No Summary Provided");
-        }
-        else {
-            values.put(DBHelper.NPCS_COL_SUMMARY, currentNPC.getSummary());
-        }
+        values.put(DBHelper.NPCS_COL_NAME, currentNPC.getName()+" - "+currentNPC.getSex().substring(0,1) + " " + currentNPC.getRace()+", "+currentNPC.getProfession());
+        values.put(DBHelper.NPCS_COL_SUMMARY, currentNPC.getSummary());
+
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DBHelper.NPCS_TABLE_NAME, null, values);
     }
