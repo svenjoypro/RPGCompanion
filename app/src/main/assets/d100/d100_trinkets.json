@@ -1,6 +1,7 @@
 {
 	"name": "Trinkets",
 	"category": "Items",
+	"source": "http://www.eberron5e.com/game-mastery/trinkets-treasures/100-new-trinkets, http://www.eberron5e.com/game-mastery/trinkets-treasures/100-new-trinkets, http://www.eberron5e.com/game-mastery/trinkets-treasures/100-new-elemental-evil-trinkets",
 	"data": [
 		{
 		"name":"Trinket",

@@ -1,6 +1,7 @@
 {
 	"name": "Enemy Last Words",
 	"category": "NPCs",
+	"source": "http://www.dungeoneering.net/d100-list-their-dying-breath/",
 	"data": [
 		{
 			"name": "Last Words",

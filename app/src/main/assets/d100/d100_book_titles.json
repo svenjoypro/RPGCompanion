@@ -1,6 +1,7 @@
 {
 	"name": "Book Titles",
 	"category": "Items",
+	"source": "http://beyondtheblackgate.blogspot.com/2009/11/100-book-titles.html, http://www.dungeoneering.net/d100-lists-book-titles/",
 	"data": [
 		{
 			"name":"Book Title",

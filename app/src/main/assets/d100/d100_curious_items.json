@@ -1,6 +1,7 @@
 {
 	"name": "Curious Items",
 	"category": "Items",
+	"source": "http://www.thealexandrian.net/creations/misc/101-curious-items.pdf",
 	"data": [
 		{
 			"name": "Curious Item",

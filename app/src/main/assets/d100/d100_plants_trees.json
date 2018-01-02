@@ -1,6 +1,7 @@
 {
 	"name": "Plants / Trees",
 	"category": "World Building",
+	"source": "http://www.dungeoneering.net/d100-list-plants-trees/",
 	"data": [
 		{
 			"name": "Plant",

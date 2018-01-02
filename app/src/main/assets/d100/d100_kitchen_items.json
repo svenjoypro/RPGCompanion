@@ -1,6 +1,7 @@
 {
 	"name": "Kitchen Items",
 	"category": "World Building",
+	"source": "http://www.dungeoneering.net/d100-kitchen-items-fantasy/",
 	"data": [
 		{
 			"name": "In the Kitchen",

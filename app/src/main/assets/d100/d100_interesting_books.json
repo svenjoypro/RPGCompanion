@@ -1,6 +1,7 @@
 {
 	"name": "Interesting Books",
 	"category": "Items",
+	"source": "https://www.reddit.com/r/d100/comments/7aee6y/lets_build_interesting_books/, https://docs.google.com/document/d/1cOMh6hufFfc-lhI_Xf6bd4wBuYwrVWqBhgiUsmBX3dk/edit",
 	"data": [
 		{
 			"name": "Book",

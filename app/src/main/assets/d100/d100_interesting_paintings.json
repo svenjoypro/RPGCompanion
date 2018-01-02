@@ -1,6 +1,7 @@
 {
 	"name": "Interesting Paintings",
 	"category": "World Building",
+	"source": "https://www.reddit.com/r/d100/comments/7i2lxo/lets_build_interesting_paintings/",
 	"data": [
 		{
 			"name":"Painting",

@@ -1,6 +1,7 @@
 {
 	"name": "Unique Horses",
 	"category": "NPCs",
+	"source": "http://soogagames.blogspot.com/2016/02/d100-horses-with-arnold-k.html",
 	"data": [
 		{
 		"name":"Horse",

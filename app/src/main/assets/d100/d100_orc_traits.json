@@ -1,6 +1,7 @@
 {
 	"name": "Orc Traits",
 	"category": "NPCs",
+	"source": "https://www.reddit.com/r/d100/comments/7i1ak2/lets_build_orc_and_halforc_traits/",
 	"data": [
 		{
 			"name":"Trait",

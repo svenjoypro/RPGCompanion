@@ -1,6 +1,7 @@
 {
 	"name": "Drunken Boasts",
 	"category": "NPCs",
+	"source": "https://www.reddit.com/r/d100/comments/7hdas7/d100_drunken_boasts/",
 	"data": [
 		{
 			"name":"Boast",

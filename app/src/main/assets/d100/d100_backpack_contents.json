@@ -1,6 +1,7 @@
 {
 	"name": "Backpack Contents",
 	"category": "Items",
+	"source": "https://docs.google.com/spreadsheets/d/1Ty-M98QuBkEy26_HcQ_MgJYNvCo-KB1irniSGfgZtPE/edit#gid=0",
 	"data": [
 		{
 			"name": "Tool",

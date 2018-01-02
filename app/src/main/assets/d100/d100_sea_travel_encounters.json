@@ -1,6 +1,7 @@
 {
 	"name": "Sea Travel Encounters",
 	"category": "Encounters",
+	"source": "https://www.reddit.com/r/d100/comments/7gdl6b/lets_build_d100_sea_travel_events/",
 	"data": [
 		{
 		"name":"Encounter",
@@ -97,7 +98,14 @@
 				"Off in the distance, a sunburned, unclean, lone figure on a lifeboat shoots off a flare, and desperately cries for help. The figure is a pirate who escaped from an encounter with the authorities by abandoning their crew. Upon landing, if he/she is turned in to the proper authorities, the party may claim their bounty, or, if kept free, the pirate may come in handy as a contact, as the pirate knows of hidden ports all across the sea.",
 				"Off in the distance, a sunburned, unclean, lone figure on a lifeboat shoots off a flare, and desperately cries for help. The figure is the final survivor of a terrible shipwreck. This person is a simple fisherman. Should the party take the survivor aboard, they will refuse to go below deck, regardless of the circumstances. If asked, all they will say is \"My friends were below deck.\"",
 				"Off in the distance, a sunburned, unclean, lone figure on a lifeboat shoots off a flare, and desperately cries for help. The figure is an arrogant cleric, surviving off of magically created food and water. This person is doing fairly well, all things considered. If rescued and delivered to their temple, this cleric will give the party a small favor, but will consider the party a small part in the cleric's survival.",
-				"Off in the distance, a sunburned, unclean, lone figure on a lifeboat shoots off a flare, and desperately cries for help. The figure is a doppleganger, feigning being stranded at Sea, after destroying a ship and eating her crew. If allowed on board, the doppleganger will continue their antics, attempting to kill the crew before they reach shore."
+				"Off in the distance, a sunburned, unclean, lone figure on a lifeboat shoots off a flare, and desperately cries for help. The figure is a doppleganger, feigning being stranded at Sea, after destroying a ship and eating her crew. If allowed on board, the doppleganger will continue their antics, attempting to kill the crew before they reach shore.",
+				"A fishing net brings aboard a treasure chest that turns out to be a mimic.",
+				"A giant squid is seen off the port side of the ship.",
+				"A group of rats get into the food!",
+				"Something huge and solid scrapes against the bottom of the ship.",
+				"Hundreds of manta rays are migrating under the ship.",
+				"Below the water, someone on the ship notices an enourmous sunken city.",
+				"An orc scout ship is seen in the distance, traveling fast towards the ship."
 			]
 		}
 	]

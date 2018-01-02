@@ -1,6 +1,7 @@
 {
 	"name": "Strange Encounters",
 	"category": "Encounters",
+	"source": "http://city-of-brass.org/OneHundredRareWonders.pdf",
 	"data": [
 		{
 		"name":"Strange Encounter",
