@@ -39,7 +39,8 @@
         <TextView
             android:id="@+id/d100_output_tv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="\nClick on a button to randomly get content.\n\nOr long press a button for a url link to the content's source" />
 
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
