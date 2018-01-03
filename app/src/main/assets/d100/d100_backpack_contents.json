@@ -105,7 +105,14 @@
 				"hoe head",
 				"shuriken/throwing hammers",
 				"small wheel",
-				"falconer's jesses"
+				"falconer's jesses",
+				"chisel",
+				"rusted iron lock",
+				"magnifying glass",
+				"hour glass",
+				"whistle",
+				"lantern",
+				"ear trumpet"
 			]
 		},
 		{
@@ -194,7 +201,7 @@
 				"dried apricots",
 				"pouch of caraway and sesame seeds",
 				"pheasant/gamefowl",
-				"duck",
+				"roasted duck",
 				"goat's head",
 				"hemlock",
 				"maize/rye",
@@ -420,7 +427,13 @@
 				"dragon's tooth",
 				"shrunken head",
 				"feathers",
-				"misc magic item"
+				"misc magic item",
+				"2x Yuan-ti scales",
+				"4x sharp fox claws",
+				"comb made of bone",
+				"patch of fur (lion, fox, bear, etc)",
+				"3x maple marbles",
+				"3x granite marbles"
 			]
 		}
 	]
