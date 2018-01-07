@@ -29,4 +29,8 @@
         android:title="Contact the Developer"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/menu_credits"
+        android:title="Credits"
+        app:showAsAction="never"/>
+
 </menu>
