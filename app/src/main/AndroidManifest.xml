@@ -86,7 +86,11 @@
         <activity android:name=".AccountActivity" />
         <activity android:name=".Names.NameGeneratorActivity" />
         <activity android:name=".Puzzles.NewPuzzleActivity" />
-        <activity android:name=".Puzzles.DisplayPuzzleActivity"></activity>
+        <activity android:name=".Puzzles.DisplayPuzzleActivity" />
+        <activity
+            android:name=".Dice.DiceActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".CreditsActivity"></activity>
     </application>
 
 </manifest>

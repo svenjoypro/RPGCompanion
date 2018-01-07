@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mpvreeken.rpgcompanion.CreditsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="16dp"
+                android:text="Developer"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Michael Vreeken"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Home Screen Icons"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adventures Image" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/credits_benbrommel_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="/u/BenBrommell" />
+
+                <Button
+                    android:id="@+id/credits_brommell_src_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Image Source" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Encounter Maps" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/credits_mrvalor_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="/u/mrvalor" />
+
+                <Button
+                    android:id="@+id/credits_mrvalor_src_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Image Source" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Special Thanks To"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/credits_dnd_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="reddit.com/r/DnD" />
+
+            <Button
+                android:id="@+id/credits_dungeons_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="reddit.com/r/DungeonsAndDragons" />
+
+            <Button
+                android:id="@+id/credits_d100_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="reddit.com/r/d100" />
+
+            <Button
+                android:id="@+id/credits_dmacademy_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="reddit.com/r/DMAcademy" />
+
+            <Button
+                android:id="@+id/credits_screen_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="reddit.com/r/DnDBehindTheScreen" />
+
+            <Button
+                android:id="@+id/credits_tables_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="reddit.com/r/BehindTheTables" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>
