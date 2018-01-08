@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.mpvreeken.rpgcompanion.Dice.DiceActivity;
 import com.mpvreeken.rpgcompanion.Hooks.HooksActivity;
 import com.mpvreeken.rpgcompanion.Maps.EncMapsActivity;
 import com.mpvreeken.rpgcompanion.NPC.NPCsActivity;
@@ -41,6 +42,7 @@ public class MainActivity extends RPGCActivity {
         ImageButton misc_btn = findViewById(R.id.main_misc_button);
         ImageButton loot_gen_btn = findViewById(R.id.main_loot_gen_button);
         ImageButton maps_btn = findViewById(R.id.main_maps_button);
+        ImageButton dice_btn = findViewById(R.id.main_dice_button);
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
@@ -76,6 +78,9 @@ public class MainActivity extends RPGCActivity {
                     case R.id.main_maps_button:
                         intent = new Intent(v.getContext(), EncMapsActivity.class);
                         break;
+                    case R.id.main_dice_button:
+                        intent = new Intent(v.getContext(), DiceActivity.class);
+                        break;
                     default:
                         intent = new Intent(v.getContext(), NPCsActivity.class);
                 }
@@ -94,6 +99,7 @@ public class MainActivity extends RPGCActivity {
         misc_btn.setOnClickListener(buttonHandler);
         loot_gen_btn.setOnClickListener(buttonHandler);
         maps_btn.setOnClickListener(buttonHandler);
+        dice_btn.setOnClickListener(buttonHandler);
 
         application.checkToken(this);
     }
