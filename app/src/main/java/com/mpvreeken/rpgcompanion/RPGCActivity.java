@@ -273,6 +273,10 @@ public class RPGCActivity extends AppCompatActivity {
             case R.id.menu_email:
                 intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","svenjoypro@gmail.com", null));
                 startActivity(Intent.createChooser(intent, "Send email..."));
+            case R.id.menu_credits:
+                intent = new Intent(getApplicationContext(), CreditsActivity.class);
+                startActivity(intent);
+                return true;
             case android.R.id.home:
                 this.finish();
                 return true;
