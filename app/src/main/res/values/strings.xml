@@ -33,6 +33,14 @@
     <string name="url_get_riddle">&baseurl;riddles/</string>
     <string name="url_submit_riddle">&baseurl;riddles/new</string>
 
+    <string name="url_get_puzzles">&baseurl;puzzles</string>
+    <string name="url_get_puzzle">&baseurl;puzzles/</string>
+    <string name="url_submit_puzzle">&baseurl;puzzles/new</string>
+
+    <string name="url_get_items">&baseurl;items</string>
+    <string name="url_get_item">&baseurl;items/</string>
+    <string name="url_submit_item">&baseurl;items/new</string>
+
     <string name="url_get_environments">&baseurl;maps/get-environments</string>
     <string name="url_get_maps">&baseurl;maps</string>
     <string name="url_get_map">&baseurl;maps/</string>
