@@ -57,9 +57,18 @@ public class Hook implements Serializable {
         return description;
     }
 
-    public Integer getUpvotes() { return upvotes; }
-    public Integer getDownvotes() { return downvotes; }
-    public Integer getVoted() { return voted; }
+    public Integer getUpvotes() {
+        if (upvotes == null) { upvotes=0; }
+        return upvotes;
+    }
+    public Integer getDownvotes() {
+        if (downvotes == null) { downvotes=0; }
+        return downvotes;
+    }
+    public Integer getVoted() {
+        if (voted == null) { voted = 0; }
+        return voted;
+    }
 
     public Integer getCalculatedVotes() { return upvotes-downvotes; }
 
