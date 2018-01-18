@@ -46,7 +46,11 @@ public class HookArrayAdapter extends ArrayAdapter<Hook> {
 
         title_tv.setText(hook.getTitle());
         votes_tv.setText(hook.getListItemVotes());
-        desc_tv.setText(hook.getDescription());
+        String desc = hook.getDescription();
+        if (desc.length()>2048) {
+            desc = desc.substring(0, 2047) + "...";
+        }
+        desc_tv.setText(desc);
 
         return rowView;
     }
