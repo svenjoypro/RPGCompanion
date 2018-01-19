@@ -9,6 +9,7 @@
 	"today is their birthday",
 	"{{relative}}'s birthday",
 	"pet recently died",
+	"recently got a new pet",
 	"their {{relative}} recently died",
 	"their {{relative}} is on their death bed",
 	"recently moved to town",
@@ -25,6 +26,15 @@
 	"{{relative}} is about to have a baby",
 	"{{relative}} just converted to {{god}}",
 	"just bought their first house",
-	"their house was recently destroyed by a fire"
+	"their house was recently destroyed by a fire",
+	"unintentionally broke a minor law and is feeling guilty about it",
+	"someone in town has recently started bullying them on a regular basis",
+	"just found out about an unplanned pregnancy",
+	"recently had a brush with death, is missing a limb, fingers, or toes",
+	"just contracted a disease with some external symptoms (green skin, cough, hair falling out, etc)",
+	"recently lost a priceless family heirloom due to forgetfulness, theft, natural disaster, etc",
+	"had been turned into a toad by an unknown force and just recently returned to normal form",
+	"had been held prisoner by a dragon, mind flayer, vampire, etc until adventurers recently killed it",
+	"recently escaped from being held captive by a hag, cult, demon, etc and is afraid they will find them again"
 	]
 }
