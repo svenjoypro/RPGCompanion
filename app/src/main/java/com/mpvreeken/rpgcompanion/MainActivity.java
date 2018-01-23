@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 import com.mpvreeken.rpgcompanion.Dice.DiceActivity;
 import com.mpvreeken.rpgcompanion.Hooks.HooksActivity;
+import com.mpvreeken.rpgcompanion.Items.ItemsActivity;
 import com.mpvreeken.rpgcompanion.Maps.EncMapsActivity;
 import com.mpvreeken.rpgcompanion.NPC.NPCsActivity;
 import com.mpvreeken.rpgcompanion.Names.NameGeneratorActivity;
@@ -43,6 +44,7 @@ public class MainActivity extends RPGCActivity {
         ImageButton loot_gen_btn = findViewById(R.id.main_loot_gen_button);
         ImageButton maps_btn = findViewById(R.id.main_maps_button);
         ImageButton dice_btn = findViewById(R.id.main_dice_button);
+        ImageButton items_btn = findViewById(R.id.main_items_button);
 
         View.OnClickListener buttonHandler = new View.OnClickListener() {
             public void onClick(View v) {
@@ -78,6 +80,9 @@ public class MainActivity extends RPGCActivity {
                     case R.id.main_maps_button:
                         intent = new Intent(v.getContext(), EncMapsActivity.class);
                         break;
+                    case R.id.main_items_button:
+                        intent = new Intent(v.getContext(), ItemsActivity.class);
+                        break;
                     case R.id.main_dice_button:
                         intent = new Intent(v.getContext(), DiceActivity.class);
                         break;
@@ -91,7 +96,7 @@ public class MainActivity extends RPGCActivity {
 
         hooks_btn.setOnClickListener(buttonHandler);
         encounters_btn.setOnClickListener(buttonHandler);
-        //puzzles_btn.setOnClickListener(buttonHandler);
+        puzzles_btn.setOnClickListener(buttonHandler);
         npc_btn.setOnClickListener(buttonHandler);
         names_btn.setOnClickListener(buttonHandler);
         riddles_btn.setOnClickListener(buttonHandler);
@@ -100,6 +105,7 @@ public class MainActivity extends RPGCActivity {
         loot_gen_btn.setOnClickListener(buttonHandler);
         maps_btn.setOnClickListener(buttonHandler);
         dice_btn.setOnClickListener(buttonHandler);
+        items_btn.setOnClickListener(buttonHandler);
 
         application.checkToken(this);
     }
