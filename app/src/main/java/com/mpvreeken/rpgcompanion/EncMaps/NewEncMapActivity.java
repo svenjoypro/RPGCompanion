@@ -76,10 +76,23 @@ public class NewEncMapActivity extends RPGCActivity {
                     return;
                 }
 
+                if (img.length()<8) {
+                    Toast.makeText(context, "The thumbnail image url must be a direct link to a jpg or png file", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                //Force link to begin with http if it doesn't already
+                if (!img.substring(0, 7).equals("http://") && !img.substring(0,8).equals("https://")) {
+                    img = "http://"+img;
+                }
                 String suffix = img.substring(img.length()-4);
                 if (!suffix.equals(".jpg") && !suffix.equals(".png")) {
                     Toast.makeText(context, "The thumbnail image url must be a direct link to a jpg or png file", Toast.LENGTH_LONG).show();
                     return;
+                }
+
+                //Force link to begin with http if it doesn't already
+                if (!link.substring(0, 7).equals("http://") && !link.substring(0,8).equals("https://")) {
+                    link = "http://"+link;
                 }
 
                 String ar = "";

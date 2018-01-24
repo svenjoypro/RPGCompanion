@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mpvreeken.rpgcompanion.CommentActivity;
+import com.mpvreeken.rpgcompanion.ExternalLinkAlertActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -191,41 +192,10 @@ public class DisplayEncMapActivity extends RPGCActivity {
         view_map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popup_view.setVisibility(View.VISIBLE);
+                showExternalLink();
             }
         });
 
-        popup_view = findViewById(R.id.map_details_popup);
-
-        Button popup_cancel_btn = findViewById(R.id.map_details_popup_cancel_btn);
-        popup_cancel_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popup_view.setVisibility(View.GONE);
-            }
-        });
-        TextView link = findViewById(R.id.map_details_popup_link_tv);
-        link.setText("URL:\n"+map.getLink());
-        link.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("MapURL", map.getLink());
-                assert clipboard != null;
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(context, "URL copied to clipboard", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-        Button popup_go_btn = findViewById(R.id.map_details_popup_go_btn);
-        popup_go_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(map.getLink()));
-                startActivity(i);
-            }
-        });
 
         /*
         //comments_lv.setAdapter(commentArrayAdapter);
@@ -239,6 +209,26 @@ public class DisplayEncMapActivity extends RPGCActivity {
             comments_layout.addView(view);
         }
         */
+    }
+
+    private void showExternalLink() {
+        String link = map.getLink();
+        if (link.length() == 0) {
+            Toast.makeText(application, "No External Link was provided for this Map", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (application.getExternalLinkAlert()) {
+            Intent intent = new Intent(getApplicationContext(), ExternalLinkAlertActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("LINK", link);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        else {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(link));
+            startActivity(i);
+        }
     }
 
 
@@ -356,7 +346,7 @@ public class DisplayEncMapActivity extends RPGCActivity {
             }
         });
     }
-
+    /*
     private void displayError(final String s) {
         DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -365,6 +355,7 @@ public class DisplayEncMapActivity extends RPGCActivity {
             }
         });
     }
+    */
 
     private void displayCommentInput() {
         Intent intent = new Intent(context, CommentActivity.class);

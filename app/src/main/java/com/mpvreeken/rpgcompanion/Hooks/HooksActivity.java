@@ -1,26 +1,19 @@
 package com.mpvreeken.rpgcompanion.Hooks;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
-
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-
-import android.widget.Toast;
-
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
-
 import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -49,7 +42,7 @@ public class HooksActivity extends RPGCActivity {
 
         page = 0;
         Random rand = new Random();
-        seed = String.valueOf(rand.nextFloat());
+        seed = String.valueOf(rand.nextInt(1000000));
 
         Button new_btn = findViewById(R.id.hooks_new_btn);
 
@@ -72,10 +65,9 @@ public class HooksActivity extends RPGCActivity {
     }
 
     public void setupUI() {
-
         hooks_lv.setAdapter(hookArrayAdapter);
         Button btn = new Button(this);
-        btn.setText("Load More");
+        btn.setText(R.string.lbl_load_more);
 
         hooks_lv.addFooterView(btn);
 
@@ -83,19 +75,6 @@ public class HooksActivity extends RPGCActivity {
             @Override
             public void onClick(View view) {
                 loadMoreHooks();
-            }
-        });
-
-        hooks_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(parent.getContext(), DisplayHookActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putString("HOOK_ID", hooksArray.get(position).getId());
-                intent.putExtras(bundle);
-                //intent.putExtra("hook_id", riddlesArray.get(position).getId());
-                startActivity(intent);
             }
         });
     }
@@ -112,6 +91,7 @@ public class HooksActivity extends RPGCActivity {
 
         Request request = new Request.Builder()
                 .url(getResources().getString(R.string.url_get_hooks))
+                .header("Authorization", "Bearer" + application.getToken())
                 .post(requestBody)
                 .build();
 
@@ -131,27 +111,13 @@ public class HooksActivity extends RPGCActivity {
                 else {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
-
                         if (r.length()==0) {
                             displayError("No More Plot Hooks. Help everyone by submitting new plot hooks.");
                             return;
                         }
 
                         for (int i=0; i<r.length(); i++) {
-                            hooksArray.add(
-                                    new Hook(
-                                            r.getJSONObject(i).getString("id"),
-                                            r.getJSONObject(i).getString("title"),
-                                            r.getJSONObject(i).getString("username"),
-                                            r.getJSONObject(i).getInt("user_id"),
-                                            r.getJSONObject(i).getString("description"),
-                                            r.getJSONObject(i).getInt("upvotes"),
-                                            r.getJSONObject(i).getInt("downvotes"),
-                                            r.getJSONObject(i).getInt("voted"),
-                                            r.getJSONObject(i).getString("created_at"),
-                                            r.getJSONObject(i).getString("updated_at")
-                                    )
-                            );
+                            hooksArray.add(new Hook(context, hooksArray.size(), r.getJSONObject(i)));
                         }
 
                         //Increment page value for server
@@ -182,7 +148,7 @@ public class HooksActivity extends RPGCActivity {
                         });
 
                     }
-                    catch (JSONException e) {
+                    catch (Exception e) {
                         displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
@@ -191,12 +157,28 @@ public class HooksActivity extends RPGCActivity {
         });
     }
 
-    private void displayError(final String s) {
-        HooksActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        SerialHook serialHook = (SerialHook) data.getSerializableExtra("SERIALIZED_OBJ");
+                        if (hooksArray != null && serialHook != null) {
+                            hooksArray.get(serialHook.position).updateLocal(serialHook);
+                            if (hookArrayAdapter != null) {
+                                hookArrayAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        else {
+
+                        }
+                    }
+                    catch (Exception e) { Log.e("HooksActivity", e.getMessage()); }
+                }
+                break;
             }
-        });
+        }
     }
 }

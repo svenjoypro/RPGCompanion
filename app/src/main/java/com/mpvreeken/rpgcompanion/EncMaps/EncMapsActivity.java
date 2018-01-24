@@ -57,7 +57,7 @@ public class EncMapsActivity extends RPGCActivity {
 
         page = 0;
         Random rand = new Random();
-        seed = String.valueOf(rand.nextFloat());
+        seed = String.valueOf(rand.nextInt(1000000));
 
         getEnvironments();
     }
@@ -134,7 +134,7 @@ public class EncMapsActivity extends RPGCActivity {
                         Intent intent = new Intent(parent.getContext(), DisplayEncMapActivity.class);
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("MAP_ID", mapsArray.get(position).getId());
+                        bundle.putInt("MAP_ID", mapsArray.get(position).getId());
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
@@ -202,21 +202,7 @@ public class EncMapsActivity extends RPGCActivity {
                             return;
                         }
                         for (int i=0; i<r.length(); i++) {
-                            mapsArray.add(
-                                    new EncMap(
-                                            r.getJSONObject(i).getString("id"),
-                                            r.getJSONObject(i).getString("title"),
-                                            r.getJSONObject(i).getString("username"),
-                                            r.getJSONObject(i).getInt("user_id"),
-                                            r.getJSONObject(i).getString("description"),
-                                            r.getJSONObject(i).getString("link"),
-                                            r.getJSONObject(i).getInt("upvotes"),
-                                            r.getJSONObject(i).getInt("downvotes"),
-                                            r.getJSONObject(i).getInt("voted"),
-                                            r.getJSONObject(i).getString("created_at"),
-                                            r.getJSONObject(i).getString("updated_at")
-                                    )
-                            );
+                            mapsArray.add(new EncMap(context, mapsArray.size(), r.getJSONObject(i)));
                         }
 
                         //Increment page value for server
@@ -248,7 +234,7 @@ public class EncMapsActivity extends RPGCActivity {
                         });
 
                     }
-                    catch (JSONException e) {
+                    catch (Exception e) {
                         displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
@@ -256,7 +242,7 @@ public class EncMapsActivity extends RPGCActivity {
             }
         });
     }
-
+    /*
     private void displayError(final String s) {
         EncMapsActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -265,4 +251,5 @@ public class EncMapsActivity extends RPGCActivity {
             }
         });
     }
+    */
 }
