@@ -22,16 +22,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:paddingBottom="8dp"
             android:text=""
             android:textColor="@color/map_list_item_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/map_list_item_img"
-            app:layout_constraintTop_toBottomOf="@+id/map_list_item_votes_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/map_list_item_title_tv" />
 
         <TextView
             android:id="@+id/map_list_item_title_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -48,21 +49,49 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text=""
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/map_list_item_img"
-            app:layout_constraintTop_toBottomOf="@+id/map_list_item_title_tv" />
+            app:layout_constraintEnd_toEndOf="@+id/map_list_item_upvote_btn"
+            app:layout_constraintStart_toStartOf="@+id/map_list_item_upvote_btn"
+            app:layout_constraintTop_toBottomOf="@+id/map_list_item_upvote_btn" />
 
+
+        <ImageButton
+            android:id="@+id/map_list_item_upvote_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/arrow_neutral" />
+
+        <ImageButton
+            android:id="@+id/map_list_item_downvote_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitXY"
+            android:scaleY="-1"
+            app:layout_constraintEnd_toEndOf="@+id/map_list_item_upvote_btn"
+            app:layout_constraintStart_toStartOf="@+id/map_list_item_upvote_btn"
+            app:layout_constraintTop_toBottomOf="@+id/map_list_item_votes_tv"
+            app:srcCompat="@mipmap/arrow_neutral" />
 
         <ImageView
             android:id="@+id/map_list_item_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@null" />
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@+id/map_list_item_downvote_btn"
+            app:layout_constraintStart_toEndOf="@+id/map_list_item_upvote_btn"
+            app:layout_constraintTop_toTopOf="@+id/map_list_item_upvote_btn"
+            app:srcCompat="@mipmap/blank_button" />
         </android.support.constraint.ConstraintLayout>
 
     <View
