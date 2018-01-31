@@ -11,30 +11,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:orientation="vertical">
 
 
-
-
-            <android.support.constraint.ConstraintLayout
+            <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/hook_details_votes_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                <ImageView
+                    android:id="@+id/hook_details_edit_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:alpha=".5"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/ic_edit" />
+
+                <TextView
+                    android:id="@+id/hook_details_description_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingBottom="8dp"
+                    android:text=""
+                    android:textIsSelectable="true"
+                    android:textColor="@color/hook_list_item_text_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/hook_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/hook_details_user_tv" />
 
                 <TextView
                     android:id="@+id/hook_details_title_tv"
@@ -43,43 +60,72 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/hook_details_votes_tv"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/hook_list_item_text_color"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/hook_details_edit_iv"
+                    app:layout_constraintStart_toEndOf="@+id/hook_details_vote_up_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/hook_details_description_tv"
+                    android:id="@+id/hook_details_user_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="2dp"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toStartOf="@+id/hook_details_edit_iv"
+                    app:layout_constraintStart_toEndOf="@+id/hook_details_vote_up_btn"
                     app:layout_constraintTop_toBottomOf="@+id/hook_details_title_tv" />
 
+                <TextView
+                    android:id="@+id/hook_details_votes_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    app:layout_constraintEnd_toEndOf="@+id/hook_details_vote_up_btn"
+                    app:layout_constraintStart_toStartOf="@+id/hook_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/hook_details_vote_up_btn" />
 
+
+                <ImageButton
+                    android:id="@+id/hook_details_vote_up_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:selectableItemBackground"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/arrow_neutral" />
+
+                <ImageButton
+                    android:id="@+id/hook_details_vote_down_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?android:selectableItemBackground"
+                    android:scaleType="fitXY"
+                    android:scaleY="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/hook_details_vote_up_btn"
+                    app:layout_constraintStart_toStartOf="@+id/hook_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/hook_details_votes_tv"
+                    app:srcCompat="@mipmap/arrow_neutral" />
             </android.support.constraint.ConstraintLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-
-                <Button
-                    android:id="@+id/hook_details_vote_up_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Vote Up" />
-
-                <Button
-                    android:id="@+id/hook_details_vote_down_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Vote Down" />
 
                 <Button
                     android:id="@+id/hook_details_comment_btn"
