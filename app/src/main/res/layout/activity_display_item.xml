@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.mpvreeken.rpgcompanion.items.DisplayitemActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+
+            <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/item_details_edit_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:alpha=".5"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/ic_edit" />
+
+                <TextView
+                    android:id="@+id/item_details_title_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/item_list_item_text_color"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/item_details_edit_iv"
+                    app:layout_constraintStart_toEndOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/item_details_external_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:text="External Link"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/item_details_user_tv" />
+
+                <TextView
+                    android:id="@+id/item_details_user_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toStartOf="@+id/item_details_edit_iv"
+                    app:layout_constraintStart_toEndOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/item_details_title_tv" />
+
+                <TextView
+                    android:id="@+id/item_details_votes_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    app:layout_constraintEnd_toEndOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintStart_toStartOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/item_details_vote_up_btn" />
+
+
+                <ImageButton
+                    android:id="@+id/item_details_vote_up_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:selectableItemBackground"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/arrow_neutral" />
+
+                <ImageButton
+                    android:id="@+id/item_details_vote_down_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?android:selectableItemBackground"
+                    android:scaleType="fitXY"
+                    android:scaleY="-1"
+                    app:layout_constraintEnd_toEndOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintStart_toStartOf="@+id/item_details_vote_up_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/item_details_votes_tv"
+                    app:srcCompat="@mipmap/arrow_neutral" />
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/item_details_description_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="8dp"
+                android:text=""
+                android:textIsSelectable="true"
+                android:textColor="@color/item_list_item_text_color" />
+
+            <ImageView
+                android:id="@+id/item_details_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/blank_button" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/item_details_comment_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="Comment" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/item_comments_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>
