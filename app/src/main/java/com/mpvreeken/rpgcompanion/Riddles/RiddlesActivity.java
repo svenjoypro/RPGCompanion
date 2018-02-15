@@ -1,25 +1,23 @@
 package com.mpvreeken.rpgcompanion.Riddles;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
-
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -34,6 +32,10 @@ public class RiddlesActivity extends RPGCActivity {
     private RiddleArrayAdapter riddleArrayAdapter;
     private ListView riddles_lv;
 
+    private Spinner sort_spinner;
+    private int sort_selection;
+    private static final String[] SORT_METHODS = {"r", "uv", "dv", "dd", "da"};
+
     private String seed; //random seed for server
     private int page; //pagination for server to get next set of maps
 
@@ -43,11 +45,12 @@ public class RiddlesActivity extends RPGCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_riddles);
+
         setupLoadingAnimTransparent();
 
         page = 0;
         Random rand = new Random();
-        seed = String.valueOf(rand.nextFloat());
+        seed = String.valueOf(rand.nextInt(1000000));
 
         Button new_btn = findViewById(R.id.riddles_new_btn);
 
@@ -65,14 +68,35 @@ public class RiddlesActivity extends RPGCActivity {
         this.riddles_lv = findViewById(R.id.riddles_lv);
 
         setupUI();
-
-        loadMoreRiddles();
     }
 
     public void setupUI() {
+        sort_spinner = findViewById(R.id.riddles_sort_spinner);
+        sort_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                sort_selection=i;
+                if (sort_selection==0) {
+                    Random rand = new Random();
+                    seed = String.valueOf(rand.nextInt(1000000));
+                }
+                resetAndLoad();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort_spinner.setAdapter(adapter);
+        sort_selection=0;
+
         riddles_lv.setAdapter(riddleArrayAdapter);
         Button btn = new Button(this);
-        btn.setText("Load More");
+        btn.setText(R.string.lbl_load_more);
 
         riddles_lv.addFooterView(btn);
 
@@ -82,18 +106,13 @@ public class RiddlesActivity extends RPGCActivity {
                 loadMoreRiddles();
             }
         });
+    }
 
-        riddles_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Intent intent = new Intent(parent.getContext(), DisplayRiddleActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("RIDDLE_ID", riddlesArray.get(position).getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+    private void resetAndLoad() {
+        page=0;
+        firstLoad=true;
+        riddleArrayAdapter.clear();
+        loadMoreRiddles();
     }
 
     public void loadMoreRiddles() {
@@ -101,13 +120,27 @@ public class RiddlesActivity extends RPGCActivity {
 
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("seed", seed)
-                .add("page", String.valueOf(page))
-                .build();
+        RequestBody requestBody;
+
+        int i = sort_spinner.getSelectedItemPosition();
+        if (i==0) {
+            //Random
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[0])
+                    .add("seed", seed)
+                    .add("page", String.valueOf(page))
+                    .build();
+        }
+        else {
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[i])
+                    .add("page", String.valueOf(page))
+                    .build();
+        }
 
         Request request = new Request.Builder()
                 .url(getResources().getString(R.string.url_get_riddles))
+                .header("Authorization", "Bearer" + application.getToken())
                 .post(requestBody)
                 .build();
 
@@ -127,27 +160,13 @@ public class RiddlesActivity extends RPGCActivity {
                 else {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
-
                         if (r.length()==0) {
                             displayError("No More Riddles. Help everyone by submitting new riddles.");
                             return;
                         }
 
                         for (int i=0; i<r.length(); i++) {
-                            riddlesArray.add(
-                                    new Riddle(
-                                            r.getJSONObject(i).getInt("id"),
-                                            r.getJSONObject(i).getString("username"),
-                                            r.getJSONObject(i).getInt("user_id"),
-                                            r.getJSONObject(i).getString("riddle"),
-                                            r.getJSONObject(i).getString("answer"),
-                                            r.getJSONObject(i).getInt("upvotes"),
-                                            r.getJSONObject(i).getInt("downvotes"),
-                                            r.getJSONObject(i).getInt("voted"),
-                                            r.getJSONObject(i).getString("created_at"),
-                                            r.getJSONObject(i).getString("updated_at")
-                                    )
-                            );
+                            riddlesArray.add(new Riddle(context, riddlesArray.size(), r.getJSONObject(i)));
                         }
 
                         //Increment page value for server
@@ -176,8 +195,9 @@ public class RiddlesActivity extends RPGCActivity {
                                 }
                             }
                         });
+
                     }
-                    catch (JSONException e) {
+                    catch (Exception e) {
                         displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
@@ -186,12 +206,36 @@ public class RiddlesActivity extends RPGCActivity {
         });
     }
 
-    private void displayError(final String s) {
-        RiddlesActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        if (data.hasExtra("DELETED")) {
+                            SerialRiddle serialRiddle = (SerialRiddle) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (riddlesArray != null && serialRiddle != null) {
+                                riddlesArray.remove(serialRiddle.position);
+                                if (riddleArrayAdapter != null) {
+                                    riddleArrayAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                        else {
+                            SerialRiddle serialRiddle = (SerialRiddle) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (riddlesArray != null && serialRiddle != null) {
+                                riddlesArray.get(serialRiddle.position).updateLocal(serialRiddle);
+                                if (riddleArrayAdapter != null) {
+                                    riddleArrayAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e) { Log.e("RiddlesActivity", e.getMessage()); }
+                }
+                break;
             }
-        });
+        }
     }
 }

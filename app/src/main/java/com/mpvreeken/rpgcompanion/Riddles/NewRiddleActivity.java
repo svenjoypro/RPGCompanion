@@ -97,7 +97,7 @@ public class NewRiddleActivity extends RPGCActivity {
                                     Intent intent = new Intent(NewRiddleActivity.this, DisplayRiddleActivity.class);
 
                                     Bundle bundle = new Bundle();
-                                    bundle.putInt("RIDDLE_ID", Integer.valueOf(all.getString("id")));
+                                    bundle.putInt("POST_ID", Integer.valueOf(all.getString("id")));
                                     intent.putExtras(bundle);
                                     finish();
                                     startActivity(intent);

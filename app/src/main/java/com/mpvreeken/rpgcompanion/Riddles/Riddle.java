@@ -1,53 +1,61 @@
 package com.mpvreeken.rpgcompanion.Riddles;
 
-import java.io.Serializable;
+import android.content.Context;
+
+import com.mpvreeken.rpgcompanion.Classes.PostObjectBase;
+import com.mpvreeken.rpgcompanion.RPGCActivity;
+import com.mpvreeken.rpgcompanion.RPGCApplication;
+
+import org.json.JSONObject;
+
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by Sven on 7/4/2017.
  */
 
-public class Riddle implements Serializable {
+public class Riddle extends PostObjectBase {
 
-    private Integer id, user_id;
-    private String username, riddle, answer;
-    private Integer upvotes, downvotes, voted;
-    private String created_at, updated_at;
-
-    public Riddle(Integer id, String username, Integer user_id, String riddle, String answer, Integer upvotes, Integer downvotes, Integer voted, String created_at, String updated_at) {
-
-        this.id=id;
-        this.username=username;
-        this.user_id=user_id;
-        this.riddle=riddle;
-        this.answer=answer;
-        this.upvotes=upvotes;
-        this.downvotes=downvotes;
-        this.voted=voted; // -1=didn't vote, 0=downvoted, 1=upvoted
-        //todo convert to readable time
-        this.created_at=created_at;
-        this.updated_at=updated_at;
+    public Riddle(Context context, int position, JSONObject r) throws Exception {
+        this.context=context;
+        this.submissionType="riddle";
+        this.activity = (RPGCActivity) context;
+        this.application = (RPGCApplication) context.getApplicationContext();
+        this.position=position;
+        this.id=r.getInt("id");
+        this.user_id=r.getInt("user_id");
+        this.answer=r.getString("answer");
+        this.user=r.getString("username");
+        this.riddle=r.getString("riddle");
+        this.upvotes=r.getInt("upvotes");
+        this.downvotes=r.getInt("downvotes");
+        this.voted=r.getInt("voted"); // -1=didn't vote, 0=downvoted, 1=upvoted
+        this.created_at=r.getString("created_at");
+        this.updated_at=r.getString("updated_at");
 
     }
 
+    public void updatePostOnServer() {
+        final RequestBody postBody = new FormBody.Builder()
+                .add("type", submissionType)
+                .add("id", String.valueOf(id))
+                .add("riddle", riddle)
+                .add("answer", answer)
+                .build();
 
-    public Integer getCalculatedVotes() { return upvotes-downvotes; }
-
-    public String getListItemVotes() {
-        return "User Votes: " + getCalculatedVotes() + " | +" + upvotes + ", -" + downvotes;
+        updatePost(postBody);
     }
 
-    public Integer getId() {return id;}
-    public Integer getUser_id() {return user_id;}
-    public String getUsername() {return username;}
-    public String getRiddle() {return riddle;}
-    public String getAnswer() {return answer;}
-    public Integer getUpvotes() {return upvotes;}
-    public Integer getDownvotes() {return downvotes;}
-    public Integer getVoted() {return voted;}
-    public String getCreated_at() {return created_at;}
-    public String getUpdated_at() {return updated_at;}
+    public SerialRiddle getSerialized() {
+        return new SerialRiddle(position, id, riddle, answer, upvotes, downvotes, voted);
+    }
 
-    public void updateUpvotes(int i) { upvotes+=i; }
-    public void updateDownvotes(int i) { downvotes+=i; }
-    public void setVoted(int i) { voted=i; }
+    public void updateLocal(SerialRiddle h) {
+        this.upvotes=h.upvotes;
+        this.downvotes=h.downvotes;
+        this.voted=h.voted;
+        this.riddle=h.riddle;
+        this.answer=h.answer;
+    }
 }
