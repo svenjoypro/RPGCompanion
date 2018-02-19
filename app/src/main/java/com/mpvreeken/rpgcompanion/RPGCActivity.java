@@ -48,7 +48,8 @@ public class RPGCActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         application = (RPGCApplication) getApplication();
-        context = getBaseContext();
+        //context = getBaseContext();
+        context = this;
     }
 
 
@@ -83,12 +84,21 @@ public class RPGCActivity extends AppCompatActivity {
                 if (error.equals("token_expired") || error.equals("token_invalid")) {
                     //TODO go to login activity
                     //I don't think we currently have expirations on our tokens, but we should check
-                    application.logout(RPGCActivity.this);
+                    application.logout();
                     //TODO should this be startactivityforresult?
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
                     //TODO this could all be handled in RPGCApplication?
                 }
+            }
+        });
+    }
+
+    public void displayError(final String error) {
+        RPGCActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getBaseContext(),error,Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -218,6 +228,7 @@ public class RPGCActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        application.setCurrentActivity(this);
         invalidateOptionsMenu();
     }
 
@@ -264,7 +275,7 @@ public class RPGCActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.menu_logout:
-                application.logout(this);
+                application.logout();
                 return true;
             case R.id.menu_register:
                 intent = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -278,7 +289,8 @@ public class RPGCActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case android.R.id.home:
-                this.finish();
+                //this.finish();
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

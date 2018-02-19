@@ -1,26 +1,18 @@
 package com.mpvreeken.rpgcompanion;
 
-import android.app.Activity;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
+import com.google.gson.Gson;
 import com.mpvreeken.rpgcompanion.Classes.User;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -32,136 +24,150 @@ import okhttp3.Response;
     */
 
 public class RPGCApplication extends Application {
-    private String username;
-    private String token;
-    private boolean loggedIn;
+
     private SharedPreferences prefs;
     public User user;
 
-    private Activity activity;
+    private RPGCActivity activity;
 
-    private final String SHARED_PREFS = "com.mpvreeken.rpgcompanion";
+    public static final String SHARED_PREFS = "com.mpvreeken.rpgcompanion";
 
     @Override
     public void onCreate () {
         super.onCreate();
 
-        prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-
-        //TODO get user from sharedPreferences, also save it to preferences at some point
-
-        this.username = prefs.getString("username", "");//second param is default value
-        this.token = prefs.getString("token", "");
-
-        this.loggedIn = false;
+        getUserFromPrefs();
     }
 
-    public void login(String token, Activity a) {
-        this.token = token;
-        this.loggedIn = true;
-        if (prefs==null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
-        prefs.edit().putString("token", this.token).apply();
-        if (a!=null) { a.invalidateOptionsMenu(); }
-    }
-
-    public void logout(RPGCActivity a) {
-        this.token = "";
-        this.loggedIn = false;
-        if (prefs==null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
-        prefs.edit().putString("token", this.token).apply();
-        if (a!=null) {
-            a.invalidateOptionsMenu();
-            a.onLoggedOut();
+    public void login(String token) {
+        user.login(token);
+        saveUserToPrefs();
+        if (activity!=null) {
+            try { activity.invalidateOptionsMenu(); }
+            catch (Exception e) {}
         }
+    }
+
+    public void logout() {
+        user.logout();
+        saveUserToPrefs();
+        if (activity!=null) {
+            try {
+                activity.invalidateOptionsMenu();
+                activity.onLoggedOut();
+            }
+            catch (Exception e) {}
+        }
+    }
+
+    public void setExternalLinkAlert(Boolean b) {
+        user.setExternalLinkAlert(b);
+        saveUserToPrefs();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("externalLinkAlert", b);
+        editor.apply();
+    }
+    public Boolean getExternalLinkAlert() {
+        return user.externalLinkAlert;
+    }
+
+    public void setCurrentActivity(RPGCActivity a) {
+        activity=a;
+    }
+
+    public int getMyID() {
+        if (user==null) {
+            getUserFromPrefs();
+        }
+        if (user==null || user.id==-1) {
+            //todo toast here?
+            logout();
+            return -1;
+        }
+        return user.id;
     }
 
     public void setUserData(User u) {
         user = u;
 
+        prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        user.setExternalLinkAlert(prefs.getBoolean("externalLinkAlert", true));
+        saveUserToPrefs();
+    }
+
+    private void getUserFromPrefs() {
+        prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("User", "");
+        try {
+            this.user = gson.fromJson(json, User.class);
+            user.setExternalLinkAlert(prefs.getBoolean("externalLinkAlert", true));
+        }
+        catch (Exception e) {
+            this.user=new User();
+        }
+    }
+
+    private void saveUserToPrefs() {
         SharedPreferences.Editor editor = prefs.edit();
-        /*
-        if (user.getStreamStatus() == 0) {
-            this.wantToStream = false;
-            editor.putBoolean("stream", false);
-        }
-        else {
-            this.wantToStream = true;
-            editor.putBoolean("stream", true);
-        }
-        editor.putString("username", user.getUsername());
-        */
-        editor.commit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        editor.putString("User", json);
+        editor.apply();
     }
 
 
     public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-        prefs.edit().putString("username", this.username).apply();
+        return user.username;
     }
 
     public String getToken() {
-        if (prefs == null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
-        if (token == null) { token = prefs.getString("token", ""); }
-        return token;
+        return user.token;
     }
 
-    public Boolean getLoggedIn() {  return loggedIn; }
+    public Boolean getLoggedIn() {  return user.loggedIn; }
 
-    public void checkToken(Activity a) {
-        if (prefs == null) { prefs = this.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE); }
-        if (token==null) { token = prefs.getString("token", ""); }
-        if (token.length()==0) {
-            loggedIn=false;
+    public void checkToken() {
+        if (user.token.length()==0) {
+            logout();
             return;
         }
-        if (a!=null) { this.activity = a; }
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(getResources().getString(R.string.url_check_token))
-                .header("Authorization", "Bearer" + token)
+                .header("Authorization", "Bearer" + user.token)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 //TODO keep this?
-                loggedIn=false;
+                logout();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                loggedIn=false;
                 if (!response.isSuccessful()) {
                     //response code isn't 200
                     Log.d("$$$$$$$$", response.body().string());
+                    logout();
                 }
                 else {
-                            /*
-                             *    possible responses:
-                             * { "success":"valid_token" }
-                             *
-                             */
                     try {
                         JSONObject r = new JSONObject(response.body().string());
-                        Log.d("^^^^^^^^^^", r.toString());
                         if (r.has("success")) {
-                            //TODO what do I do with this? Nothing?
-                            loggedIn=true;
-                            if (activity!=null) {
-                                activity.invalidateOptionsMenu();
-                            }
+                            user.refreshToken(r);
+                            login(r.getString("jwt"));
                         }
                         else {
-                            //"An unknown error has occurred. Please try again.";
+                            logout();
                         }
                     }
-                    catch (JSONException e) {
-                        Log.d("RPGCApplication", e.getMessage());
+                    catch (Exception e) {
+                        logout();
+                        Log.e("RPGCApplication", e.getMessage());
                     }
                 }
             }
