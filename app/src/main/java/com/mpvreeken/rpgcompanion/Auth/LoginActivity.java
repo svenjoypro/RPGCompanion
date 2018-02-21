@@ -4,12 +4,14 @@ package com.mpvreeken.rpgcompanion.Auth;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mpvreeken.rpgcompanion.Classes.User;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -97,7 +99,7 @@ public class LoginActivity extends RPGCActivity {
                                 JSONObject r = new JSONObject(response.body().string());
                                 if (r.has("jwt")) {
                                     //Success
-                                    onResponseSuccess(r.getString("jwt"));
+                                    onResponseSuccess(r);
                                 }
                                 else {
                                     //Error
@@ -130,14 +132,28 @@ public class LoginActivity extends RPGCActivity {
         });
     }
 
-    public void onResponseSuccess(final String token) {
+    public void onResponseSuccess(final JSONObject r) {
         //If login is successful, flag as logged in in application,
         // finish this activity
+        try {
+            application.login(r.getString("jwt"));
+            User u = new User(r);
+            application.setUserData(u);
+        } catch (Exception e) {
+            Log.e("LoginActivity", e.getMessage());
+            LoginActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getBaseContext(), "Login Error. Please try again", Toast.LENGTH_SHORT).show();
+                    application.logout();
+                }
+            });
+            return;
+        }
         LoginActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(getBaseContext(), "Logged in successfully", Toast.LENGTH_SHORT).show();
-                application.login(token, LoginActivity.this);
                 invalidateOptionsMenu();
                 finish();
             }
