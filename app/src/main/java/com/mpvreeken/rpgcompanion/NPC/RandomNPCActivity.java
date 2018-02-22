@@ -164,7 +164,11 @@ public class RandomNPCActivity extends RPGCActivity {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DBHelper.NPCS_COL_NPC, json);
-        values.put(DBHelper.NPCS_COL_NAME, currentNPC.getName()+" - "+currentNPC.getSex().substring(0,1) + " " + currentNPC.getRace()+", "+currentNPC.getProfession());
+        String sex = currentNPC.getSex();
+        if (sex.length()>0) {
+            sex = sex.substring(0,1) + " ";
+        }
+        values.put(DBHelper.NPCS_COL_NAME, currentNPC.getName()+" - "+ sex + currentNPC.getRace()+", "+currentNPC.getProfession());
         values.put(DBHelper.NPCS_COL_SUMMARY, currentNPC.getSummary());
 
         // Insert the new row, returning the primary key value of the new row
