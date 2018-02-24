@@ -11,7 +11,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -36,27 +39,43 @@ public class PostObjectBase {
     protected String submissionType;
     protected String externalLink, imageLink;
     protected String riddle, answer;
+    protected List<Integer> environments;
+    protected boolean bookmarked=false;
 
-    private EventListener eventListener;
-    public interface EventListener {
+    private VoteEventListener voteEventListener;
+    public interface VoteEventListener {
         void onVoteFail();
         void onVoteSuccess();
-        void onUpdatePostFail();
-        void onUpdatePostSuccess();
+        void onBookmarkFail();
     }
-    public void setEventListener(EventListener listener) {
-        eventListener = listener;
+    public void setVoteEventListener(VoteEventListener listener) {
+        voteEventListener = listener;
     }
 
-    public Boolean isMine() {
-        return application.getMyID() == id;
+    private EditEventListener editEventListener;
+    public interface EditEventListener {
+        void onUpdatePostFail();
+        void onUpdatePostSuccess();
+        void onDeletePostFail();
+        void onDeletePostSuccess();
     }
+    public void setEditEventListener(EditEventListener listener){
+        editEventListener = listener;
+    }
+
+
+    public Boolean isMine() {
+        return application.getMyID() == user_id;
+    }
+
+    public Boolean isBookmarked() { return bookmarked; }
 
     public int getId() {return id; }
 
     public String getTitle() {
         return title;
     }
+    public void setTitle(String t) { title=t; }
 
     public String getUser() {
         return user;
@@ -65,17 +84,27 @@ public class PostObjectBase {
     public String getDescription() {
         return description;
     }
+    public void setDescription(String d) { description=d; }
 
     public int getUpvotes() { return upvotes; }
     public int getDownvotes() { return downvotes; }
     public int getVoted() { return voted; }
 
+    public List<Integer> getEnvironments() { return environments; }
+    public void setEnvironments(List<Integer> l) { environments=l; }
+
     public String getExternalLink() {
         return externalLink != null ? externalLink : "";
+    }
+    public void setExternalLink(String s) {
+        externalLink=s;
     }
 
     public String getImageLink() {
         return imageLink != null ? imageLink : "";
+    }
+    public void setImageLink(String s) {
+        imageLink=s;
     }
 
     public String getRiddle() {
@@ -84,6 +113,8 @@ public class PostObjectBase {
     public String getAnswer() {
         return answer != null ? answer : "";
     }
+    public void setRiddle(String r) { riddle=r; }
+    public void setAnswer(String a) { answer=a; }
 
     public int getCalculatedVotes() { return upvotes-downvotes; }
 
@@ -135,7 +166,7 @@ public class PostObjectBase {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 activity.displayError("Could not connect to server. Please try again");
-                eventListener.onVoteFail();
+                voteEventListener.onVoteFail();
                 e.printStackTrace();
             }
 
@@ -143,13 +174,14 @@ public class PostObjectBase {
             public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     activity.onUnsuccessfulResponse(response);
-                    eventListener.onVoteFail();
+                    voteEventListener.onVoteFail();
                 }
                 else {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
 
                         if (all.has("success")) {
+                            Log.e("Vote", "Success");
                             //success
                             if (vote==1) {
                                 upvotes+=1;
@@ -164,17 +196,70 @@ public class PostObjectBase {
                                 }
                             }
                             voted = vote;
-                            eventListener.onVoteSuccess();
+                            voteEventListener.onVoteSuccess();
                         }
                         else {
                             Log.e("PostObjectBase.vote()", "Unknown Error: "+ all.toString());
-                            eventListener.onVoteFail();
+                            voteEventListener.onVoteFail();
                             activity.displayError("An unknown error occurred. Please try again");
                         }
                     }
                     catch (Exception e) {
                         Log.e("err", e.getMessage());
-                        eventListener.onVoteFail();
+                        voteEventListener.onVoteFail();
+                        activity.displayError("An unknown error occurred. Please try again");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void bookmark(boolean v) {
+        if (v == bookmarked) { return; }
+
+        final int book = v ? 1 : 0;
+        final RequestBody postBody = new FormBody.Builder()
+                .add("type", submissionType)
+                .add("id", String.valueOf(id))
+                .add("bookmark", String.valueOf(book))
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(context.getResources().getString(R.string.url_bookmark))
+                .header("Authorization", "Bearer" + application.getToken())
+                .post(postBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.displayError("Could not connect to server. Please try again");
+                voteEventListener.onBookmarkFail();
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    activity.onUnsuccessfulResponse(response);
+                    voteEventListener.onBookmarkFail();
+                }
+                else {
+                    try {
+                        JSONObject all = new JSONObject(response.body().string());
+
+                        if (all.has("success")) { bookmarked = book==1; }
+                        else {
+                            Log.e("PostObjectBase.vote()", "Unknown Error: "+ all.toString());
+                            voteEventListener.onBookmarkFail();
+                            activity.displayError("An unknown error occurred. Please try again");
+                        }
+                    }
+                    catch (Exception e) {
+                        Log.e("err", e.getMessage());
+                        voteEventListener.onBookmarkFail();
                         activity.displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
@@ -195,7 +280,7 @@ public class PostObjectBase {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 activity.displayError("Could not connect to server. Please try again");
-                eventListener.onUpdatePostFail();
+                editEventListener.onUpdatePostFail();
                 e.printStackTrace();
             }
 
@@ -210,7 +295,7 @@ public class PostObjectBase {
 
                         if (all.has("success")) {
                             //success
-                            eventListener.onUpdatePostSuccess();
+                            editEventListener.onUpdatePostSuccess();
 
                             return;
                         }
@@ -225,7 +310,60 @@ public class PostObjectBase {
                         e.printStackTrace();
                     }
                 }
-                eventListener.onUpdatePostFail();
+                editEventListener.onUpdatePostFail();
+            }
+        });
+    }
+
+
+    public void deletePostOnServer() {
+        RequestBody postBody = new FormBody.Builder()
+                .add("type", submissionType)
+                .add("id", String.valueOf(id))
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(context.getResources().getString(R.string.url_delete_post))
+                .header("Authorization", "Bearer" + application.getToken())
+                .post(postBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.displayError("Could not connect to server. Please try again");
+                editEventListener.onDeletePostFail();
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    activity.onUnsuccessfulResponse(response);
+                }
+                else {
+                    try {
+                        JSONObject all = new JSONObject(response.body().string());
+
+                        if (all.has("success")) {
+                            //success
+                            editEventListener.onDeletePostSuccess();
+
+                            return;
+                        }
+                        else {
+                            Log.e("PostObjectBase.vote()", "Unknown Error: "+ all.toString());
+                            activity.displayError("An unknown error occurred. Please try again");
+                        }
+                    }
+                    catch (Exception e) {
+                        Log.e("err", e.getMessage());
+                        activity.displayError("An unknown error occurred. Please try again");
+                        e.printStackTrace();
+                    }
+                }
+                editEventListener.onDeletePostFail();
             }
         });
     }
