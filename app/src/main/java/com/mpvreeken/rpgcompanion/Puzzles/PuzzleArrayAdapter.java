@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mpvreeken.rpgcompanion.Classes.PostObjectBase;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -115,7 +116,7 @@ public class PuzzleArrayAdapter extends ArrayAdapter<Puzzle> {
             }
         });
 
-        puzzle.setEventListener(new Puzzle.EventListener() {
+        puzzle.setVoteEventListener(new PostObjectBase.VoteEventListener() {
             @Override
             public void onVoteFail() {
                 tempVoted[0] = voted[0];
@@ -129,14 +130,7 @@ public class PuzzleArrayAdapter extends ArrayAdapter<Puzzle> {
             }
 
             @Override
-            public void onUpdatePostFail() {
-
-            }
-
-            @Override
-            public void onUpdatePostSuccess() {
-
-            }
+            public void onBookmarkFail() { }
         });
 
         return rowView;

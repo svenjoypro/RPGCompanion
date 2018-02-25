@@ -34,6 +34,8 @@ public class Puzzle extends PostObjectBase {
         this.upvotes=r.getInt("upvotes");
         this.downvotes=r.getInt("downvotes");
         this.voted=r.getInt("voted"); // -1=didn't vote, 0=downvoted, 1=upvoted
+        int b = r.has("bookmarked") ? r.getInt("bookmarked") : 0;
+        this.bookmarked = b==1;
         this.created_at=r.getString("created_at");
         this.updated_at=r.getString("updated_at");
     }
@@ -44,7 +46,7 @@ public class Puzzle extends PostObjectBase {
                 .add("type", submissionType)
                 .add("id", String.valueOf(id))
                 .add("title", title)
-                .add("desc", description)
+                .add("description", description)
                 .add("external_link", externalLink)
                 .add("image_link", imageLink)
                 .build();
