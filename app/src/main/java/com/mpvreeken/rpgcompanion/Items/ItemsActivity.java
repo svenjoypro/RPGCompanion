@@ -6,8 +6,12 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
+
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 import org.json.JSONArray;
@@ -24,9 +28,13 @@ import okhttp3.Response;
 
 public class ItemsActivity extends RPGCActivity {
 
-    ArrayList<Item> itemsArray = new ArrayList<>();
-    ItemArrayAdapter itemArrayAdapter;
-    ListView items_lv;
+    private ArrayList<Item> itemsArray = new ArrayList<>();
+    private ItemArrayAdapter itemArrayAdapter;
+    private ListView items_lv;
+
+    private Spinner sort_spinner;
+    private int sort_selection;
+    private static final String[] SORT_METHODS = {"r", "uv", "dv", "dd", "da"};
 
     private String seed; //random seed for server
     private int page; //pagination for server to get next set of maps
@@ -60,11 +68,43 @@ public class ItemsActivity extends RPGCActivity {
         this.items_lv = findViewById(R.id.items_lv);
 
         setupUI();
-
-        loadMoreItems();
     }
 
     public void setupUI() {
+        sort_spinner = findViewById(R.id.items_sort_spinner);
+        sort_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                sort_selection=i;
+                if (sort_selection==0) {
+                    Random rand = new Random();
+                    seed = String.valueOf(rand.nextInt(1000000));
+                }
+                resetAndLoad();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort_spinner.setAdapter(adapter);
+        sort_selection=0;
+
+        if (application.getLoggedIn()) {
+            Button saved_btn = findViewById(R.id.saved_btn);
+            saved_btn.setVisibility(View.VISIBLE);
+            saved_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(context, SavedItemsActivity.class));
+                }
+            });
+        }
+
         items_lv.setAdapter(itemArrayAdapter);
         Button btn = new Button(this);
         btn.setText(R.string.lbl_load_more);
@@ -79,15 +119,35 @@ public class ItemsActivity extends RPGCActivity {
         });
     }
 
+    private void resetAndLoad() {
+        page=0;
+        firstLoad=true;
+        itemArrayAdapter.clear();
+        loadMoreItems();
+    }
+
     public void loadMoreItems() {
         showLoadingAnim();
 
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("seed", seed)
-                .add("page", String.valueOf(page))
-                .build();
+        RequestBody requestBody;
+
+        int i = sort_spinner.getSelectedItemPosition();
+        if (i==0) {
+            //Random
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[0])
+                    .add("seed", seed)
+                    .add("page", String.valueOf(page))
+                    .build();
+        }
+        else {
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[i])
+                    .add("page", String.valueOf(page))
+                    .build();
+        }
 
         Request request = new Request.Builder()
                 .url(getResources().getString(R.string.url_get_items))
@@ -164,15 +224,22 @@ public class ItemsActivity extends RPGCActivity {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
                     try {
-                        SerialItem serialItem = (SerialItem) data.getSerializableExtra("SERIALIZED_OBJ");
-                        if (itemsArray != null && serialItem != null) {
-                            itemsArray.get(serialItem.position).updateLocal(serialItem);
-                            if (itemArrayAdapter != null) {
-                                itemArrayAdapter.notifyDataSetChanged();
+                        if (data.hasExtra("DELETED")) {
+                            SerialItem serialItem = (SerialItem) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (itemsArray != null && serialItem != null) {
+                                itemsArray.remove(serialItem.position);
+                                if (itemArrayAdapter != null) {
+                                    itemArrayAdapter.notifyDataSetChanged();
+                                }
                             }
-                        }
-                        else {
-
+                        } else {
+                            SerialItem serialItem = (SerialItem) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (itemsArray != null && serialItem != null) {
+                                itemsArray.get(serialItem.position).updateLocal(serialItem);
+                                if (itemArrayAdapter != null) {
+                                    itemArrayAdapter.notifyDataSetChanged();
+                                }
+                            }
                         }
                     }
                     catch (Exception e) { Log.e("ItemsActivity", e.getMessage()); }

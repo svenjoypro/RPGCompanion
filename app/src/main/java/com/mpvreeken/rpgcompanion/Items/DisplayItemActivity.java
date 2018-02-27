@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.mpvreeken.rpgcompanion.Classes.PostObjectBase;
 import com.mpvreeken.rpgcompanion.ExternalLinkAlertActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
@@ -43,10 +44,12 @@ public class DisplayItemActivity extends RPGCActivity {
     private LinearLayout comments_layout;
     private Item item;
     private ImageButton upvote_btn, downvote_btn;
+    private ImageView bookmark_iv;
     private TextView votes_tv;
     private SerialItem serialized;
     private Button external_btn;
     private ImageView img;
+    private TextView title_tv, description_tv, user_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,11 +163,11 @@ public class DisplayItemActivity extends RPGCActivity {
     public void setupUI() {
         votes_tv = findViewById(R.id.item_details_votes_tv);
         votes_tv.setText(String.valueOf(item.getCalculatedVotes()));
-        TextView title_tv = findViewById(R.id.item_details_title_tv);
-        title_tv.setText(String.valueOf(item.getTitle()));
-        TextView description_tv = findViewById(R.id.item_details_description_tv);
-        description_tv.setText(String.valueOf(item.getDescription()));
-        TextView user_tv = findViewById(R.id.item_details_user_tv);
+        title_tv = findViewById(R.id.item_details_title_tv);
+        title_tv.setText(item.getTitle());
+        description_tv = findViewById(R.id.item_details_description_tv);
+        description_tv.setText(item.getDescription());
+        user_tv = findViewById(R.id.item_details_user_tv);
         user_tv.setText(item.getDetailSubtitle());
 
         if (item.getVoted() == 1) {
@@ -175,13 +178,39 @@ public class DisplayItemActivity extends RPGCActivity {
         }
 
         if (item.isMine()) {
-
+            ImageView edit_iv = findViewById(R.id.item_details_edit_iv);
+            edit_iv.setVisibility(View.VISIBLE);
+            edit_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditItemActivity.item=item;
+                    Intent intent = new Intent(context, EditItemActivity.class);
+                    startActivityForResult(intent, 1);
+                }
+            });
+        }
+        else {
+            bookmark_iv = findViewById(R.id.item_details_bookmark_iv);
+            resetBookmark();
+            bookmark_iv.setVisibility(View.VISIBLE);
+            bookmark_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (item.isBookmarked()) {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmark);
+                        item.bookmark(false);
+                    }
+                    else {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+                        item.bookmark(true);
+                    }
+                }
+            });
         }
 
         external_btn = findViewById(R.id.item_details_external_btn);
         if (item.getExternalLink().length()>0) {
             external_btn.setVisibility(View.VISIBLE);
-            external_btn = findViewById(R.id.item_details_external_btn);
             external_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -207,12 +236,15 @@ public class DisplayItemActivity extends RPGCActivity {
             comments_layout.addView(view);
         }
 
-        item.setEventListener(new Item.EventListener() {
+        item.setVoteEventListener(new PostObjectBase.VoteEventListener() {
             @Override
-            public void onVoteFail() {
+            public void onVoteFail(final String msg) {
                 DisplayItemActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (!msg.isEmpty()) {
+                            Toast.makeText(application, msg, Toast.LENGTH_SHORT).show();
+                        }
                         resetButtons();
                     }
                 });
@@ -230,25 +262,28 @@ public class DisplayItemActivity extends RPGCActivity {
             }
 
             @Override
-            public void onUpdatePostFail() {
+            public void onBookmarkFail(final String msg) {
                 DisplayItemActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onUpdatePostSuccess() {
-                DisplayItemActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+                        resetBookmark();
+                        if (!msg.isEmpty()) {
+                            Toast.makeText(application, msg, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
         });
+    }
+
+    private void resetBookmark() {
+        if (item.isBookmarked()) {
+            bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+        }
+        else {
+            bookmark_iv.setImageResource(R.mipmap.ic_bookmark);
+        }
     }
 
     private void showExternalLink() {
@@ -295,6 +330,52 @@ public class DisplayItemActivity extends RPGCActivity {
                 }
             }
         });
+    }
+
+    private void updateAfterEdit() {
+        title_tv.setText(item.getTitle());
+        description_tv.setText(item.getDescription());
+        user_tv.setText(item.getDetailSubtitle());
+
+        if (item.getExternalLink().length()>0) {
+            external_btn.setVisibility(View.VISIBLE);
+            external_btn.setOnClickListener(null);
+            external_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showExternalLink();
+                }
+            });
+        }
+
+        String img_url = item.getImageLink();
+        if (img_url.length()>0) {
+            img.setVisibility(View.VISIBLE);
+            Glide.with(context).load(item.getImageLink()).into(img);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data.hasExtra("DELETED")) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("DELETED", true);
+                        resultIntent.putExtra("SERIALIZED_OBJ", item.getSerialized());
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    }
+                    else {
+                        updateAfterEdit();
+                        setOnResult();
+                    }
+                }
+                break;
+            }
+        }
     }
 
 }

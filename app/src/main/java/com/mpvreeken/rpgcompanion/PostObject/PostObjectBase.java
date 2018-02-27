@@ -44,9 +44,9 @@ public class PostObjectBase {
 
     private VoteEventListener voteEventListener;
     public interface VoteEventListener {
-        void onVoteFail();
+        void onVoteFail(String msg);
         void onVoteSuccess();
-        void onBookmarkFail();
+        void onBookmarkFail(String msg);
     }
     public void setVoteEventListener(VoteEventListener listener) {
         voteEventListener = listener;
@@ -145,6 +145,10 @@ public class PostObjectBase {
     public void downvote() { vote(false); }
 
     protected void vote(boolean v) {
+        if (!application.getLoggedIn()) {
+            voteEventListener.onVoteFail("You must be logged in to vote");
+            return;
+        }
         if (v && voted==1) { return; }
         if (!v && voted==0) { return; }
 
@@ -166,7 +170,7 @@ public class PostObjectBase {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 activity.displayError("Could not connect to server. Please try again");
-                voteEventListener.onVoteFail();
+                voteEventListener.onVoteFail("");
                 e.printStackTrace();
             }
 
@@ -174,7 +178,7 @@ public class PostObjectBase {
             public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     activity.onUnsuccessfulResponse(response);
-                    voteEventListener.onVoteFail();
+                    voteEventListener.onVoteFail("");
                 }
                 else {
                     try {
@@ -200,13 +204,13 @@ public class PostObjectBase {
                         }
                         else {
                             Log.e("PostObjectBase.vote()", "Unknown Error: "+ all.toString());
-                            voteEventListener.onVoteFail();
+                            voteEventListener.onVoteFail("");
                             activity.displayError("An unknown error occurred. Please try again");
                         }
                     }
                     catch (Exception e) {
                         Log.e("err", e.getMessage());
-                        voteEventListener.onVoteFail();
+                        voteEventListener.onVoteFail("");
                         activity.displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
@@ -216,6 +220,10 @@ public class PostObjectBase {
     }
 
     public void bookmark(boolean v) {
+        if (!application.getLoggedIn()) {
+            voteEventListener.onBookmarkFail("You must be logged in to save posts");
+            return;
+        }
         if (v == bookmarked) { return; }
 
         final int book = v ? 1 : 0;
@@ -236,7 +244,7 @@ public class PostObjectBase {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 activity.displayError("Could not connect to server. Please try again");
-                voteEventListener.onBookmarkFail();
+                voteEventListener.onBookmarkFail("");
                 e.printStackTrace();
             }
 
@@ -244,7 +252,7 @@ public class PostObjectBase {
             public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     activity.onUnsuccessfulResponse(response);
-                    voteEventListener.onBookmarkFail();
+                    voteEventListener.onBookmarkFail("");
                 }
                 else {
                     try {
@@ -253,13 +261,13 @@ public class PostObjectBase {
                         if (all.has("success")) { bookmarked = book==1; }
                         else {
                             Log.e("PostObjectBase.vote()", "Unknown Error: "+ all.toString());
-                            voteEventListener.onBookmarkFail();
+                            voteEventListener.onBookmarkFail("");
                             activity.displayError("An unknown error occurred. Please try again");
                         }
                     }
                     catch (Exception e) {
                         Log.e("err", e.getMessage());
-                        voteEventListener.onBookmarkFail();
+                        voteEventListener.onBookmarkFail("");
                         activity.displayError("An unknown error occurred. Please try again");
                         e.printStackTrace();
                     }
