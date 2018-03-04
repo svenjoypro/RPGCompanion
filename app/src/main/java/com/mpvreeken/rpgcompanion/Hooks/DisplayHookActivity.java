@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mpvreeken.rpgcompanion.Classes.PostObjectBase;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
@@ -37,8 +40,10 @@ public class DisplayHookActivity extends RPGCActivity {
     private LinearLayout comments_layout;
     private Hook hook;
     private ImageButton upvote_btn, downvote_btn;
+    private ImageView bookmark_iv;
     private TextView votes_tv;
-    private SerialHook serialHook;
+    private SerialHook serialized;
+    private TextView title_tv, description_tv, user_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,17 @@ public class DisplayHookActivity extends RPGCActivity {
         final Bundle hookBundle = intent.getExtras();
         assert hookBundle != null;
 
-        serialHook = (SerialHook) hookBundle.getSerializable("SERIALIZED_OBJ");
+        if (hookBundle.containsKey("SERIALIZED_OBJ")) {
+            serialized = (SerialHook) hookBundle.getSerializable("SERIALIZED_OBJ");
+        }
+        else if (hookBundle.containsKey("POST_ID")) {
+            serialized = new SerialHook(hookBundle.getInt("POST_ID"));
+        }
+        else {
+            Toast.makeText(application, "An unknown error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         upvote_btn = findViewById(R.id.hook_details_vote_up_btn);
         upvote_btn.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +98,7 @@ public class DisplayHookActivity extends RPGCActivity {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(getResources().getString(R.string.url_get_hook)+serialHook.id)
+                .url(getResources().getString(R.string.url_get_hook)+ serialized.id)
                 .header("Authorization", "Bearer" + application.getToken())
                 .build();
 
@@ -105,7 +120,7 @@ public class DisplayHookActivity extends RPGCActivity {
                         JSONObject all = new JSONObject(response.body().string());
 
                         JSONObject h = all.getJSONObject("hook");
-                        hook = new Hook(context, serialHook.position, h);
+                        hook = new Hook(context, serialized.position, h);
 
                         JSONArray cs = all.getJSONArray("comments");
                         for (int i=0; i<cs.length(); i++) {
@@ -142,11 +157,11 @@ public class DisplayHookActivity extends RPGCActivity {
     public void setupUI() {
         votes_tv = findViewById(R.id.hook_details_votes_tv);
         votes_tv.setText(String.valueOf(hook.getCalculatedVotes()));
-        TextView title_tv = findViewById(R.id.hook_details_title_tv);
+        title_tv = findViewById(R.id.hook_details_title_tv);
         title_tv.setText(String.valueOf(hook.getTitle()));
-        TextView description_tv = findViewById(R.id.hook_details_description_tv);
+        description_tv = findViewById(R.id.hook_details_description_tv);
         description_tv.setText(String.valueOf(hook.getDescription()));
-        TextView user_tv = findViewById(R.id.hook_details_user_tv);
+        user_tv = findViewById(R.id.hook_details_user_tv);
         user_tv.setText(hook.getDetailSubtitle());
 
         if (hook.getVoted() == 1) {
@@ -157,7 +172,34 @@ public class DisplayHookActivity extends RPGCActivity {
         }
 
         if (hook.isMine()) {
-
+            ImageView edit_iv = findViewById(R.id.hook_details_edit_iv);
+            edit_iv.setVisibility(View.VISIBLE);
+            edit_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditHookActivity.hook=hook;
+                    Intent intent = new Intent(context, EditHookActivity.class);
+                    startActivityForResult(intent, 1);
+                }
+            });
+        }
+        else {
+            bookmark_iv = findViewById(R.id.hook_details_bookmark_iv);
+            resetBookmark();
+            bookmark_iv.setVisibility(View.VISIBLE);
+            bookmark_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (hook.isBookmarked()) {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmark);
+                        hook.bookmark(false);
+                    }
+                    else {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+                        hook.bookmark(true);
+                    }
+                }
+            });
         }
 
         //comments_lv.setAdapter(commentArrayAdapter);
@@ -171,12 +213,15 @@ public class DisplayHookActivity extends RPGCActivity {
             comments_layout.addView(view);
         }
 
-        hook.setEventListener(new Hook.EventListener() {
+        hook.setVoteEventListener(new PostObjectBase.VoteEventListener() {
             @Override
-            public void onVoteFail() {
+            public void onVoteFail(final String msg) {
                 DisplayHookActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (!msg.isEmpty()) {
+                            Toast.makeText(application, msg, Toast.LENGTH_SHORT).show();
+                        }
                         resetButtons();
                     }
                 });
@@ -187,35 +232,42 @@ public class DisplayHookActivity extends RPGCActivity {
                 DisplayHookActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("SERIALIZED_OBJ", hook.getSerialized());
-                        setResult(Activity.RESULT_OK, resultIntent);
-
                         votes_tv.setText(String.valueOf(hook.getCalculatedVotes()));
                     }
                 });
+                setOnResult();
             }
 
             @Override
-            public void onUpdatePostFail() {
+            public void onBookmarkFail(final String msg) {
                 DisplayHookActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onUpdatePostSuccess() {
-                DisplayHookActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
+                        resetBookmark();
+                        if (!msg.isEmpty()) {
+                            Toast.makeText(application, msg, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
         });
+    }
+
+    private void resetBookmark() {
+        if (hook.isBookmarked()) {
+            bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+        }
+        else {
+            bookmark_iv.setImageResource(R.mipmap.ic_bookmark);
+        }
+    }
+
+    private void setOnResult() {
+        if (serialized.position!=-1) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("SERIALIZED_OBJ", hook.getSerialized());
+            setResult(Activity.RESULT_OK, resultIntent);
+        }
     }
 
     private void resetButtons() {
@@ -234,6 +286,35 @@ public class DisplayHookActivity extends RPGCActivity {
                 }
             }
         });
+    }
+
+    private void updateAfterEdit() {
+        title_tv.setText(hook.getTitle());
+        description_tv.setText(hook.getDescription());
+        user_tv.setText(hook.getDetailSubtitle());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data.hasExtra("DELETED")) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("DELETED", true);
+                        resultIntent.putExtra("SERIALIZED_OBJ", hook.getSerialized());
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    }
+                    else {
+                        updateAfterEdit();
+                        setOnResult();
+                    }
+                }
+                break;
+            }
+        }
     }
 
 }

@@ -98,7 +98,7 @@ public class NewHookActivity extends RPGCActivity {
                                 Intent intent = new Intent(NewHookActivity.this, DisplayHookActivity.class);
 
                                 Bundle bundle = new Bundle();
-                                bundle.putString("HOOK_ID", all.getString("id"));
+                                bundle.putInt("POST_ID", Integer.valueOf(all.getString("id")));
                                 intent.putExtras(bundle);
                                 finish();
                                 startActivity(intent);

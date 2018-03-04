@@ -5,11 +5,10 @@ import android.content.Context;
 import com.mpvreeken.rpgcompanion.Classes.PostObjectBase;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 import com.mpvreeken.rpgcompanion.RPGCApplication;
-
 import org.json.JSONObject;
-
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
+
 
 /**
  * Created by Sven on 7/4/2017.
@@ -31,6 +30,8 @@ public class Hook extends PostObjectBase {
         this.upvotes=r.getInt("upvotes");
         this.downvotes=r.getInt("downvotes");
         this.voted=r.getInt("voted"); // -1=didn't vote, 0=downvoted, 1=upvoted
+        int b = r.has("bookmarked") ? r.getInt("bookmarked") : 0;
+        this.bookmarked = b==1;
         this.created_at=r.getString("created_at");
         this.updated_at=r.getString("updated_at");
 
@@ -41,7 +42,7 @@ public class Hook extends PostObjectBase {
                 .add("type", submissionType)
                 .add("id", String.valueOf(id))
                 .add("title", title)
-                .add("desc", description)
+                .add("description", description)
                 .build();
 
         updatePost(postBody);
@@ -58,7 +59,4 @@ public class Hook extends PostObjectBase {
         this.title=h.title;
         this.description=h.description;
     }
-
-
-
 }

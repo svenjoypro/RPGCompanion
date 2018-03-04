@@ -6,8 +6,12 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
+
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 import org.json.JSONArray;
@@ -24,9 +28,12 @@ import okhttp3.Response;
 
 public class HooksActivity extends RPGCActivity {
 
-    ArrayList<Hook> hooksArray = new ArrayList<>();
-    HookArrayAdapter hookArrayAdapter;
-    ListView hooks_lv;
+    private ArrayList<Hook> hooksArray = new ArrayList<>();
+    private HookArrayAdapter hookArrayAdapter;
+    private ListView hooks_lv;
+    private Spinner sort_spinner;
+    private int sort_selection;
+    private static final String[] SORT_METHODS = {"r", "uv", "dv", "dd", "da"};
 
     private String seed; //random seed for server
     private int page; //pagination for server to get next set of maps
@@ -54,17 +61,49 @@ public class HooksActivity extends RPGCActivity {
             }
         });
 
-        //Fetch hooks from db
         this.hooksArray = new ArrayList<>();
         this.hookArrayAdapter = new HookArrayAdapter(this, hooksArray);
         this.hooks_lv = findViewById(R.id.hooks_lv);
 
         setupUI();
-
-        loadMoreHooks();
     }
 
     public void setupUI() {
+        sort_spinner = findViewById(R.id.hooks_sort_spinner);
+        sort_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                sort_selection=i;
+                if (sort_selection==0) {
+                    Random rand = new Random();
+                    seed = String.valueOf(rand.nextInt(1000000));
+                }
+                resetAndLoad();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort_spinner.setAdapter(adapter);
+        sort_selection=0;
+
+        if (application.getLoggedIn()) {
+            Button saved_btn = findViewById(R.id.saved_btn);
+            saved_btn.setVisibility(View.VISIBLE);
+            saved_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(context, SavedHooksActivity.class));
+                }
+            });
+        }
+
+
         hooks_lv.setAdapter(hookArrayAdapter);
         Button btn = new Button(this);
         btn.setText(R.string.lbl_load_more);
@@ -79,15 +118,35 @@ public class HooksActivity extends RPGCActivity {
         });
     }
 
+    private void resetAndLoad() {
+        page=0;
+        firstLoad=true;
+        hookArrayAdapter.clear();
+        loadMoreHooks();
+    }
+
     public void loadMoreHooks() {
         showLoadingAnim();
 
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("seed", seed)
-                .add("page", String.valueOf(page))
-                .build();
+        RequestBody requestBody;
+
+        int i = sort_spinner.getSelectedItemPosition();
+        if (i==0) {
+            //Random
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[0])
+                    .add("seed", seed)
+                    .add("page", String.valueOf(page))
+                    .build();
+        }
+        else {
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[i])
+                    .add("page", String.valueOf(page))
+                    .build();
+        }
 
         Request request = new Request.Builder()
                 .url(getResources().getString(R.string.url_get_hooks))
@@ -164,15 +223,23 @@ public class HooksActivity extends RPGCActivity {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
                     try {
-                        SerialHook serialHook = (SerialHook) data.getSerializableExtra("SERIALIZED_OBJ");
-                        if (hooksArray != null && serialHook != null) {
-                            hooksArray.get(serialHook.position).updateLocal(serialHook);
-                            if (hookArrayAdapter != null) {
-                                hookArrayAdapter.notifyDataSetChanged();
+                        if (data.hasExtra("DELETED")) {
+                            SerialHook serialHook = (SerialHook) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (hooksArray != null && serialHook != null) {
+                                hooksArray.remove(serialHook.position);
+                                if (hookArrayAdapter != null) {
+                                    hookArrayAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
                         else {
-
+                            SerialHook serialHook = (SerialHook) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (hooksArray != null && serialHook != null) {
+                                hooksArray.get(serialHook.position).updateLocal(serialHook);
+                                if (hookArrayAdapter != null) {
+                                    hookArrayAdapter.notifyDataSetChanged();
+                                }
+                            }
                         }
                     }
                     catch (Exception e) { Log.e("HooksActivity", e.getMessage()); }
