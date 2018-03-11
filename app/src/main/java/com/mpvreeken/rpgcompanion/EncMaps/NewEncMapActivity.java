@@ -1,7 +1,6 @@
-package com.mpvreeken.rpgcompanion.Maps;
+package com.mpvreeken.rpgcompanion.EncMaps;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.mpvreeken.rpgcompanion.Hooks.DisplayHookActivity;
-import com.mpvreeken.rpgcompanion.Hooks.NewHookActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 import com.mpvreeken.rpgcompanion.Widgets.MultiselectSpinner;
@@ -32,7 +29,6 @@ import okhttp3.Response;
 public class NewEncMapActivity extends RPGCActivity {
 
     private EditText title_et, desc_et, link_et, img_et;
-    private ArrayList<String> envs;
     private MultiselectSpinner spinner;
 
     @Override
@@ -42,11 +38,10 @@ public class NewEncMapActivity extends RPGCActivity {
 
         setupLoadingAnim();
 
-        envs = getIntent().getStringArrayListExtra("ENVS");
 
         spinner = findViewById(R.id.new_map_envs_spinner);
 
-        spinner.setItems(envs);
+        spinner.setItems(EncMap.ENVS);
 
         title_et = findViewById(R.id.new_map_title_input);
         desc_et = findViewById(R.id.new_map_desc_input);
@@ -148,7 +143,7 @@ public class NewEncMapActivity extends RPGCActivity {
                                     Intent intent = new Intent(context, DisplayEncMapActivity.class);
 
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("MAP_ID", all.getString("id"));
+                                    bundle.putInt("POST_ID", Integer.valueOf(all.getString("id")));
                                     intent.putExtras(bundle);
                                     finish();
                                     startActivity(intent);

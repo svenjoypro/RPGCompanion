@@ -1,110 +1,109 @@
-package com.mpvreeken.rpgcompanion.Maps;
+package com.mpvreeken.rpgcompanion.EncMaps;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
+
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.mpvreeken.rpgcompanion.CommentActivity;
+import com.mpvreeken.rpgcompanion.Classes.PostObjectBase;
 import com.mpvreeken.rpgcompanion.ExternalLinkAlertActivity;
 import com.mpvreeken.rpgcompanion.R;
 import com.mpvreeken.rpgcompanion.RPGCActivity;
 
-import org.json.JSONException;
+import org.json.JSONArray;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class DisplayEncMapActivity extends RPGCActivity {
 
-    private String map_id;
-    //private ArrayList<MapComment> commentsArray = new ArrayList<>();
-    //private CommentsArrayAdapter commentArrayAdapter;
-    //private LinearLayout comments_layout;
+    private ArrayList<EncMapComment> commentsArray = new ArrayList<>();
+    private EncMapCommentsArrayAdapter commentArrayAdapter;
+    private LinearLayout comments_layout;
     private EncMap map;
-    private Button upvote_btn;
-    private Button downvote_btn;
+    private ImageButton upvote_btn, downvote_btn, img_btn;
+    private ImageView bookmark_iv;
     private TextView votes_tv;
-    private ImageView img;
-    private ConstraintLayout popup_view;
+    private SerialEncMap serialized;
+    private Button external_btn;
+    private TextView title_tv, description_tv, user_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_enc_map);
-
         setupLoadingAnim();
 
-        map_id = getIntent().getExtras().getString("MAP_ID");
+        Intent intent = getIntent();
+        final Bundle bundle = intent.getExtras();
+        assert bundle != null;
+
+        if (bundle.containsKey("SERIALIZED_OBJ")) {
+            serialized = (SerialEncMap) bundle.getSerializable("SERIALIZED_OBJ");
+        }
+        else if (bundle.containsKey("POST_ID")) {
+            serialized = new SerialEncMap(bundle.getInt("POST_ID"));
+        }
+        else {
+            Toast.makeText(application, "An unknown error has occurred. Please try again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         upvote_btn = findViewById(R.id.map_details_vote_up_btn);
-        downvote_btn = findViewById(R.id.map_details_vote_down_btn);
-        Button comment_btn = findViewById(R.id.map_details_comment_btn);
-        View.OnClickListener buttonHandler = new View.OnClickListener() {
-            public void onClick(View v) {
-                switch(v.getId()) {
-                    case R.id.map_details_vote_up_btn:
-                        vote(true);
-                        break;
-                    case R.id.map_details_vote_down_btn:
-                        vote(false);
-                        break;
-                    case R.id.map_details_comment_btn:
-                        displayCommentInput();
-                        break;
-                    default:
-                }
+        upvote_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upvote_btn.setImageResource(R.mipmap.arrow_upvote);
+                downvote_btn.setImageResource(R.mipmap.arrow_neutral);
+                map.upvote();
             }
-        };
-
-        upvote_btn.setOnClickListener(buttonHandler);
-        downvote_btn.setOnClickListener(buttonHandler);
-        comment_btn.setOnClickListener(buttonHandler);
-
-        img = findViewById(R.id.map_details_img);
-
-
-        /*
-        commentsArray = new ArrayList<>();
-        commentArrayAdapter = new MapCommentsArrayAdapter(this, commentsArray);
-        comments_lv = findViewById(R.id.map_comments_lv);
-        comments_layout = findViewById(R.id.map_comments_linear_layout);
-        */
-
+        });
+        downvote_btn = findViewById(R.id.map_details_vote_down_btn);
+        downvote_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downvote_btn.setImageResource(R.mipmap.arrow_downvote);
+                upvote_btn.setImageResource(R.mipmap.arrow_neutral);
+                map.downvote();
+            }
+        });
 
         //Fetch maps from db
-        getMapData();
-    }
+        this.commentsArray = new ArrayList<>();
+        this.commentArrayAdapter = new EncMapCommentsArrayAdapter(this, commentsArray);
+        //this.comments_lv = findViewById(R.id.map_comments_lv);
 
-    private void getMapData() {
         showLoadingAnim();
 
-        Glide.with(context).load(context.getResources().getString(R.string.url_map_thumbs)+map_id+".jpg").into(img);
+        this.comments_layout = findViewById(R.id.map_comments_linear_layout);
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(getResources().getString(R.string.url_get_map)+map_id)
+                .url(getResources().getString(R.string.url_get_map)+ serialized.id)
                 .header("Authorization", "Bearer" + application.getToken())
                 .build();
 
@@ -113,7 +112,6 @@ public class DisplayEncMapActivity extends RPGCActivity {
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 hideLoadingAnim();
                 displayError("Could not connect to server. Please try again");
-                e.printStackTrace();
             }
 
             @Override
@@ -126,24 +124,12 @@ public class DisplayEncMapActivity extends RPGCActivity {
                     try {
                         JSONObject all = new JSONObject(response.body().string());
 
-                        JSONObject m = all.getJSONObject("map");
-                        map = new EncMap(m.getString("id"),
-                                m.getString("title"),
-                                m.getString("username"),
-                                m.getInt("user_id"),
-                                m.getString("description"),
-                                m.getString("link"),
-                                m.getInt("upvotes"),
-                                m.getInt("downvotes"),
-                                m.getInt("voted"),
-                                m.getString("created_at"),
-                                m.getString("updated_at")
-                        );
-                        /*
+                        JSONObject h = all.getJSONObject("map");
+                        map = new EncMap(context, serialized.position, h);
                         JSONArray cs = all.getJSONArray("comments");
                         for (int i=0; i<cs.length(); i++) {
                             commentsArray.add(
-                                    new Comment(cs.getJSONObject(i).getString("id"),
+                                    new EncMapComment(cs.getJSONObject(i).getString("id"),
                                             cs.getJSONObject(i).getString("map_id"),
                                             cs.getJSONObject(i).getString("username"),
                                             cs.getJSONObject(i).getString("comment"),
@@ -152,7 +138,7 @@ public class DisplayEncMapActivity extends RPGCActivity {
                                     )
                             );
                         }
-                        */
+
 
                         //We can't update the UI on a background thread, so run on the UI thread
                         DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
@@ -162,7 +148,7 @@ public class DisplayEncMapActivity extends RPGCActivity {
                             }
                         });
                     }
-                    catch (JSONException e) {
+                    catch (Exception e) {
                         displayError("An unknown error occurred. Please try again");
                         Log.e("DisplayEncMapActivity", e.getMessage());
                         e.printStackTrace();
@@ -175,21 +161,68 @@ public class DisplayEncMapActivity extends RPGCActivity {
     public void setupUI() {
         votes_tv = findViewById(R.id.map_details_votes_tv);
         votes_tv.setText(String.valueOf(map.getCalculatedVotes()));
-        TextView title_tv = findViewById(R.id.map_details_title_tv);
-        title_tv.setText(String.valueOf(map.getTitle()));
-        TextView description_tv = findViewById(R.id.map_details_description_tv);
-        description_tv.setText(String.valueOf(map.getDescription()));
-
+        title_tv = findViewById(R.id.map_details_title_tv);
+        title_tv.setText(map.getTitle());
+        description_tv = findViewById(R.id.map_details_description_tv);
+        description_tv.setText(map.getDescription());
+        user_tv = findViewById(R.id.map_details_user_tv);
+        user_tv.setText(map.getDetailSubtitle());
 
         if (map.getVoted() == 1) {
-            upvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+            upvote_btn.setImageResource(R.mipmap.arrow_upvote);
         }
         else if (map.getVoted() == 0) {
-            downvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+            downvote_btn.setImageResource(R.mipmap.arrow_downvote);
         }
 
-        Button view_map_btn = findViewById(R.id.map_details_view_btn);
-        view_map_btn.setOnClickListener(new View.OnClickListener() {
+        if (map.isMine()) {
+            ImageView edit_iv = findViewById(R.id.map_details_edit_iv);
+            edit_iv.setVisibility(View.VISIBLE);
+            edit_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditEncMapActivity.map=map;
+                    Intent intent = new Intent(context, EditEncMapActivity.class);
+                    startActivityForResult(intent, 1);
+                }
+            });
+        }
+        else {
+            bookmark_iv = findViewById(R.id.map_details_bookmark_iv);
+            resetBookmark();
+            bookmark_iv.setVisibility(View.VISIBLE);
+            bookmark_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (map.isBookmarked()) {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmark);
+                        map.bookmark(false);
+                    }
+                    else {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+                        map.bookmark(true);
+                    }
+                }
+            });
+        }
+
+        external_btn = findViewById(R.id.map_details_external_btn);
+        external_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showExternalLink();
+            }
+        });
+
+        img_btn = findViewById(R.id.map_details_img_btn);
+        //TODO how to fail gracefully with this
+        try {
+            Glide.with(context).load(context.getResources().getString(R.string.url_map_thumbs) + map.getId() + ".jpg").into(img_btn);
+        }
+        catch (Exception e) {
+            Toast.makeText(application, "Error loading map image", Toast.LENGTH_SHORT).show();
+        }
+        img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showExternalLink();
@@ -197,24 +230,71 @@ public class DisplayEncMapActivity extends RPGCActivity {
         });
 
 
-        /*
         //comments_lv.setAdapter(commentArrayAdapter);
 
         for (int i=0; i<commentsArray.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.comment_layout, null);
-            TextView comment_tv = (TextView) view.findViewById(R.id.comment_layout_comment_tv);
+            TextView comment_tv = view.findViewById(R.id.comment_layout_comment_tv);
 
 
             comment_tv.setText(commentsArray.get(i).getComment());
             comments_layout.addView(view);
         }
-        */
+
+        map.setVoteEventListener(new PostObjectBase.VoteEventListener() {
+            @Override
+            public void onVoteFail(final String msg) {
+                DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!msg.isEmpty()) {
+                            Toast.makeText(application, msg, Toast.LENGTH_SHORT).show();
+                        }
+                        resetButtons();
+                    }
+                });
+            }
+
+            @Override
+            public void onVoteSuccess() {
+                DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        votes_tv.setText(String.valueOf(map.getCalculatedVotes()));
+                    }
+                });
+                setOnResult();
+            }
+
+            @Override
+            public void onBookmarkFail(final String msg) {
+                DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+                        resetBookmark();
+                        if (!msg.isEmpty()) {
+                            Toast.makeText(application, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void resetBookmark() {
+        if (map.isBookmarked()) {
+            bookmark_iv.setImageResource(R.mipmap.ic_bookmarked);
+        }
+        else {
+            bookmark_iv.setImageResource(R.mipmap.ic_bookmark);
+        }
     }
 
     private void showExternalLink() {
-        String link = map.getLink();
+        String link = map.getExternalLink();
         if (link.length() == 0) {
-            Toast.makeText(application, "No External Link was provided for this Map", Toast.LENGTH_LONG).show();
+            Toast.makeText(application, "No External Link was provided for this map", Toast.LENGTH_LONG).show();
             return;
         }
         if (application.getExternalLinkAlert()) {
@@ -231,72 +311,12 @@ public class DisplayEncMapActivity extends RPGCActivity {
         }
     }
 
-
-    private void vote(boolean v) {
-        if (v && map.getVoted()==1) { return; }
-        if (!v && map.getVoted()==0) { return; }
-
-        if (v) {
-            upvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
-            downvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+    private void setOnResult() {
+        if (serialized.position!=-1) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("SERIALIZED_OBJ", map.getSerialized());
+            setResult(Activity.RESULT_OK, resultIntent);
         }
-        else {
-            downvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
-            upvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
-        }
-
-        final String vote = v ? "1" : "0";
-        final RequestBody postBody = new FormBody.Builder()
-                .add("type", "map")
-                .add("id", String.valueOf(map_id))
-                .add("vote", vote)
-                .build();
-
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(getResources().getString(R.string.url_vote))
-                .header("Authorization", "Bearer" + application.getToken())
-                .post(postBody)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                displayError("Could not connect to server. Please try again");
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
-                boolean success=false;
-                if (!response.isSuccessful()) {
-                    onUnsuccessfulResponse(response);
-                }
-                else {
-                    try {
-                        JSONObject all = new JSONObject(response.body().string());
-                        if (all.has("success")) {
-                            //success
-                            Log.e("DisplayEncMapActivity", "Success");
-                            success=true;
-                            onVoteSuccess(vote);
-                        }
-                        else {
-                            Log.e("DisplayEncMapActivity", "Unknown Error: "+ all.toString());
-                            displayError("An unknown error occurred. Please try again");
-                        }
-                    }
-                    catch (JSONException e) {
-                        Log.e("DisplayEncMapActivity", e.getMessage());
-                        displayError("An unknown error occurred. Please try again");
-                        e.printStackTrace();
-                    }
-                }
-                if (!success) {
-                    //if something failed, then reset up/down vote buttons to their original state
-                    resetButtons();
-                }
-            }
-        });
     }
 
     private void resetButtons() {
@@ -304,78 +324,45 @@ public class DisplayEncMapActivity extends RPGCActivity {
             @Override
             public void run() {
                 if (map.getVoted() == 0) {
-                    upvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
-                    downvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
+                    upvote_btn.setImageResource(R.mipmap.arrow_neutral);
+                    downvote_btn.setImageResource(R.mipmap.arrow_downvote);
                 } else if (map.getVoted() == 1) {
-                    upvote_btn.setTextColor(getResources().getColor(R.color.textVoted));
-                    downvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+                    upvote_btn.setImageResource(R.mipmap.arrow_upvote);
+                    downvote_btn.setImageResource(R.mipmap.arrow_neutral);
                 } else {
-                    upvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
-                    downvote_btn.setTextColor(getResources().getColor(R.color.textButtonPrimary));
+                    upvote_btn.setImageResource(R.mipmap.arrow_neutral);
+                    downvote_btn.setImageResource(R.mipmap.arrow_neutral);
                 }
             }
         });
     }
 
-    private void onVoteSuccess(final String v) {
-        DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (v.equals("1")) {
-                    //upvote
-                    if (map.getVoted()==0) {
-                        map.updateUpvotes(1);
-                        map.updateDownvotes(-1);
-                    }
-                    else if (map.getVoted()==-1) {
-                        map.updateUpvotes(1);
-                    }
-                }
-                else {
-                    //downvote
-                    if (map.getVoted()==1) {
-                        map.updateDownvotes(1);
-                        map.updateUpvotes(-1);
-                    }
-                    else if (map.getVoted()==-1) {
-                        map.updateDownvotes(1);
-                    }
-                }
-                votes_tv.setText(String.valueOf(map.getCalculatedVotes()));
-                map.setVoted(Integer.valueOf(v));
-            }
-        });
-    }
-    /*
-    private void displayError(final String s) {
-        DisplayEncMapActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-    */
-
-    private void displayCommentInput() {
-        Intent intent = new Intent(context, CommentActivity.class);
-
-        intent.putExtra("id", map.getId());
-        intent.putExtra("commentType", "map");
-
-        startActivityForResult(intent, 1);
+    private void updateAfterEdit() {
+        title_tv.setText(map.getTitle());
+        description_tv.setText(map.getDescription());
+        user_tv.setText(map.getDetailSubtitle());
+        //Glide.with(context).load(context.getResources().getString(R.string.url_map_thumbs)+map.getId()+".jpg").into(img_btn);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //Should only happen after comment is submitted or cancelled
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK){
-                //String result=data.getStringExtra("result");
-                //TODO Add user's new comment to the list of comments
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //user pressed back btn
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data.hasExtra("DELETED")) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("DELETED", true);
+                        resultIntent.putExtra("SERIALIZED_OBJ", map.getSerialized());
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    }
+                    else {
+                        updateAfterEdit();
+                        setOnResult();
+                    }
+                }
+                break;
             }
         }
     }

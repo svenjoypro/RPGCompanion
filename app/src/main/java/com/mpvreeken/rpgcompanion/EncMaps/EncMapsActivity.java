@@ -1,12 +1,17 @@
-package com.mpvreeken.rpgcompanion.Maps;
+package com.mpvreeken.rpgcompanion.EncMaps;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mpvreeken.rpgcompanion.R;
@@ -14,12 +19,12 @@ import com.mpvreeken.rpgcompanion.RPGCActivity;
 import com.mpvreeken.rpgcompanion.Widgets.MultiselectSpinner;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -30,12 +35,16 @@ import okhttp3.Response;
 
 public class EncMapsActivity extends RPGCActivity {
 
-    private ArrayList<String> envs;
     private MultiselectSpinner spinner;
 
+    private List<Integer> tempSelectedIndices;
+
     private ArrayList<EncMap> mapsArray = new ArrayList<>();
-    private EncMapArrayAdapter encMapArrayAdapter;
+    private EncMapArrayAdapter mapArrayAdapter;
     private ListView maps_lv;
+
+    private Spinner sort_spinner, filter_spinner;
+    private static final String[] SORT_METHODS = {"r", "uv", "dv", "dd", "da"};
 
     private String seed; //random seed for server
     private int page; //pagination for server to get next set of maps
@@ -49,130 +58,172 @@ public class EncMapsActivity extends RPGCActivity {
 
         setupLoadingAnimTransparent();
 
-        spinner = findViewById(R.id.maps_envs_spinner);
-
-        maps_lv = findViewById(R.id.maps_lv);
-        mapsArray = new ArrayList<>();
-        encMapArrayAdapter = new EncMapArrayAdapter(this, mapsArray);
-
         page = 0;
         Random rand = new Random();
         seed = String.valueOf(rand.nextInt(1000000));
 
-        getEnvironments();
-    }
+        Button new_btn = findViewById(R.id.maps_new_btn);
 
-    private void getEnvironments() {
-        showLoadingAnim();
-
-        String env_url = getResources().getString(R.string.url_get_environments);
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(env_url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
+        new_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                displayError("Could not connect to server. Please try again");
-                hideLoadingAnim();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
-                hideLoadingAnim();
-                if (!response.isSuccessful()) {
-                    onUnsuccessfulResponse(response);
-                }
-                else {
-                    try {
-                        JSONArray r = new JSONArray(response.body().string());
-                        envs = new ArrayList<>();
-                        for (int i=0; i<r.length(); i++) {
-                            envs.add(r.getString(i));
-                        }
-                        setupUI();
-                    }
-                    catch (JSONException e) {
-                        displayError("An unknown error occurred. Please try again");
-                        finish();
-                    }
-                }
-            }
-        });
-    }
-
-    private void setupUI() {
-        EncMapsActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (envs==null || envs.size()==0) {
-                    Toast.makeText(context, "Unable to get Map data from server", Toast.LENGTH_LONG).show();
-                    finish();
+            public void onClick(View view) {
+                if (!application.getLoggedIn()) {
+                    Toast.makeText(application, "You must be logged in to post a new Map", Toast.LENGTH_LONG).show();
                     return;
                 }
-
-                spinner.setItems(envs);
-                spinner.setSelection(envs);
-
-                Button btn = new Button(context);
-                btn.setText("Load More");
-
-                maps_lv.addFooterView(btn);
-
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        loadMoreMaps();
-                    }
-                });
-
-                maps_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                        Intent intent = new Intent(parent.getContext(), DisplayEncMapActivity.class);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("MAP_ID", mapsArray.get(position).getId());
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                });
-
-                Button new_map_btn = findViewById(R.id.maps_new_btn);
-                new_map_btn.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getBaseContext(), NewEncMapActivity.class);
-                        intent.putStringArrayListExtra("ENVS", new ArrayList<>(envs));
-                        startActivity(intent);
-                    }
-                });
-
-                loadMoreMaps();
+                Intent intent = new Intent(context, NewEncMapActivity.class);
+                startActivity(intent);
             }
         });
+
+        spinner = findViewById(R.id.maps_envs_spinner);
+        spinner.setItems(EncMap.ENVS);
+        spinner.setSelection(EncMap.ENVS);
+
+        spinner.setEventListener(new MultiselectSpinner.OnSpinnerEventsListener() {
+            @Override
+            public void onSpinnerOpened() {
+                tempSelectedIndices = spinner.getSelectedIndicies();
+            }
+
+            @Override
+            public void onSpinnerClosed() {
+                if (!tempSelectedIndices.equals(spinner.getSelectedIndicies())) {
+                    /*
+                    mapArrayAdapter.clear();
+                    mapArrayAdapter.notifyDataSetChanged();
+                    page=0;
+                    loadMoreEncMaps();
+                    */
+                    resetAndLoad();
+                }
+            }
+        });
+
+        //Fetch maps from db
+        this.mapsArray = new ArrayList<>();
+        this.mapArrayAdapter = new EncMapArrayAdapter(this, mapsArray);
+        this.maps_lv = findViewById(R.id.maps_lv);
+
+        setupUI();
     }
 
-    private void loadMoreMaps() {
-        showLoadingAnim();
+    public void setupUI() {
+        sort_spinner = findViewById(R.id.maps_sort_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort_spinner.setAdapter(adapter);
+        sort_spinner.setSelected(false);
+        sort_spinner.setSelection(0,true);
+        sort_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i==0) {
+                    Random rand = new Random();
+                    seed = String.valueOf(rand.nextInt(1000000));
+                }
+                resetAndLoad();
+            }
 
-        OkHttpClient client = new OkHttpClient();
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        filter_spinner = findViewById(R.id.maps_filter_spinner);
+        ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(this,
+                R.array.filter_array, android.R.layout.simple_spinner_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filter_spinner.setAdapter(filterAdapter);
+        filter_spinner.setSelected(false);
+        filter_spinner.setSelection(0,true);
+        filter_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                resetAndLoad();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        if (application.getLoggedIn()) {
+            filter_spinner.setVisibility(View.VISIBLE);
+        }
+
+        maps_lv.setAdapter(mapArrayAdapter);
+        Button btn = new Button(this);
+        btn.setText(R.string.lbl_load_more);
+
+        maps_lv.addFooterView(btn);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadMoreEncMaps();
+            }
+        });
+
+        loadMoreEncMaps();
+    }
+
+    private void resetAndLoad() {
+        page=0;
+        firstLoad=true;
+        mapArrayAdapter.clear();
+        loadMoreEncMaps();
+    }
+
+    public void loadMoreEncMaps() {
+        Log.e("MAPS", "LoadMore");
+        showLoadingAnim();
 
         StringBuilder ar = new StringBuilder();
         for(int i:spinner.getSelectedIndicies()) {
             ar.append(i).append(",");
         }
+        if (ar.length()==0) {
+            Toast.makeText(application, "Please select at least one environment", Toast.LENGTH_SHORT).show();
+            hideLoadingAnim();
+            return;
+        }
         ar = new StringBuilder(ar.substring(0, ar.length() - 1));
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("envs", ar.toString())
-                .add("seed", seed)
-                .add("page", String.valueOf(page))
-                .build();
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody requestBody;
+
+        String filter = application.getLoggedIn() ? String.valueOf(filter_spinner.getSelectedItemPosition()) : "0";
+
+        int i = sort_spinner.getSelectedItemPosition();
+        if (i==0) {
+            //Random
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[0])
+                    .add("seed", seed)
+                    .add("page", String.valueOf(page))
+                    .add("filter", filter)
+                    .add("envs", ar.toString())
+                    .build();
+        }
+        else {
+            requestBody = new FormBody.Builder()
+                    .add("method", SORT_METHODS[i])
+                    .add("page", String.valueOf(page))
+                    .add("filter", filter)
+                    .add("envs", ar.toString())
+                    .build();
+        }
 
         Request request = new Request.Builder()
                 .url(getResources().getString(R.string.url_get_maps))
+                .header("Authorization", "Bearer" + application.getToken())
                 .post(requestBody)
                 .build();
 
@@ -193,17 +244,14 @@ public class EncMapsActivity extends RPGCActivity {
                     try {
                         JSONArray r = new JSONArray(response.body().string());
                         if (r.length()==0) {
-                            if (mapsArray.size() == 0) {
-                                displayError("No Maps Found. Help everyone by submitting new maps.");
-                            }
-                            else {
-                                displayError("No More Maps. Help everyone by submitting new maps.");
-                            }
+                            displayError("No More Maps. Help everyone by submitting new maps.");
                             return;
                         }
+
                         for (int i=0; i<r.length(); i++) {
                             mapsArray.add(new EncMap(context, mapsArray.size(), r.getJSONObject(i)));
                         }
+
 
                         //Increment page value for server
                         page+=1;
@@ -214,21 +262,20 @@ public class EncMapsActivity extends RPGCActivity {
                                 if (firstLoad) {
                                     firstLoad=false;
                                     //Set the new data
-                                    maps_lv.setAdapter(encMapArrayAdapter);
+                                    maps_lv.setAdapter(mapArrayAdapter);
                                 }
                                 else {
                                     //Get scroll position of listview, so we can retain their position after loading more
                                     int firstVisibleItem = maps_lv.getFirstVisiblePosition();
-                                    int oldCount = encMapArrayAdapter.getCount();
+                                    int oldCount = mapArrayAdapter.getCount();
                                     View view = maps_lv.getChildAt(0);
                                     int pos = (view == null ? 0 : view.getBottom());
 
-
                                     //Set the new data
-                                    maps_lv.setAdapter(encMapArrayAdapter);
+                                    maps_lv.setAdapter(mapArrayAdapter);
 
                                     //Set the listview position back to where they were
-                                    maps_lv.setSelectionFromTop(firstVisibleItem + encMapArrayAdapter.getCount() - oldCount + 1, pos);
+                                    maps_lv.setSelectionFromTop(firstVisibleItem + mapArrayAdapter.getCount() - oldCount + 1, pos);
                                 }
                             }
                         });
@@ -242,14 +289,36 @@ public class EncMapsActivity extends RPGCActivity {
             }
         });
     }
-    /*
-    private void displayError(final String s) {
-        EncMapsActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        if (data.hasExtra("DELETED")) {
+                            SerialEncMap serialEncMap = (SerialEncMap) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (mapsArray != null && serialEncMap != null) {
+                                mapsArray.remove(serialEncMap.position);
+                                if (mapArrayAdapter != null) {
+                                    mapArrayAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            SerialEncMap serialEncMap = (SerialEncMap) data.getSerializableExtra("SERIALIZED_OBJ");
+                            if (mapsArray != null && serialEncMap != null) {
+                                mapsArray.get(serialEncMap.position).updateLocal(serialEncMap);
+                                if (mapArrayAdapter != null) {
+                                    mapArrayAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e) { Log.e("EncMapsActivity", e.getMessage()); }
+                }
+                break;
             }
-        });
+        }
     }
-    */
 }
