@@ -1,0 +1,202 @@
+{
+	"name": "Dungeon Builder",
+	"category": "World Building",
+	"source": "",
+	"data": [
+		{
+			"name": "Humidity",
+			"data": [
+				"Wet and moldy – damp, and mold grows everywhere",
+				"Flooded – ankle to waist deep water everywhere",
+				"Underwater – most if not all is underwater",
+				"Wet and rotten – sodden, and everything is ruined, turning into mush",
+				"Foggy/Humid - moisture fills the air and lightly obscures vision",
+				"Rainy - somehow it's raining in here",
+				"Crumbling – dry rot, crumbling stone",
+				"Dry and dusty – a layer of dust and grit cover everything",
+				"Parched – dry air that makes you thirsty and uncomfortable",
+				"Dry and windy - a constant dry wind dries out your skin",
+				"Dry and dehydrating – you instantly feel dehydrated and your mouth and throat dry up, difficult to breathe and survive"
+			]
+		},
+		{
+			"name": "Temperature",
+			"data": [
+				"Icy – covered with a layer of ice, formations on walls and ceiling",
+				"Clammy – cold and damp air, works through your clothes",
+				"Glacial – biting cold, walls of ice",
+				"Crisp – cool but invigorating",
+				"Comfortable - room temperature",
+				"Smoldering – piles of still warm ash, may have low oxygen levels",
+				"Steamy – geothermal vents, geysers, etc.",
+				"Magma – dangerous flows of magma (1500k about 3 times as hot as a campfire, 500k) in large rooms, heat may dissipate enough to approach, in small rooms maybe not",
+				"Warm – general warmer temperature",
+				"Hot - uncomfortably hot that in time will begin to exhaust adventurers"
+			]
+		},
+		{
+			"name": "Flora",
+			"data": [
+				"Overgrown/roots – plant growth and hanging roots block passages and cluster about the ground",
+				"Flowering – strange cave flowers grow or sprout from bushes or vines",
+				"Fungus/mold – large fungi or molds grow throughout the area",
+				"Gardens – carefully tended (once?) gardens dot the area",
+				"Sparse - A single type of plant/flower that only survives in these conditions",
+				"Dead - At one point there was a lot of plant life, but it seems to all be dead now",
+				"None - no plant life to be found"
+			]
+		},
+		{
+			"name": "Fauna",
+			"data": [
+				"Swarming – filled with large swarms of vermin",
+				"Insects - Spiders and other insects inhabit the dungeon",
+				"Dead - Bodies/corpses litter the area",
+				"Eerie – No sign of creatures, but feelings of being watched, prickling of the skin, etc.",
+				"Beasts – area is populated with animals, predators, scavengers etc.",
+				"Lowlives – slimes, fungus monsters and insects",
+				"Magical – elementals, undead, constructs and other unnatural things",
+				"Humanoids – primitive or advanced humanoid tool users"
+			]
+		},
+		{
+			"name": "Origin",
+			"data": [
+				"Natural solution cave – caves formed by minerals dissolving, sometimes crystalline",
+				"Natural lava tubes – formed by magma flowing out of a space, stone is hard, rooms are tunnel like",
+				"Natural fracture cave – full of debris, layers of rock collapse to form caves",
+				"Natural erosion cave – made by action of wind or water wearing down rock, may have strong winds or high tide",
+				"Manufactured hewn – crudely carved out of rock, surface still shows tool marks",
+				"Manufactured supported – soft stone supported by columns or beams",
+				"Manufactured rough brick – simple stone bricks carved from rock shore up and finish walls",
+				"Manufactured advanced brick – smaller, fancier, or simply better made stone bricks",
+				"Architecture monolithic – huge construction from large slabs of rock"
+			]
+		},
+		{
+			"name": "Sounds",
+			"data": [
+				"Whistling – sound of wind forced through tight passages or over odd formations",
+				"Rumbling – perhaps an indication this area is unstable or of seismic activity",
+				"Battle noises – inhabitants often get in noisy conflict",
+				"Moaning – the wind? or something more sinister?",
+				"Small creatures - chirping of crickets or squirming of insects",
+				"Quiet - every step you make sounds like thunder compared to the silence",
+				"Silence - piercing silence that seems to swallow up even the noise you make"
+			]
+		},
+		{
+			"name": "Smells",
+			"data": [
+				"Decay – death, decomposition, mold",
+				"Dirt – the smell of earth and dirt",
+				"Chemicals – sulfur or other strange acrid brews, sickly sweet tangs, some kind of strange chemicals are on the air",
+				"Metal – the distinct smell and taste of metal, is this a metallurgists, a mine, or just an ore rich area?"
+			]
+		},
+		{
+			"name": "Size",
+			"data": [
+				"Tiny - a quick 1-3 room dungeon",
+				"Tiny - a quick 1-3 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Small – your classic 5 room dungeon",
+				"Medium – complex, 5-15 rooms",
+				"Medium – complex, 5-15 rooms",
+				"Medium – complex, 5-15 rooms",
+				"Medium – complex, 5-15 rooms",
+				"Large – massive, 20-50 rooms",
+				"Large – massive, 20-50 rooms",
+				"Extra large – sprawling multizone area"
+			]
+		},
+		{
+			"name": "Scale",
+			"data": [
+				"Tight – small rooms, tight passages, crawling and squeezing through tunnels",
+				"Tight – small rooms, tight passages, crawling and squeezing through tunnels",
+				"Standard – normal room and passage scale",
+				"Standard – normal room and passage scale",
+				"Standard – normal room and passage scale",
+				"Large – larger passways, huge rooms",
+				"Mixed – a mix of scales, often natural but also a characteristic of an area inhabited by different sizes of creature"
+			]
+		},
+		{	
+			"name": "Room Styles",
+			"data": [
+				"Rectangular – standard square and rectangular rooms",
+				"Rectangular – standard square and rectangular rooms",
+				"Elliptical – circles and ellipses",
+				"Angled – angled rooms other than squares and rectangles, triangles, hexagons, unusual shapes…",
+				"Natural – caves and natural passages",
+				"Natural – caves and natural passages",
+				"Natural – caves and natural passages",
+				"Natural – caves and natural passages",
+				"Cavernous – huge open caverns with vaulted ceilings",
+				"Chasms – deep chasms voids and pits",
+				"Open – one monstrous cavern with discrete areas within (feels a little like overland)"				
+			]
+		},
+		{
+			"name": "Maintenance",
+			"data": [
+				"Maintained – the area is being maintained, passably clean and repairs are made",
+				"Expanding – the area is maintained and new areas are being built on the edges",
+				"Abandoned – no one is doing maintenance, most things still work but some don’t and wear is obvious",
+				"Collapsing – no one has done maintenance for a long time, few things work, most are broken, missing, or destroyed"
+			]
+		},
+		{
+			"name": "Visibility",
+			"data": [
+				"Foggy – mists, steam or fog blanket the area",
+				"Screened – webs, vines or other obstructions shroud the area",
+				"Magic darkness – rooms or the entire area is covered in magical darkness",
+				"Twisty – no special obstructions, just very few straight passages so vision only extends to the next bend"
+			]
+		},
+		{
+			"name": "Treasure",
+			"data": [
+				"Coin and items – standard treasures",
+				"Raw ore/gems – area has been or can be mined for raw ore and gems",
+				"Art – area has art objects that can be looted as treasure",
+				"Goods – not much in the way of treasure, but area has trade good that can be sold"
+			]
+		},
+		{
+			"name": "Hazards",
+			"data": [
+				"Hazards – venomous critters, naturally occurring rockfalls, pits or fire gouts",
+				"Traps – area is/was home to a trap builders and has many traps",
+				"Monsters – area full of deadly monsters",
+				"Curses – area holds curses or other magical dangers"
+			]
+		},
+		{
+			"name": "Misc",
+			"data": [
+				"Architecture – contains a unique piece of architecture, statuary, or other landmark",
+				"Foe – contains a unique monster, NPC or the like",
+				"Magic effect – contains a special magic effect, either an aura over the whole area or a specific feature like a magical portal or pool",
+				"Treasure – has a special one of a kind treasure that may have its own backstory or associated quest"
+			]
+		},
+		{
+			"name": "Magical Properties",
+			"data": [
+				"Changing – shifting walls, moving rooms and other tricks",
+				"Non-euclidean – the area has a definite arrangement but its full of portals, bends in reality or other weirdness that make it difficult to map",
+				"Wild-magic – magic in this area acts unpredictably",
+				"Null-magic – magic in this area is suppressed or nullified"
+			]
+		}
+	]
+}
