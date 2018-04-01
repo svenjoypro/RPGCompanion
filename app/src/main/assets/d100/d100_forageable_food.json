@@ -1,0 +1,132 @@
+{
+	"name": "Forageable Food",
+	"category": "Misc",
+	"source": "https://www.reddit.com/r/d100/comments/84e116/d100_flavorful_foraged_foods/",
+	"data": [
+		{
+			"name": "Forest",
+			"data": [
+				"Ramps (Wild Leeks)",
+				"River Cane Shoots",
+				"Fiddleheads) (Young Ferns) (Requires Preparation before eating",
+				"Oyster Mushroom",
+				"Quail Eggs",
+				"Catfish",
+				"Queen Anne’s Lace (Wild Carrots)",
+				"Chicken of the Woods Mushroom",
+				"Cattails (near water)",
+				"BlackBerries",
+				"Chicory (Leafy Vegetable)",
+				"Paw Paw (Tree Fruit)",
+				"Black Walnuts (Requires Preparation before eating)",
+				"Acorns (Requires Preparation before eating)",
+				"Bolete Mushrooms",
+				"Rose Hips (Rose Bush Berries) (Requires Preparation before eating)",
+				"Crabapple (Tree Fruit)",
+				"Persimmons (Tree Fruit)",
+				"Gingko nuts (Requires Preparation before eating)",
+				"Chestnuts"
+			]
+		},
+		{
+			"name": "Mountains",
+			"data": [
+				"Shaggy Mane Mushrooms",
+				"Horseradish",
+				"Rhubarb (Requires Preparation before eating)",
+				"Morel Mushrooms",
+				"Green Fir Pine Cones (Requires Preparation before eating)",
+				"Cherries",
+				"Gooseberry (Requires Preparation before eating)",
+				"Blueberry",
+				"Elderberries",
+				"Raspberries",
+				"Porcini Mushroom",
+				"Chanterelle",
+				"Salmon",
+				"Sheep Sorrel (Leafy Vegetable)",
+				"Evergreen Needles (Requires Preparation before eating)",
+				"Camas Root",
+				"Actinidia (Bush Fruit)",
+				"Juniper Berries",
+				"Sea buckthorn (Bush Berry)",
+				"Usnea – Old Man’s Beard (Moss) (Requires Preparation before eating)"
+			]
+		},
+		{
+			"name": "Coastal/Water",
+			"data": [
+				"Pepper Dulse (Seaweed)",
+				"Gutweed (Seaweed)",
+				"Brown Crabs",
+				"Duck Eggs",
+				"Sandpiper Eggs",
+				"Brown shrimp",
+				"Snails",
+				"Sugar Kelp (Seaweed)",
+				"Sea Lettuce (Seaweed)",
+				"Beach Peas (Requires Preparation before eating)",
+				"Beach Mustard (Leafy Vegetable)",
+				"Sand Crab",
+				"Watercress (Leafy Vegetable)",
+				"Oarweed (Seaweed) (Requires Preparation before eating)",
+				"Serrated Wrack (Seaweed)",
+				"Mussels",
+				"Laver (Seaweed) (Requires Preparation before eating)",
+				"Dumont’s Weed (Seaweed)",
+				"Clams",
+				"Oysters"
+			]
+		},
+		{
+			"name": "Plains/Meadow",
+			"data": [
+				"Wild Violets",
+				"Dandelions",
+				"Burdock (Leafy Vegetable)",
+				"Daylilies",
+				"Kudzu (Leafy Vegetable)",
+				"Lambsquarter (Leafy Vegetable)",
+				"Purslane (Succulent)",
+				"Miner’s Lettuce",
+				"Hedgehog Mushrooms",
+				"Wild Onions",
+				"Strawberries",
+				"Wild Grapes",
+				"Wild Apples",
+				"Squash",
+				"Pecans (Requires Preparation before eating)",
+				"Kinnikinnick (Leafy Vegetable)",
+				"Greenbriar Root",
+				"Cattail Root",
+				"Chickweed",
+				"Teaberry"
+			]
+		},
+		{
+			"name": "Desert/Arid",
+			"data": [
+				"Nettles (Leafy Vegetable) (Requires Preparation before eating)",
+				"Agarita Berries",
+				"Yucca Flower (Requires Preparation before eating)",
+				"Milk Thistle",
+				"Chiávul Buds (Cactus)",
+				"Saguaro Fruit (Cactus) (Requires Preparation before eating)",
+				"Mulberries",
+				"Wild Poppies",
+				"Hackberry",
+				"Amaranth",
+				"Honey Mesquite (Bush and Seeds)",
+				"Prickly Pear (Cactus) (Requires Preparation before eating)",
+				"Peppergrass",
+				"Sweetgum Pods",
+				"Henbit (Leafy Vegetable)",
+				"Buffalo Gourd",
+				"Carolina Bristle Mallow",
+				"Barrel Cactus (Requires Preparation before eating)",
+				"Agave (Requires Preparation before eating)",
+				"Arrowhead Root (Requires Preparation before eating)"
+			]
+		}
+	]
+}
