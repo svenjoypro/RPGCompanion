@@ -1,7 +1,10 @@
 package com.mpvreeken.rpgcompanion;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -74,6 +77,7 @@ public class AccountActivity extends RPGCAuthActivity {
             public void onFailure(Call call, IOException e) {
                 hideLoadingAnim();
                 onHttpCallbackFail(e.getMessage());
+                finish();
             }
 
             @Override
@@ -81,6 +85,7 @@ public class AccountActivity extends RPGCAuthActivity {
                 hideLoadingAnim();
                 if (!response.isSuccessful()) {
                     onUnsuccessfulResponse(response);
+                    finish();
                 }
                 else {
                     try {
@@ -95,6 +100,7 @@ public class AccountActivity extends RPGCAuthActivity {
                     catch (JSONException e) {
                         Log.d("RPGCApplication", e.getMessage());
                         onHttpResponseError("An unknown error has occurred. Please try again.");
+                        finish();
                     }
                 }
             }
