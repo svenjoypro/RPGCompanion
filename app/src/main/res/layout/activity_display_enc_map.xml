@@ -25,17 +25,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/map_details_edit_iv"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:alpha=".5"
-                    android:visibility="gone"
+                <FrameLayout
+                    android:id="@+id/frameLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/ic_edit" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/map_details_edit_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:alpha=".5"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@mipmap/ic_edit" />
+
+                    <ImageView
+                        android:id="@+id/map_details_bookmark_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@mipmap/ic_bookmark" />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/map_details_title_tv"
@@ -48,7 +66,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/map_list_item_text_color"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/map_details_edit_iv"
+                    app:layout_constraintEnd_toStartOf="@+id/frameLayout"
                     app:layout_constraintStart_toEndOf="@+id/map_details_img_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,7 +90,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:textAlignment="center"
-                    app:layout_constraintEnd_toStartOf="@+id/map_details_edit_iv"
+                    app:layout_constraintEnd_toStartOf="@+id/frameLayout"
                     app:layout_constraintStart_toEndOf="@+id/map_details_img_btn"
                     app:layout_constraintTop_toBottomOf="@+id/map_details_title_tv" />
 

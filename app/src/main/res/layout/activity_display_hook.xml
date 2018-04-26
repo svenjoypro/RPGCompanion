@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.mpvreeken.rpgcompanion.Hooks.DisplayHookActivity"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:context="com.mpvreeken.rpgcompanion.Hooks.DisplayHookActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,17 +25,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/hook_details_edit_iv"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:alpha=".5"
-                    android:visibility="gone"
+                <FrameLayout
+                    android:id="@+id/frameLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/ic_edit" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/hook_details_edit_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:alpha=".5"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@mipmap/ic_edit" />
+
+                    <ImageView
+                        android:id="@+id/hook_details_bookmark_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@mipmap/ic_bookmark" />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/hook_details_description_tv"
@@ -47,8 +64,8 @@
                     android:layout_marginTop="2dp"
                     android:paddingBottom="8dp"
                     android:text=""
-                    android:textIsSelectable="true"
                     android:textColor="@color/hook_list_item_text_color"
+                    android:textIsSelectable="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/hook_details_vote_up_btn"
                     app:layout_constraintTop_toBottomOf="@+id/hook_details_user_tv" />
@@ -64,7 +81,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/hook_list_item_text_color"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/hook_details_edit_iv"
+                    app:layout_constraintEnd_toStartOf="@+id/frameLayout"
                     app:layout_constraintStart_toEndOf="@+id/hook_details_vote_up_btn"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +93,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:textAlignment="center"
-                    app:layout_constraintEnd_toStartOf="@+id/hook_details_edit_iv"
+                    app:layout_constraintEnd_toStartOf="@+id/frameLayout"
                     app:layout_constraintStart_toEndOf="@+id/hook_details_vote_up_btn"
                     app:layout_constraintTop_toBottomOf="@+id/hook_details_title_tv" />
 
