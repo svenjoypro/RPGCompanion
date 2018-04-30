@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY baseurl "http://107.150.7.141/rpg_companion/api/"><!ENTITY publicurl "http://107.150.7.141/rpg_companion/public/">]>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY baseurl_OLD "http://107.150.7.141/rpg_companion/api/">
+    <!ENTITY publicurl_OLD "http://107.150.7.141/rpg_companion/public/">
+    <!ENTITY baseurl "http://dndcompanion.com/api/">
+    <!ENTITY publicurl "http://dndcompanion.com/">
+]>
 
 <resources>
     <string name="app_name">RPG Companion</string>
@@ -15,6 +21,8 @@
     <!-- URLS -->
 
     <string name="url_register">&baseurl;register</string>
+    <string name="url_register2">&baseurl;register2</string>
+
     <string name="url_confirm_email">&baseurl;confirm-email</string>
     <string name="url_resend_email">&baseurl;resend-email</string>
     <string name="url_create_pw_reset">&baseurl;create-password-reset</string>
@@ -41,6 +49,10 @@
     <string name="url_get_item">&baseurl;items/</string>
     <string name="url_submit_item">&baseurl;items/new</string>
 
+    <string name="url_get_dungeons">&baseurl;dungeons</string>
+    <string name="url_get_dungeon">&baseurl;dungeons/</string>
+    <string name="url_submit_dungeon">&baseurl;dungeons/new</string>
+
     <string name="url_get_environments">&baseurl;maps/get-environments</string>
     <string name="url_get_maps">&baseurl;maps</string>
     <string name="url_get_map">&baseurl;maps/</string>
@@ -49,6 +61,9 @@
 
 
     <string name="url_vote">&baseurl;vote</string>
+    <string name="url_bookmark">&baseurl;bookmark</string>
+    <string name="url_update_post">&baseurl;admin/update-post</string>
+    <string name="url_delete_post">&baseurl;admin/delete-post</string>
 
     <string name="url_submit_comment">&baseurl;comments/post</string>
     <string name="url_submit_post">&baseurl;posts/post</string>
@@ -56,4 +71,25 @@
     <string name="url_get_release_notes">&baseurl;release-notes</string>
 
     <string name="npc_activity_title">Generated NPC</string>
+
+
+    <string name="lbl_load_more">Load More</string>
+
+    <string-array name="sort_array">
+        <item>Random</item>
+        <item>Upvotes</item>
+        <item>Downvotes</item>
+        <item>Newest</item>
+        <item>Oldest</item>
+    </string-array>
+    <string-array name="filter_array">
+        <item>All Posts</item>
+        <item>Just Mine</item>
+        <item>Exclude Mine</item>
+        <item>Saved Posts</item>
+    </string-array>
+
+
+    <string name="tos_text">I agree to the Terms of Service</string>
+
 </resources>
